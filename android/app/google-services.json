@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "27623311684",
+    "project_id": "trackher-3e3e4",
+    "storage_bucket": "trackher-3e3e4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:27623311684:android:f5bbae05f7affc73c46f11",
+        "android_client_info": {
+          "package_name": "com.zynth.trackher"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJ3VK0oZFGAv8fue0SFaFx75MjiBrtjE8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

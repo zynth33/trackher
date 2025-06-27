@@ -1,0 +1,5 @@
+{"messages": [{"role": "user", "content": "What is the capital of France?"}, {"role": "assistant", "content": "The capital of France is Paris."}]}
+{"messages": [{"role": "user", "content": "How do I make a simple HTTP request in Python?"}, {"role": "assistant", "content": "You can use the `requests` library:\n\n```python\nimport requests\nresponse = requests.get('https://example.com')\nprint(response.text)\n```"}]}
+{"messages": [{"role": "user", "content": "Give me a motivational quote."}, {"role": "assistant", "content": "\"Success is not final, failure is not fatal: It is the courage to continue that counts.\" – Winston Churchill"}]}
+{"messages": [{"role": "user", "content": "Can you write a haiku about the ocean?"}, {"role": "assistant", "content": "Waves kiss the shoreline\nWhispers of the deep abyss\nBlue peace evermore"}]}
+{"messages": [{"role": "user", "content": "What are some good project ideas for beginners in Flutter?"}, {"role": "assistant", "content": "Here are some beginner Flutter project ideas:\n1. To-do List App\n2. Weather Forecast App\n3. Simple Calculator\n4. Note-taking App\n5. Expense Tracker"}]}
