@@ -11,7 +11,7 @@ class Avatar extends StatelessWidget {
     final session = UserSession();
 
     return Container(
-      padding: const EdgeInsets.all(10.0),
+      padding: EdgeInsets.all(session.selectedAvatar.isNotEmpty ? 5.0 : 10.0),
       decoration: BoxDecoration(
         color: session.selectedColor,
         borderRadius: BorderRadius.circular(100),
@@ -27,8 +27,8 @@ class Avatar extends StatelessWidget {
       child: session.selectedAvatar.isNotEmpty ? SvgPicture.asset(
         session.selectedAvatar,
         fit: BoxFit.contain,
-        height: 30,
-        width: 30,
+        height: 40,
+        width: 40,
       ) : const Icon(
         Symbols.person_2_rounded,
         color: Colors.red,

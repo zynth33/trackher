@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:trackher/models/journal_entry.dart';
+import '../models/journal_entry.dart';
 import '../database/database_helper.dart';
 
 class PeriodRepository {

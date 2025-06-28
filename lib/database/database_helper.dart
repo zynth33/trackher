@@ -3,8 +3,7 @@ import 'dart:convert';
 
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:trackher/models/journal_entry.dart';
-
+import '../models/journal_entry.dart';
 
 class DatabaseHelper {
   static const _databaseName = "PeriodsDatabase.db";

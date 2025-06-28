@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
+import '../utils/helper_functions.dart';
+
 class DatesSession {
   static final DatesSession _instance = DatesSession._internal();
   factory DatesSession() => _instance;
@@ -101,8 +103,4 @@ class DatesSession {
 
   ValueNotifier<Map<DateTime, Map<String, dynamic>>> get dataMapNotifier =>
       _dataMapNotifier;
-
-  DateTime normalizeDate(DateTime date) {
-    return DateTime(date.year, date.month, date.day);
-  }
 }

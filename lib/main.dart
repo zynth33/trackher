@@ -3,16 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:timezone/data/latest.dart' as tz;
-import 'package:trackher/pages/period_date_selection_page/period_date_selection_page.dart';
-import 'package:trackher/services/navigation_service.dart';
-import 'package:trackher/services/notification_service.dart';
-import 'package:trackher/sessions/settings_session.dart';
-import 'package:trackher/sessions/symptoms_session.dart';
-import 'package:trackher/sessions/user_session.dart';
-import 'package:trackher/utils/enums.dart';
+
+import './pages/period_date_selection_page/period_date_selection_page.dart';
+import './services/navigation_service.dart';
+import './services/notification_service.dart';
+import './sessions/settings_session.dart';
+import './sessions/symptoms_session.dart';
+import './sessions/user_session.dart';
+import './utils/enums.dart';
 import './repositories/period_repository.dart';
 import './sessions/period_session.dart';
 import './pages/period_page/period_page.dart';
+
 import 'firebase_options.dart';
 import 'models/past_period.dart';
 import 'models/period_prediction.dart';
@@ -31,19 +33,8 @@ void main() async {
   // Local notification setup
   await initNotifications();
 
-  // Initialize Hive
-  await Hive.initFlutter();
-  Hive.registerAdapter(PeriodPredictionAdapter());
-  Hive.registerAdapter(PastPeriodAdapter());
-
-  // Open Hive Boxes to Populate Sessions
-  await Hive.openBox<PeriodPrediction>('predictions');
-  await Hive.openBox<PastPeriod>('pastPeriods');
-  await Hive.openBox('periodCycleData');
-  await Hive.openBox('periodMetaData');
-  await Hive.openBox('settingsData');
-  await Hive.openBox<Map>('datesData');
-  await Hive.openBox('avatarBox');
+  // Initialize Hive and Hive Boxes
+  await setHive();
 
   // Populate Sessions with Previous data
   setData();
@@ -162,4 +153,20 @@ void setSettings() {
   if(settingsDataBox.isNotEmpty) {
     SettingsSession().setTheme(settingsDataBox.get("theme") as ThemeModeOption);
   }
+}
+
+Future<void> setHive() async {
+  // Initialize Hive
+  await Hive.initFlutter();
+  Hive.registerAdapter(PeriodPredictionAdapter());
+  Hive.registerAdapter(PastPeriodAdapter());
+
+  // Open Hive Boxes to Populate Sessions
+  await Hive.openBox<PeriodPrediction>('predictions');
+  await Hive.openBox<PastPeriod>('pastPeriods');
+  await Hive.openBox('periodCycleData');
+  await Hive.openBox('periodMetaData');
+  await Hive.openBox('settingsData');
+  await Hive.openBox<Map>('datesData');
+  await Hive.openBox('avatarBox');
 }

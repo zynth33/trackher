@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:trackher/models/journal_entry.dart';
-import 'package:trackher/repositories/period_repository.dart';
-import 'package:trackher/sessions/symptoms_session.dart';
+import '../../../models/journal_entry.dart';
+import '../../../repositories/period_repository.dart';
+import '../../../sessions/symptoms_session.dart';
 
 import 'mood_selector.dart';
 

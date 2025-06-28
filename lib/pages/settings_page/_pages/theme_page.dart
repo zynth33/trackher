@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:trackher/sessions/settings_session.dart';
+import '../../../sessions/settings_session.dart';
 
 import '../../../utils/enums.dart';
 
@@ -20,7 +20,7 @@ class _ThemePageState extends State<ThemePage> {
       SettingsSession().setTheme(option);
     });
 
-    var box = Hive.box('settingsBox');
+    var box = Hive.box('settingsData');
     box.put('theme', option);
   }
 
@@ -44,10 +44,9 @@ class _ThemePageState extends State<ThemePage> {
             color: isSelected ? Colors.pink : Colors.transparent,
             width: 2,
           ),
-          boxShadow: isSelected
-              ? [
+          boxShadow: isSelected ? [
             BoxShadow(
-              color: Colors.pink.withOpacity(0.2),
+              color: Colors.pink.withValues(alpha: 0.2),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),

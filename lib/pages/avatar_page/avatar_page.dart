@@ -18,6 +18,8 @@ class _AvatarPageState extends State<AvatarPage> {
   Color selectedColor = Colors.blue;
   String selectedAvatar = 'assets/avatars/avatar_1.svg';
   final _box = Hive.box('avatarBox');
+  final shuffledAvatars = AppConstants.avatars;
+  final shuffledColors = AppConstants.avatarColors;
 
 
   @override
@@ -33,13 +35,13 @@ class _AvatarPageState extends State<AvatarPage> {
     if (avatarPath is String) {
       selectedAvatar = avatarPath;
     } else {
-      selectedAvatar = getRandom(AppConstants.avatars);
+      selectedAvatar = getRandom(shuffledAvatars);
     }
 
     if (colorValue is int) {
       selectedColor = Color(colorValue);
     } else {
-      selectedColor = getRandom(AppConstants.avatarColors);
+      selectedColor = getRandom(shuffledColors);
     }
   }
 
@@ -56,20 +58,19 @@ class _AvatarPageState extends State<AvatarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 00.0),
+      body: SafeArea(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 13.0, vertical: 20.0),
+              padding: const EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   InkWell(
-                    onTap: () => Navigator.pop(context),
-                    borderRadius: BorderRadius.circular(100),
-                    child: const Icon(Icons.arrow_back, size: 30)
+                      onTap: () => Navigator.pop(context),
+                      borderRadius: BorderRadius.circular(100),
+                      child: const Icon(Icons.arrow_back, size: 30)
                   ),
                   const SizedBox(width: 20),
                   const Text(
@@ -100,7 +101,7 @@ class _AvatarPageState extends State<AvatarPage> {
               ),
             ),
             const SizedBox(height: 40),
-
+        
             Container(
               height: 190,
               width: 190,
@@ -112,11 +113,11 @@ class _AvatarPageState extends State<AvatarPage> {
               child: SvgPicture.asset(selectedAvatar),
             ),
             const SizedBox(height: 40),
-
+        
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: AppConstants.avatarColors.map((color) {
+                children: shuffledColors.map((color) {
                   final isSelected = color == selectedColor;
                   return GestureDetector(
                     onTap: () {
@@ -130,8 +131,8 @@ class _AvatarPageState extends State<AvatarPage> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: isSelected
-                          ? Border.all(color: Colors.pink, width: 2)
-                          : null,
+                            ? Border.all(color: Colors.pink, width: 2)
+                            : null,
                       ),
                       child: CircleAvatar(
                         backgroundColor: color,
@@ -142,13 +143,16 @@ class _AvatarPageState extends State<AvatarPage> {
                 }).toList(),
               ),
             ),
-            Divider(height: 40, color: HexColor.fromHex(AppConstants.graySwatch1), thickness: 1,),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30),
+              child: Divider(height: 40, color: Colors.grey.withValues(alpha: 0.4), thickness: 2,),
+            ),
             Expanded(
               child: SingleChildScrollView(
                 child: Wrap(
                   spacing: 10,
                   runSpacing: 10,
-                  children: AppConstants.avatars.map((avatar) {
+                  children: shuffledAvatars.map((avatar) {
                     return InkWell(
                       onTap: () {
                         setState(() {
@@ -169,7 +173,8 @@ class _AvatarPageState extends State<AvatarPage> {
                   }).toList(),
                 ),
               ),
-            )
+            ),
+            // SizedBox(height: 10,)
           ],
         ),
       ),

@@ -1,11 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:trackher/pages/avatar_page/avatar_page.dart';
-import 'package:trackher/pages/settings_page/_components/avatar.dart';
+import '../../pages/avatar_page/avatar_page.dart';
+import '../../pages/settings_page/_components/avatar.dart';
 import '../../sessions/user_session.dart';
 import '../../utils/constants.dart';
-import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 import '_components/settings_card.dart';
 

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
@@ -15,6 +17,8 @@ import 'enums.dart';
 
 class AppConstants {
   AppConstants._();
+
+  static final _random = Random();
 
   static const String graySwatch1 = "#595555";
 
@@ -173,28 +177,36 @@ class AppConstants {
     FAQItem("How do I set up reminders?", "Go to Settings > Cycle Preferences to customize reminders."),
   ];
 
-  static const List<Color> avatarColors = [
-    Colors.blue,
-    Colors.pink,
-    Colors.green,
-    Colors.orange,
-    Colors.purple,
-    Colors.yellow,
-    Colors.teal,
-    Colors.brown,
-  ];
+  static List<Color> get avatarColors {
+    final colors = [
+      Colors.blue,
+      Colors.pink,
+      Colors.green,
+      Colors.orange,
+      Colors.purple,
+      Colors.yellow,
+      Colors.teal,
+      Colors.brown,
+    ];
+    colors.shuffle(_random);
+    return colors;
+  }
 
-  static List<String> avatars = [
-    'assets/avatars/avatar_1.svg',
-    'assets/avatars/avatar_2.svg',
-    'assets/avatars/avatar_3.svg',
-    'assets/avatars/avatar_4.svg',
-    'assets/avatars/avatar_5.svg',
-    'assets/avatars/avatar_6.svg',
-    'assets/avatars/avatar_7.svg',
-    'assets/avatars/avatar_8.svg',
-    'assets/avatars/avatar_9.svg',
-    'assets/avatars/avatar_10.svg',
-    'assets/avatars/avatar_11.svg',
-  ];
+  static List<String> get avatars {
+    final avatarList = [
+      'assets/avatars/avatar_1.svg',
+      'assets/avatars/avatar_2.svg',
+      'assets/avatars/avatar_3.svg',
+      'assets/avatars/avatar_4.svg',
+      'assets/avatars/avatar_5.svg',
+      'assets/avatars/avatar_6.svg',
+      'assets/avatars/avatar_7.svg',
+      'assets/avatars/avatar_8.svg',
+      'assets/avatars/avatar_9.svg',
+      'assets/avatars/avatar_10.svg',
+      'assets/avatars/avatar_11.svg',
+    ];
+    avatarList.shuffle(_random);
+    return avatarList;
+  }
 }

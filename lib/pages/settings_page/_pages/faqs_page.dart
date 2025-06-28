@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../utils/constants.dart';
 
+import '../../../utils/constants.dart';
 import '../_components/help_button.dart';
 
 class FaqsPage extends StatefulWidget {
@@ -34,7 +34,6 @@ class _FaqsPageState extends State<FaqsPage> {
             ),
             const SizedBox(height: 24),
 
-            // Need Help?
             Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -59,7 +58,6 @@ class _FaqsPageState extends State<FaqsPage> {
             ),
             const SizedBox(height: 24),
 
-            // FAQ
             Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -69,14 +67,16 @@ class _FaqsPageState extends State<FaqsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("Frequently Asked Questions",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  const Text("Frequently Asked Questions", style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16
+                  )),
                   const SizedBox(height: 12),
                   ...AppConstants.faqs.map((faq) => Container(
-                    margin: const EdgeInsets.symmetric(vertical: 8), // spacing between tiles
+                    margin: const EdgeInsets.symmetric(vertical: 8),
                     decoration: BoxDecoration(
-                      color: Colors.grey.withAlpha(80), // background color
-                      borderRadius: BorderRadius.circular(12), // rounded corners
+                      color: Colors.grey.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                     child: Theme(
                       data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
@@ -86,16 +86,12 @@ class _FaqsPageState extends State<FaqsPage> {
                           style: const TextStyle(fontWeight: FontWeight.w500),
                         ),
                         trailing: const Icon(Icons.help_outline_rounded, color: Colors.grey),
-                        onExpansionChanged: (expanded) {
-                          // setState(() {
-                          //   faq.isExpanded = expanded;
-                          // });
-                        },
+                        onExpansionChanged: (expanded) {},
                         children: [
                           Container(
                             width: MediaQuery.of(context).size.width,
                             decoration: BoxDecoration(
-                              color: Colors.white, // background color
+                              color: Colors.white,
                               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(12), bottomRight: Radius.circular(12)), // rounded corners
                             ),
                             child: Padding(
@@ -110,6 +106,40 @@ class _FaqsPageState extends State<FaqsPage> {
                 ],
               ),
             ),
+            const SizedBox(height: 24),
+
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Text("Still Need Help?", style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20
+                  )),
+                  SizedBox(height: 15,),
+                  Text("📧 Email: support@trackher.com", style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),),
+                  SizedBox(height: 8,),
+                  Text("📞 Phone: +1 (555) 123-HELP", style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),),
+                  SizedBox(height: 8,),
+                  Text("🕒 Hours: Mon-Fri 9AM-6PM EST", style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),),
+                ],
+              ),
+            )
           ],
         ),
       ),

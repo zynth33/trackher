@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:trackher/sessions/period_session.dart';
+import '../../../sessions/period_session.dart';
 
 class RoundedCircularProgress extends StatelessWidget {
   final double day;

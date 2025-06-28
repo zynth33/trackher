@@ -35,7 +35,6 @@ T? getValueForDateInMap<T>(DateTime target, Map<DateTime, T> map) {
   return null;
 }
 
-
 Widget getMessageForDate(DateTime date) {
   if (!isPastDate(date)) return const SizedBox.shrink();
 
@@ -85,4 +84,8 @@ Future<void> scheduleNotification({
 }
 
 T getRandom<T>(List<T> list) => list[Random().nextInt(list.length)];
+
+DateTime normalizeDate(DateTime date) {
+  return DateTime(date.year, date.month, date.day);
+}
 

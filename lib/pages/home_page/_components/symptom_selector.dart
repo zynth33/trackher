@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:trackher/sessions/dates_session.dart';
-import 'package:trackher/sessions/symptoms_session.dart';
+import '../../../sessions/dates_session.dart';
+import '../../../sessions/symptoms_session.dart';
 
 import '../../../utils/enums.dart';
 

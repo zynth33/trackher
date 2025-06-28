@@ -35,7 +35,6 @@ class _PeriodPageState extends State<PeriodPage> {
   
   @override
   Widget build(BuildContext context) {
-    print(Theme.of(context).brightness);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:trackher/sessions/dates_session.dart';
+import '../../../sessions/dates_session.dart';
 
 class InfiniteDateScroll extends StatefulWidget {
   const InfiniteDateScroll({super.key});
