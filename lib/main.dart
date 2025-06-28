@@ -4,8 +4,12 @@ import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:trackher/pages/period_date_selection_page/period_date_selection_page.dart';
+import 'package:trackher/services/navigation_service.dart';
 import 'package:trackher/services/notification_service.dart';
+import 'package:trackher/sessions/settings_session.dart';
 import 'package:trackher/sessions/symptoms_session.dart';
+import 'package:trackher/sessions/user_session.dart';
+import 'package:trackher/utils/enums.dart';
 import './repositories/period_repository.dart';
 import './sessions/period_session.dart';
 import './pages/period_page/period_page.dart';
@@ -32,103 +36,130 @@ void main() async {
   Hive.registerAdapter(PeriodPredictionAdapter());
   Hive.registerAdapter(PastPeriodAdapter());
 
+  // Open Hive Boxes to Populate Sessions
   await Hive.openBox<PeriodPrediction>('predictions');
   await Hive.openBox<PastPeriod>('pastPeriods');
   await Hive.openBox('periodCycleData');
   await Hive.openBox('periodMetaData');
+  await Hive.openBox('settingsData');
+  await Hive.openBox<Map>('datesData');
+  await Hive.openBox('avatarBox');
+
+  // Populate Sessions with Previous data
+  setData();
+  setSettings();
 
   // Load any app-specific state
   await PeriodRepository().loadRecentJournalEntries();
+  await UserSession().init();
 
   // Run the app
   runApp(MyApp());
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    setData();
     final _ = PeriodRepository();
     SymptomsSession().setDate(DateTime.now());
 
-    return MaterialApp(
-      title: 'TrackHer',
-      debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.light,
-      theme: ThemeData(
-        appBarTheme: AppBarTheme(
-          systemOverlayStyle: SystemUiOverlayStyle.dark
-        )
-      ),
-      darkTheme: ThemeData(
-        appBarTheme: AppBarTheme(
-          systemOverlayStyle: SystemUiOverlayStyle.dark,
-        )
-      ),
-      home: PeriodSession().periodDays.isNotEmpty ? PeriodPage() : PeriodDateSelectionPage(),
+    return ValueListenableBuilder<ThemeModeOption>(
+      valueListenable: SettingsSession().themeModeNotifier,
+      builder: (context, theme, _) {
+        return MaterialApp(
+          title: 'TrackHer',
+          debugShowCheckedModeBanner: false,
+          themeMode: switch(theme) {
+            ThemeModeOption.light => ThemeMode.light,
+            ThemeModeOption.dark => ThemeMode.dark,
+            ThemeModeOption.system => ThemeMode.system,
+          },
+          navigatorKey: navigatorKey,
+          theme: ThemeData(
+            appBarTheme: AppBarTheme(
+              systemOverlayStyle: SystemUiOverlayStyle.dark
+            )
+          ),
+          darkTheme: ThemeData.dark().copyWith(
+            appBarTheme: AppBarTheme(
+              systemOverlayStyle: SystemUiOverlayStyle.dark,
+              iconTheme: IconThemeData(
+                color: Colors.black
+              )
+            )
+          ),
+          home: PeriodSession().periodDays.isNotEmpty ? PeriodPage() : PeriodDateSelectionPage(),
+        );
+      },
     );
   }
-  
-  void setData() {
-    final Box<PeriodPrediction> periodPredictionBox = Hive.box<PeriodPrediction>('predictions');
-    final Box<PastPeriod> pastPeriodBox = Hive.box<PastPeriod>('pastPeriods');
-    var periodMetaDataBox = Hive.box('periodMetaData');
-    var periodCycleDataBox = Hive.box('periodCycleData');
+}
 
-    final Set<DateTime> allPeriodDays = {};
-    final Set<DateTime> allFertileDays = {};
-    final Set<DateTime> allPmsDays = {};
-    final Set<DateTime> allOvulationDays = {};
+void setData() {
+  final Box<PeriodPrediction> periodPredictionBox = Hive.box<PeriodPrediction>('predictions');
+  final Box<PastPeriod> pastPeriodBox = Hive.box<PastPeriod>('pastPeriods');
+  var periodMetaDataBox = Hive.box('periodMetaData');
+  var periodCycleDataBox = Hive.box('periodCycleData');
 
-    if (periodPredictionBox.isNotEmpty) {
-      final allPredictions = periodPredictionBox.values.toList();
+  final Set<DateTime> allPeriodDays = {};
+  final Set<DateTime> allFertileDays = {};
+  final Set<DateTime> allPmsDays = {};
+  final Set<DateTime> allOvulationDays = {};
 
-      for (final prediction in allPredictions) {
-        allPeriodDays.addAll(prediction.periodWindow.map((d) => DateTime.parse(d)));
-        allPmsDays.addAll(prediction.pmsWindow.map((d) => DateTime.parse(d)));
-        allFertileDays.addAll(prediction.fertileWindow.map((d) => DateTime.parse(d)));
-        allOvulationDays.add(DateTime.parse(prediction.ovulation));
-      }
+  if (periodPredictionBox.isNotEmpty) {
+    final allPredictions = periodPredictionBox.values.toList();
 
-      PeriodSession().setPeriodDays(allPeriodDays);
-      PeriodSession().setPmsDays(allPmsDays);
-      PeriodSession().setFertileDays(allFertileDays);
-      PeriodSession().setOvulationDays(allOvulationDays);
+    for (final prediction in allPredictions) {
+      allPeriodDays.addAll(prediction.periodWindow.map((d) => DateTime.parse(d)));
+      allPmsDays.addAll(prediction.pmsWindow.map((d) => DateTime.parse(d)));
+      allFertileDays.addAll(prediction.fertileWindow.map((d) => DateTime.parse(d)));
+      allOvulationDays.add(DateTime.parse(prediction.ovulation));
     }
 
-    if (pastPeriodBox.isNotEmpty) {
-      final List<String> listOfPastPeriods = pastPeriodBox.values.toList()[0].pastPeriods;
-      final Set<DateTime> pastPeriods = {};
+    PeriodSession().setPeriodDays(allPeriodDays);
+    PeriodSession().setPmsDays(allPmsDays);
+    PeriodSession().setFertileDays(allFertileDays);
+    PeriodSession().setOvulationDays(allOvulationDays);
+  }
 
-      for (final period in listOfPastPeriods) {
-        pastPeriods.add(DateTime.parse(period));
-      }
+  if (pastPeriodBox.isNotEmpty) {
+    final List<String> listOfPastPeriods = pastPeriodBox.values.toList()[0].pastPeriods;
+    final Set<DateTime> pastPeriods = {};
 
-      allPeriodDays.addAll(pastPeriods);
-
-      PeriodSession().setPeriodDays(allPeriodDays);
+    for (final period in listOfPastPeriods) {
+      pastPeriods.add(DateTime.parse(period));
     }
 
-    if (periodMetaDataBox.isNotEmpty) {
-      PeriodSession().setCycleLength(periodMetaDataBox.get('cycleLength'));
-      PeriodSession().setPeriodLength(periodMetaDataBox.get('periodLength'));
-    }
+    allPeriodDays.addAll(pastPeriods);
 
-    // if (periodCycleDataBox.isNotEmpty) {
-    //   PeriodSession().setCycleNumbers(periodCycleDataBox.get('cycleMap'));
-    // }
+    PeriodSession().setPeriodDays(allPeriodDays);
+  }
 
-    if (periodCycleDataBox.isNotEmpty) {
-      final rawMap = periodCycleDataBox.get('cycleMap') as Map;
+  if (periodMetaDataBox.isNotEmpty) {
+    PeriodSession().setCycleLength(periodMetaDataBox.get('cycleLength'));
+    PeriodSession().setPeriodLength(periodMetaDataBox.get('periodLength'));
+  }
 
-      final Map<DateTime, int> convertedMap = rawMap.map(
-            (key, value) => MapEntry(DateTime.parse(key.toString()), value as int),
-      );
+  // if (periodCycleDataBox.isNotEmpty) {
+  //   PeriodSession().setCycleNumbers(periodCycleDataBox.get('cycleMap'));
+  // }
 
-      PeriodSession().setCycleNumbers(convertedMap);
-    }
+  if (periodCycleDataBox.isNotEmpty) {
+    final rawMap = periodCycleDataBox.get('cycleMap') as Map;
+
+    final Map<DateTime, int> convertedMap = rawMap.map(
+          (key, value) => MapEntry(DateTime.parse(key.toString()), value as int),
+    );
+
+    PeriodSession().setCycleNumbers(convertedMap);
+  }
+}
+
+void setSettings() {
+  var settingsDataBox = Hive.box('settingsData');
+  if(settingsDataBox.isNotEmpty) {
+    SettingsSession().setTheme(settingsDataBox.get("theme") as ThemeModeOption);
   }
 }

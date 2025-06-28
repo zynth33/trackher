@@ -24,3 +24,5 @@ enum Symptom {
   bloating,
   backPain,
 }
+
+enum ThemeModeOption { light, dark, system }

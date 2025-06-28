@@ -15,8 +15,9 @@ class _StaticPeriodCalendarState extends State<StaticPeriodCalendar> {
   final DateTime _focusedDay = DateTime.now();
 
   final Set<DateTime> _periodDays = PeriodSession().periodDays;
-
   final Set<DateTime> _lightFutureDays = PeriodSession().pmsDays;
+  final Set<DateTime> _ovulationDays = PeriodSession().ovulationDays;
+  final Set<DateTime> _fertileDays = PeriodSession().fertileDays;
 
   bool _isSameDay(DateTime a, DateTime b) => a.year == b.year && a.month == b.month && a.day == b.day;
 
@@ -88,6 +89,29 @@ class _StaticPeriodCalendarState extends State<StaticPeriodCalendar> {
                     border: Colors.yellow,
                     isNormal: false,
                     isFuture: true
+                  );
+                }
+
+                if (_ovulationDays.any((d) => _isSameDay(d, day))) {
+                  return buildCircle(
+                      day: day,
+                      fill: Colors.white,
+                      textColor: Colors.black,
+                      border: Colors.blueGrey,
+                      isNormal: false,
+                      isFuture: true,
+                      showBorder: true
+                  );
+                }
+
+                if (_fertileDays.any((d) => _isSameDay(d, day))) {
+                  return buildCircle(
+                      day: day,
+                      fill: Colors.blueGrey.withValues(alpha: 0.4),
+                      textColor: Colors.white,
+                      isNormal: false,
+                      isFuture: true,
+                      showBorder: false
                   );
                 }
 

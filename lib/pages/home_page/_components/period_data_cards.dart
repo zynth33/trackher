@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+import '../../../sessions/period_session.dart';
+import '../../../utils/helper_functions.dart';
 
 class PeriodDataCards extends StatelessWidget {
   const PeriodDataCards({
@@ -7,6 +11,18 @@ class PeriodDataCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentDay = getValueForDateInMap(DateTime.now(), PeriodSession().cycleNumbers) ?? 0;
+    final daysUntilNext = PeriodSession().cycleLength - currentDay;
+    final cycleLength = PeriodSession().cycleLength;
+    final nextDate = DateTime.now().add(Duration(days: daysUntilNext + 1));
+    final formattedNextDate = DateFormat('MMM d').format(nextDate);
+    final cycleStartDate = getCycleStartDateFromCycleMap(
+      DateTime.now(),
+      PeriodSession().cycleNumbers,
+    );
+    final formattedCycleStartDate = DateFormat('MMM d').format(cycleStartDate!);
+    final formattedToday = DateFormat('d MMM').format(DateTime.now());
+
     return Column(
       children: [
         Row(
@@ -31,8 +47,8 @@ class PeriodDataCards extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.all(13.0),
                     decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(100)
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(100)
                     ),
                     child: Icon(Icons.calendar_today_outlined, color: Colors.green,),
                   ),
@@ -42,12 +58,12 @@ class PeriodDataCards extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Cycle", style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18
+                        color: Colors.black,
+                        fontSize: 18
                       ),),
-                      Text("20 Dec", style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 14
+                      Text(formattedCycleStartDate, style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14
                       ),)
                     ],
                   )
@@ -73,8 +89,8 @@ class PeriodDataCards extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.all(13.0),
                     decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(100)
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(100)
                     ),
                     child: Icon(Icons.add, color: Colors.deepPurple,),
                   ),
@@ -84,12 +100,12 @@ class PeriodDataCards extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Save Day", style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18
+                        color: Colors.black,
+                        fontSize: 18
                       ),),
-                      Text("22 Dec", style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 14
+                      Text(formattedToday, style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14
                       ),)
                     ],
                   )
@@ -126,12 +142,12 @@ class PeriodDataCards extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),),
                   SizedBox(height: 5,),
-                  Text("Dec 15", style: TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18
+                  Text(formattedNextDate, style: TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18
                   ),),
-                  Text("in 8 days", style: TextStyle(
+                  Text("in $daysUntilNext days", style: TextStyle(
                     color: Colors.grey,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
@@ -163,7 +179,7 @@ class PeriodDataCards extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),),
                   SizedBox(height: 5,),
-                  Text("28 Days", style: TextStyle(
+                  Text("$cycleLength Days", style: TextStyle(
                       color: Colors.deepPurpleAccent,
                       fontWeight: FontWeight.bold,
                       fontSize: 18
@@ -182,3 +198,22 @@ class PeriodDataCards extends StatelessWidget {
     );
   }
 }
+
+DateTime? getCycleStartDateFromCycleMap(DateTime today, Map<DateTime, int> cycleNumbers) {
+  final todayDate = DateTime(today.year, today.month, today.day);
+
+  // Step 1: Get the cycle number for today
+  final currentCycleNumber = cycleNumbers[todayDate];
+  if (currentCycleNumber == null) return null;
+
+  // Step 2: Find the earliest date that has this cycle number
+  final matchingEntries = cycleNumbers.entries
+      .where((entry) => entry.value == currentCycleNumber)
+      .toList();
+
+  if (matchingEntries.isEmpty) return null;
+
+  matchingEntries.sort((a, b) => a.key.compareTo(b.key));
+  return matchingEntries.first.key;
+}
+

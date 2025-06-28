@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:trackher/sessions/period_session.dart';
 
 class RoundedCircularProgress extends StatelessWidget {
   final double day;
@@ -20,17 +21,22 @@ class RoundedCircularProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: size,
-      height: size,
-      child: CustomPaint(
-        painter: _RoundedProgressPainter(
-          progress: day/28,
-          strokeWidth: strokeWidth,
-          backgroundColor: backgroundColor,
-          progressColor: progressColor,
-        ),
-      ),
+    return ValueListenableBuilder<int>(
+      valueListenable: PeriodSession().cycleLengthNotifier,
+      builder: (context, cycleLength, _) {
+        return SizedBox(
+          width: size,
+          height: size,
+          child: CustomPaint(
+            painter: _RoundedProgressPainter(
+              progress: day / cycleLength,
+              strokeWidth: strokeWidth,
+              backgroundColor: backgroundColor,
+              progressColor: progressColor,
+            ),
+          ),
+        );
+      },
     );
   }
 }

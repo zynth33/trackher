@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
+import '../pages/settings_page/_pages/theme_page.dart';
+import '../pages/settings_page/_pages/faqs_page.dart';
 import '../models/category_item.dart';
+import '../models/faq_item.dart';
 import '../models/settings_item.dart';
 import '../models/chat.dart';
 import '../models/quick_question.dart';
 import '../models/recent_chat.dart';
+import '../services/navigation_service.dart';
+
 import 'enums.dart';
 
 class AppConstants {
@@ -70,14 +75,14 @@ class AppConstants {
         Icon(Symbols.palette_rounded, color: Colors.black, size: 18,),
         "Theme",
         "Light or dark mode",
-            (){}
+          () => navigatorKey.currentState?.push(MaterialPageRoute(builder: (_) => const ThemePage())),
     ),
-    SettingsItem(
-        Icon(Symbols.language, color: Colors.black, size: 18,),
-        "Language",
-        "Choose your language",
-            (){}
-    ),
+    // SettingsItem(
+    //     Icon(Symbols.language, color: Colors.black, size: 18,),
+    //     "Language",
+    //     "Choose your language",
+    //         (){}
+    // ),
   ];
 
   static List<SettingsItem> notificationsSettings = [
@@ -125,7 +130,7 @@ class AppConstants {
         Icon(Symbols.help, color: Colors.black, size: 18,),
         "Help Center",
         "FAQs and support articles",
-            (){}
+            () => navigatorKey.currentState?.push(MaterialPageRoute(builder: (_) => const FaqsPage())),
     ),
   ];
 
@@ -158,5 +163,38 @@ class AppConstants {
     CategoryItem("🍑", "Kegel Exercises"),
     CategoryItem("🤒", "Disease or injury"),
     CategoryItem("🧘", "Meditation"),
+  ];
+
+  static const List<FAQItem> faqs = [
+    FAQItem("How do I track my period?", "Go to the Calendar and tap the + button to add period data."),
+    FAQItem("How accurate are the predictions?", "Predictions improve over time based on the data you enter."),
+    FAQItem("Can I edit past cycle data?", "Yes, go to History > Edit to update past entries."),
+    FAQItem("Is my data private and secure?", "Absolutely. We use end-to-end encryption to keep your data safe."),
+    FAQItem("How do I set up reminders?", "Go to Settings > Cycle Preferences to customize reminders."),
+  ];
+
+  static const List<Color> avatarColors = [
+    Colors.blue,
+    Colors.pink,
+    Colors.green,
+    Colors.orange,
+    Colors.purple,
+    Colors.yellow,
+    Colors.teal,
+    Colors.brown,
+  ];
+
+  static List<String> avatars = [
+    'assets/avatars/avatar_1.svg',
+    'assets/avatars/avatar_2.svg',
+    'assets/avatars/avatar_3.svg',
+    'assets/avatars/avatar_4.svg',
+    'assets/avatars/avatar_5.svg',
+    'assets/avatars/avatar_6.svg',
+    'assets/avatars/avatar_7.svg',
+    'assets/avatars/avatar_8.svg',
+    'assets/avatars/avatar_9.svg',
+    'assets/avatars/avatar_10.svg',
+    'assets/avatars/avatar_11.svg',
   ];
 }

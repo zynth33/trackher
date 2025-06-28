@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:trackher/models/past_period.dart';
+import '../../../models/past_period.dart';
 import '../../../models/period_prediction.dart';
 import '../../../sessions/period_session.dart';
 import 'package:table_calendar/table_calendar.dart';

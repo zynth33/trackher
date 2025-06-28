@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:trackher/pages/period_date_selection_page/period_date_selection_page.dart';
 import '../../sessions/period_session.dart';
 import '_components/header_row.dart';
 import '_components/period_legacy.dart';
@@ -22,7 +23,7 @@ class _CalenderPageState extends State<CalenderPage> {
   bool isMonth = true;
   late String heading = "month, year";
 
-  bool isLoading = true; // Add this
+  bool isLoading = true; 
 
   @override
   void initState() {
@@ -143,7 +144,7 @@ class _CalenderPageState extends State<CalenderPage> {
               ]
             ),
             child: ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => PeriodDateSelectionPage(allowFutureMonths: true,))),
               icon: const Icon(FontAwesomeIcons.penToSquare, size: 16),
               label: const Text("Edit Period", style: TextStyle(
                 fontSize: 14,

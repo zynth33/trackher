@@ -192,15 +192,30 @@ class PeriodTracker {
       )
           : null;
 
-      if (nextStart == null || normalizedDate.isBefore(nextStart)) {
+      final cycleEnd = nextStart != null
+          ? nextStart.subtract(const Duration(days: 1))
+          : start.add(Duration(days: averageCycleLength - 1));
+
+      if (!normalizedDate.isBefore(start) && !normalizedDate.isAfter(cycleEnd)) {
         return normalizedDate.difference(start).inDays + 1;
       }
     }
 
-    final lastStart = periodStartDates.last;
-    return normalizedDate.difference(DateTime(lastStart.year, lastStart.month, lastStart.day)).inDays + 1;
-  }
+    // Predict future cycle based on last known start date
+    DateTime lastStart = DateTime(
+      periodStartDates.last.year,
+      periodStartDates.last.month,
+      periodStartDates.last.day,
+    );
 
+    while (normalizedDate.isAfter(
+        lastStart.add(Duration(days: averageCycleLength - 1)))) {
+      lastStart = lastStart.add(Duration(days: averageCycleLength));
+    }
+
+    // We're now within the predicted current cycle
+    return normalizedDate.difference(lastStart).inDays + 1;
+  }
 
   /// For printing/debug
   void printPredictions({int months = 1}) {

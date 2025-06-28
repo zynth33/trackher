@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -20,6 +21,7 @@ class PeriodDateSelectionPage extends StatefulWidget {
 class _PeriodDateSelectionPageState extends State<PeriodDateSelectionPage> {
   final Set<DateTime> _selectedDates = {};
   final ScrollController _scrollController = ScrollController();
+  final today = DateTime.now();
 
   late List<DateTime> _monthList;
 
@@ -138,16 +140,16 @@ class _PeriodDateSelectionPageState extends State<PeriodDateSelectionPage> {
                     final normalizedSelected = _selectedDates.map(normalize).toSet();
                     final normalizedSession = PeriodSession().periodDays.map(normalize).toSet();
 
-                    if (normalizedSelected.length == normalizedSession.length && normalizedSelected.containsAll(normalizedSession)) {
-                      print("equal");
+                    if (normalizedSelected.length != normalizedSession.length && !normalizedSelected.containsAll(normalizedSession)) {
                       generatePeriods();
                       Future.delayed(const Duration(milliseconds: 500), () {
                         if (mounted && context.mounted) {
                           Navigator.pop(context);
                         }
                       });
+                    } else {
+                      Navigator.pop(context);
                     }
-
                   } else {
                     generatePeriods();
                     Future.delayed(const Duration(milliseconds: 500), () {
@@ -221,9 +223,9 @@ class _PeriodDateSelectionPageState extends State<PeriodDateSelectionPage> {
                         if (PeriodSession().periodDays.any((d) => _isSameDay(d, day))) {
                           return buildCircle(
                             day: day,
-                            fill: Colors.pink.withValues(alpha: 0.35),
-                            textColor: Colors.pink,
-                            showDot: !_isSameDay(day, DateTime.now()),
+                            fill: day.isAfter(today) ? Colors.pink.withValues(alpha: 0.35) : Colors.transparent,
+                            textColor: day.isAfter(today) ? Colors.pink : Colors.black,
+                            showDot: day.isAfter(today) ? !_isSameDay(day, DateTime.now()) : false,
                             isNormal: false,
                           );
                         }
@@ -286,11 +288,14 @@ class _PeriodDateSelectionPageState extends State<PeriodDateSelectionPage> {
   }
 
   void generatePeriods() {
-    final sortedDates = _selectedDates.toList()
+    final todayDate = DateTime(today.year, today.month, today.day);
+
+    final sortedDates = _selectedDates
+        .where((d) => !widget.allowFutureMonths || d.isBefore(todayDate) || _isSameDay(d, todayDate))
+        .toList()
       ..sort((a, b) => a.compareTo(b));
 
     List<DateTime> pastPeriods = sortedDates;
-
     int oldestYear = PeriodTracker.getOldestYear(pastPeriods);
     int limitYear = oldestYear + 2;
 
@@ -309,7 +314,7 @@ class _PeriodDateSelectionPageState extends State<PeriodDateSelectionPage> {
     PeriodSession().setPeriodLength(stats.periodLength);
 
     final predictionMap = tracker.getPredictions(months: 120);
-    PeriodSession().setPredictions(predictionMap);
+    // PeriodSession().setPredictions(predictionMap);
 
     final allPredictions = predictionMap['predictions']!;
 
@@ -334,9 +339,10 @@ class _PeriodDateSelectionPageState extends State<PeriodDateSelectionPage> {
 
     final Map<DateTime, int> cycleMap = {};
 
-    for (DateTime date = firstDate;
-    !date.isAfter(lastDate);
-    date = date.add(const Duration(days: 1))) {
+    for (DateTime date = firstDate; !date.isAfter(lastDate); date = date.add(const Duration(days: 1))) {
+      if (kDebugMode) {
+        print("$date: ${tracker.getCycleDay(date)}");
+      }
       cycleMap[date] = tracker.getCycleDay(date);
     }
 

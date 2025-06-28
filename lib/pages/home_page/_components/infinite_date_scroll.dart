@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:trackher/sessions/dates_session.dart';
 
 class InfiniteDateScroll extends StatefulWidget {
   const InfiniteDateScroll({super.key});
@@ -49,6 +50,7 @@ class _InfiniteDateScrollState extends State<InfiniteDateScroll> {
               setState(() {
                 _selectedDate = date;
               });
+              DatesSession().setDate(date);
             } : null,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 3),
