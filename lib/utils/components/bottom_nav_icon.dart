@@ -18,26 +18,26 @@ class BottomNavIcon extends StatelessWidget {
       child: Stack(
         children: [
           AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              padding: EdgeInsets.symmetric(vertical: selected ? 15.0 : 13.0, horizontal: selected ? doubleTapped ? 25.0 : 15.0 : 13.0),
-              decoration: BoxDecoration(
-                color: backgroundColor,
-                borderRadius: BorderRadius.circular(100),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 3,
-                    offset: Offset(1, 1),
-                  ),
-                ]
-              ),
-              child: AnimatedSize(
-                duration: const Duration(milliseconds: 300),
-                child: doubleTapped ? Text(name, style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14
-                ),) : Icon(icon, color: selected ? Colors.white : Colors.black,),
-              )
+            duration: const Duration(milliseconds: 200),
+            padding: EdgeInsets.symmetric(vertical: selected ? 15.0 : 13.0, horizontal: selected ? doubleTapped ? 25.0 : 15.0 : 13.0),
+            decoration: BoxDecoration(
+              color: backgroundColor,
+              borderRadius: BorderRadius.circular(100),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 3,
+                  offset: Offset(1, 1),
+                ),
+              ]
+            ),
+            child: AnimatedSize(
+              duration: const Duration(milliseconds: 300),
+              child: doubleTapped ? Text(name, style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 14
+              ),) : Icon(icon, color: selected ? Colors.white : Colors.black,),
+            )
           ),
           (selected && !doubleTapped) ? Positioned(
             right: 0,
