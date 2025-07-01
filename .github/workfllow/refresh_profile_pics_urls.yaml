@@ -1,0 +1,17 @@
+name: Refresh Expired Profile Pictures
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # Runs every day at 2 AM UTC
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call Supabase Function to Refresh Expired Profile Pics
+        run: |
+          curl -X POST https://htvthyjwjaudfuxbiqmf.functions.supabase.co/refresh-profile-pics \
+            -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0dnRoeWp3amF1ZGZ1eGJpcW1mIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MDkyMjYyNCwiZXhwIjoyMDY2NDk4NjI0fQ.fw66k-nwxiM1BXYqPFuXxRjNu6p9Upg9Hqx2SprTb34" \
+            -H "Content-Type: application/json"
