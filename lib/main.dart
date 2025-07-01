@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
 import './pages/period_date_selection_page/period_date_selection_page.dart';
@@ -22,29 +24,26 @@ import 'models/period_prediction.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Firebase
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await dotenv.load(fileName: ".env");
 
-  // Initialize timezones (for zoned notifications)
+  /// Initialize DBs
+  await initDBs();
+
+  /// Initialize timezones (for zoned notifications)
   tz.initializeTimeZones();
 
-  // Local notification setup
+  /// Local notification setup
   await initNotifications();
 
-  // Initialize Hive and Hive Boxes
-  await setHive();
-
-  // Populate Sessions with Previous data
+  /// Populate Sessions with Previous data
   setData();
   setSettings();
 
-  // Load any app-specific state
+  /// Load any app-specific state
   await PeriodRepository().loadRecentJournalEntries();
   await UserSession().init();
 
-  // Run the app
+  /// Run the app
   runApp(MyApp());
 }
 
@@ -155,7 +154,28 @@ void setSettings() {
   }
 }
 
-Future<void> setHive() async {
+Future<void> initDBs() async{
+  /// Initialize Firebase and Supabase
+  await initCloudDBs();
+
+  /// Initialize Hive and Hive Boxes
+  await initLocalDBs();
+}
+
+Future<void> initCloudDBs() async{
+  // Initialize Supabase
+  await Supabase.initialize(
+    url: dotenv.env['SUPABASE_URL']!,
+    anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
+  );
+
+  // Initialize Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+}
+
+Future<void> initLocalDBs() async {
   // Initialize Hive
   await Hive.initFlutter();
   Hive.registerAdapter(PeriodPredictionAdapter());

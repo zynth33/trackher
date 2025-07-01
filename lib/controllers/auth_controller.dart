@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../services/supabase/supabase_user_service.dart';
 import '../sessions/user_session.dart';
 
 class AuthController {
@@ -25,10 +26,9 @@ class AuthController {
 
   Future<User?> signInWithGoogle() async {
     final googleUser = await _googleSignIn.signIn();
-    if (googleUser == null) return null; // User canceled sign-in
+    if (googleUser == null) return null;
 
     final googleAuth = await googleUser.authentication;
-
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
@@ -38,16 +38,34 @@ class AuthController {
     final user = res.user;
 
     if (user != null) {
-      // Populate session with user details
-      UserSession().setMultipleUserDetails({
-        'uid': user.uid,
+      final uid = user.uid;
+      await UserSession().registerFirebaseUid(uid);
+
+      final supabaseUserService = SupabaseUserService();
+      final existingProfile = await supabaseUserService.getUserProfile(uid);
+
+      if (existingProfile == null) {
+        await supabaseUserService.createUserProfile({
+          'id': uid,
+          'name': user.displayName ?? '',
+          'email': user.email ?? '',
+          'profile_pic_url': user.photoURL ?? '',
+          'created_at': DateTime.now().toIso8601String(),
+        });
+      }
+
+
+      await UserSession().setMultipleUserDetails({
+        'id': uid,
         'name': user.displayName ?? '',
         'email': user.email ?? '',
         'profileImageUrl': user.photoURL ?? '',
         'isAnonymous': user.isAnonymous,
-        'dateOfBirth': '', // optional, can be added later
         'providerId': user.providerData.first.providerId,
+        'dateOfBirth': '',
       });
+
+      await UserSession().init();
     }
 
     return user;

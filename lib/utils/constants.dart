@@ -34,7 +34,7 @@ class AppConstants {
   static const List<RecentChat> recentChats = [
     RecentChat("Pregnancy Symptoms", "Thank you for the helpful information!"),
     RecentChat("Cycle Tracking", "How often should I check my temperature?"),
-    RecentChat("Fertility Signs", "What's the best tracking app? ?")
+    RecentChat("Fertility Signs", "What's the best tracking app?")
   ];
 
   static const List<Chat> chats = [

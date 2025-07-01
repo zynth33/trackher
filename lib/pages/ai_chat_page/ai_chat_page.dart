@@ -22,6 +22,8 @@ class _AIChatPageState extends State<AIChatPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -63,18 +65,12 @@ class _AIChatPageState extends State<AIChatPage> {
                       },
                     ),
                     SizedBox(height: 20,),
-                    Text("Recent Chats", style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500
-                    ),),
-                    SizedBox(height: 15,),
                     RecentChats(),
                     SizedBox(height: 10,),
                     Center(
                       child: Text("AI responses are for informational purposes only", style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 10
+                        color: Colors.grey,
+                        fontSize: 10
                       ),),
                     ),
                     SizedBox(

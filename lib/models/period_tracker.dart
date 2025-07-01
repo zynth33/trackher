@@ -65,18 +65,19 @@ class PeriodTracker {
       };
     }).toList();
 
-    DateTime today = DateTime.now();
-    DateTime firstOfNextMonth = DateTime(today.year, today.month + 1, 1);
+    final DateTime today = DateTime.now();
 
     final List<Map<String, DateTime>> predictedPeriods = [];
     DateTime lastPeriodStart = periodStartDates.last;
 
     while (predictedPeriods.length < months) {
       final nextStart = lastPeriodStart.add(Duration(days: averageCycleLength));
-      if (nextStart.isAfter(firstOfNextMonth.subtract(const Duration(days: 1)))) {
-        final nextEnd = nextStart.add(Duration(days: periodLength - 1));
+      final nextEnd = nextStart.add(Duration(days: periodLength - 1));
+
+      if (nextStart.isAfter(today.subtract(const Duration(days: 1)))) {
         predictedPeriods.add({'start': nextStart, 'end': nextEnd});
       }
+
       lastPeriodStart = nextStart;
     }
 

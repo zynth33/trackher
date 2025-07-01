@@ -34,6 +34,8 @@ dependencies:
   google_sign_in: ^6.3.0
   image_picker: ^1.1.0
   animations: ^2.0.11
+  flutter_dotenv: ^5.2.1
+  supabase_flutter: ^2.9.1
 
 
 dev_dependencies:
@@ -52,6 +54,22 @@ flutter:
   uses-material-design: true
 
   assets:
+    - .env
     - assets/icons/
     - assets/avatars/
     - assets/posts/
+
+  fonts:
+    - family: Mali
+      fonts:
+        - asset: fonts/mali/Mali-Regular.ttf
+        - asset: fonts/mali/Mali-ExtraLight.ttf
+          weight: 300
+        - asset: fonts/mali/Mali-Light.ttf
+          weight: 500
+        - asset: fonts/mali/Mali-Medium.ttf
+          weight: 600
+        - asset: fonts/mali/Mali-Bold.ttf
+          weight: 700
+        - asset: fonts/mali/Mali-SemiBold.ttf
+          weight: 800

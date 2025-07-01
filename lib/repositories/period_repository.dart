@@ -48,4 +48,10 @@ class PeriodRepository {
       row['id'].toString(),
     )).toList();
   }
+
+  /// Delete a journal entry by ID
+  Future<void> deleteJournalEntry(String id) async {
+    await dbHelper.deleteJournalEntry(int.parse(id));
+    await loadRecentJournalEntries();
+  }
 }

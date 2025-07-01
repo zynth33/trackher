@@ -19,7 +19,17 @@ class PeriodCycleCard extends StatelessWidget {
           valueListenable: PeriodSession().cycleLengthNotifier,
           builder: (context, cycleLength, _) {
             final currentDay = getValueForDateInMap(DateTime.now(), cycleNumbers) ?? 0;
+            final periodLength = PeriodSession().periodLength;
             final daysUntilNext = cycleLength - currentDay;
+
+            String nextPeriodText;
+            if (currentDay >= 1 && currentDay <= periodLength) {
+              nextPeriodText = 'Period is ongoing';
+            } else if (daysUntilNext == 1 || daysUntilNext <= 0) {
+              nextPeriodText = 'Next period tomorrow';
+            } else {
+              nextPeriodText = 'Next period in $daysUntilNext days';
+            }
 
             return Container(
               padding: const EdgeInsets.all(20),
@@ -149,7 +159,7 @@ class PeriodCycleCard extends StatelessWidget {
                         style: const TextStyle(color: Colors.grey, fontSize: 24, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        ' Next period in $daysUntilNext days',
+                        nextPeriodText,
                         textAlign: TextAlign.center,
                         style: const TextStyle(color: Colors.grey, fontSize: 15),
                       ),

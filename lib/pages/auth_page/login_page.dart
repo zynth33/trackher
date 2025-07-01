@@ -4,7 +4,6 @@ import '../../utils/components/app_title.dart';
 import 'forgot_password_page.dart';
 import 'sign_up_page.dart';
 import '../../utils/components/divider_with_text.dart';
-import '../../utils/components/gradient_rich_text.dart';
 import '../../utils/constants.dart';
 import '../../utils/extensions/color.dart';
 
@@ -167,7 +166,7 @@ class LoginPage extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: 10.0),
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(100),
                       gradient: LinearGradient(
                         colors: [
                           Colors.purple,

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
-import '../../../sessions/period_session.dart';
 
+import '../../../sessions/period_session.dart';
 import '../../../utils/components/day_circle.dart';
 
 class StaticPeriodCalendar extends StatefulWidget {
@@ -35,15 +36,21 @@ class _StaticPeriodCalendarState extends State<StaticPeriodCalendar> {
             padding: const EdgeInsets.symmetric(horizontal: 13.0, vertical: 10.0),
             child: Row(
               children: [
-                Text("June", style: TextStyle(
-                  color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
-                  fontSize: 20
-                ),),
-                Spacer(),
-                Text("2025", style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 16,
-                ),)
+                Text(
+                  DateFormat('MMMM').format(DateTime.now()),
+                  style: TextStyle(
+                    color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
+                    fontSize: 20,
+                  ),
+                ),
+                const Spacer(),
+                Text(
+                  DateFormat('y').format(DateTime.now()),
+                  style: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 16,
+                  ),
+                ),
               ],
             ),
           ),

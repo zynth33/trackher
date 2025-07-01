@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../utils/assets.dart';
-import '../../utils/components/app_title.dart';
-
-import 'login_page.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -89,8 +86,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) =>
                   value == null || value.isEmpty || !value.contains('@')
-                      ? 'Enter a valid email'
-                      : null,
+                    ? 'Enter a valid email'
+                    : null,
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -109,7 +106,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     padding: EdgeInsets.symmetric(vertical: 13.0),
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(100),
                       gradient: LinearGradient(
                         colors: [
                           Colors.purple,
@@ -132,16 +129,16 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text("Already have an account?", style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500
                       ),textAlign: TextAlign.center,),
                       SizedBox(width: 5,),
                       InkWell(
                         onTap: () => Navigator.pop(context),
                         child: Text("Sign in", style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.deepPurple,
-                            fontWeight: FontWeight.w500
+                          fontSize: 16,
+                          color: Colors.deepPurple,
+                          fontWeight: FontWeight.w500
                         ),textAlign: TextAlign.center,),
                       )
                     ],

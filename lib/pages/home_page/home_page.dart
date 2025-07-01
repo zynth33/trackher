@@ -43,9 +43,9 @@ class HomePage extends StatelessWidget {
             }
 
             final showBanner =
-                DatesSession().getValueForKey(today, 'flow') == null &&
-                    (PeriodSession().periodDays.contains(today) ||
-                    PeriodSession().pmsDays.contains(today));
+              DatesSession().getValueForKey(today, 'flow') == null &&
+                (PeriodSession().periodDays.contains(today) ||
+                PeriodSession().pmsDays.contains(today));
 
             final backgroundGradient = showBanner ? LinearGradient(
               begin: Alignment.topLeft,

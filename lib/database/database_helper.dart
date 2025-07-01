@@ -79,6 +79,11 @@ class DatabaseHelper {
     }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
+  Future<int> deleteJournalEntry(int id) async {
+    final db = await database;
+    return await db.delete('journals', where: 'id = ?', whereArgs: [id]);
+  }
+
   Future<List<Map<String, Object?>>> getRecentJournalEntries() async {
     final db = await instance.database;
     return await db.query(

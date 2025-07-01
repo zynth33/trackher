@@ -321,6 +321,7 @@ class _PeriodDateSelectionPageState extends State<PeriodDateSelectionPage> {
     setPeriodsInLocalStorage(allPredictions);
     setPastPeriodsInLocalStorage(pastPeriods.toSet());
 
+
     final Set<DateTime> allPeriodDays = pastPeriods.toSet();
     final Set<DateTime> allPmsDays = {};
     final Set<DateTime> allFertileDays = {};
@@ -332,6 +333,9 @@ class _PeriodDateSelectionPageState extends State<PeriodDateSelectionPage> {
       allFertileDays.addAll(_parseDateList(monthData['fertileWindow']));
       allOvulationDays.add(DateTime.parse(monthData['ovulation']));
     }
+
+    // print(pastPeriods.toSet());
+    // print(allPeriodDays);
 
     final now = DateTime.now();
     final DateTime firstDate = DateTime(now.year - 1, 1, 1);

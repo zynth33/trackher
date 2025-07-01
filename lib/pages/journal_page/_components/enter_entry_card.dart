@@ -25,15 +25,15 @@ class _EnterEntryCardState extends State<EnterEntryCard> {
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 13.0),
       decoration: BoxDecoration(
-          color: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black,
-          boxShadow: const [
-            BoxShadow(
-              color: Color.fromARGB(20, 0, 0, 0),
-              blurRadius: 10,
-              offset: Offset(0, 5),
-            ),
-          ],
-          borderRadius: BorderRadius.circular(20)
+        color: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black,
+        boxShadow: const [
+          BoxShadow(
+            color: Color.fromARGB(20, 0, 0, 0),
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
+        ],
+        borderRadius: BorderRadius.circular(20)
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -112,8 +112,6 @@ class _EnterEntryCardState extends State<EnterEntryCard> {
                     }
 
                     final allSymptoms = SymptomsSession().symptoms.values.expand((list) => list).toList();
-
-                    print(SymptomsSession().symptoms);
 
                     JournalEntry entry = JournalEntry(
                         selectedEmoji!,

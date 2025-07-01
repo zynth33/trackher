@@ -22,6 +22,8 @@ class AppAssets {
   static const postBirthday = 'assets/posts/post_birthday.png';
   static const postForgotPassword = 'assets/posts/post_forgot_password.png';
   static const postEmailVerification = 'assets/posts/post_email_verification.png';
+  static const postNoJournalEntries = 'assets/posts/post_no_entries.png';
+  static const postNoIrsaChats = 'assets/posts/post_no_chats.png';
 
   /// assets/icons
   static const iconFlowLight = 'assets/icons/flow_light.svg';

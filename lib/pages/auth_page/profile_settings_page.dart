@@ -1,8 +1,17 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../pages/avatar_page/avatar_page.dart';
+import '../../services/supabase/supabase_user_service.dart';
 import '../../sessions/user_session.dart';
+
+import '_components/image_source_picker_bottom_sheet.dart';
+import '_components/auth_text_field.dart';
+
 
 class ProfileSettingsPage extends StatefulWidget {
   const ProfileSettingsPage({super.key});
@@ -43,13 +52,65 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
     _profileImagePath = session.profileImageUrl;
   }
 
-  Future<void> _pickImage() async {
-    final image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      setState(() {
-        _profileImagePath = image.path;
-      });
+  Future<void> _pickImageFromGallery() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (mounted && context.mounted) {
+      Navigator.pop(context);
     }
+    if (image != null) {
+      try {
+        final uid = UserSession().id;
+        if(uid != null) {
+          final url = await SupabaseUserService().uploadProfilePicture(uid, File(image.path));
+
+          setState(() {
+            _profileImagePath = url;
+
+            session.setUserDetail('profileImageUrl', url);
+          });
+          if (kDebugMode) {
+            print(url);
+          }
+        }
+      } catch (e) {
+        if(kDebugMode) {
+          print("Error Occurred $e");
+        }
+      }
+    }
+  }
+
+  Future<void> _pickImageFromCamera() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+    if (mounted && context.mounted) {
+      Navigator.pop(context);
+    }
+    if (image != null) {
+      try {
+        final uid = UserSession().id;
+        if(uid != null) {
+          final url = await SupabaseUserService().uploadProfilePicture(uid, File(image.path));
+
+          setState(() {
+            _profileImagePath = url;
+
+            session.setUserDetail('profileImageUrl', url);
+          });
+          if (kDebugMode) {
+            print(url);
+          }
+        }
+      } catch (e) {
+        if(kDebugMode) {
+          print("Error Occurred $e");
+        }
+      }
+    }
+  }
+
+  void _pickAvatar() {
+    Navigator.pop(context);
+    Navigator.push(context, MaterialPageRoute(builder: (context) => AvatarPage()));
   }
 
   Future<void> _saveChanges() async {
@@ -62,9 +123,11 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
         'profileImageUrl': _profileImagePath,
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Profile updated')),
-      );
+     if (mounted) {
+       ScaffoldMessenger.of(context).showSnackBar(
+         const SnackBar(content: Text('Profile updated')),
+       );
+     }
     }
   }
 
@@ -85,12 +148,10 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final avatarWidget = _profileImagePath != null
-        ? CircleAvatar(
+    final avatarWidget = _profileImagePath != null ? CircleAvatar(
       radius: 40,
       backgroundImage: NetworkImage(_profileImagePath!),
-    )
-        : const CircleAvatar(
+    ) : const CircleAvatar(
       radius: 40,
       backgroundColor: Colors.purpleAccent,
       child: Icon(Icons.person, size: 40, color: Colors.white),
@@ -150,7 +211,19 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                   avatarWidget,
                   const SizedBox(height: 12),
                   InkWell(
-                    onTap: _pickImage,
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                        ),
+                        builder: (_) => ImageSourcePickerBottomSheet(
+                            pickImageFromGallery: _pickImageFromGallery,
+                            pickImageFromCamera: _pickImageFromCamera,
+                            pickAvatar: _pickAvatar
+                        ),
+                      );
+                    },
                     child: Container (
                       padding: EdgeInsets.symmetric(vertical: 10.0),
                       width: 140,
@@ -197,24 +270,24 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 ),
                 child: Column(
                   children: [
-                    _buildTextField(
+                    AuthTextField(
                       controller: _nameController,
                       icon: Icons.person,
                       label: 'Full Name',
                     ),
-                    _buildTextField(
+                    AuthTextField(
                       controller: _emailController,
                       icon: Icons.email,
                       label: 'Email Address',
                       keyboardType: TextInputType.emailAddress,
                     ),
-                    _buildTextField(
+                    AuthTextField(
                       controller: _phoneController,
                       icon: Icons.phone,
                       label: 'Phone Number',
                       keyboardType: TextInputType.phone,
                     ),
-                    _buildTextField(
+                    AuthTextField(
                       controller: _dobController,
                       icon: Icons.calendar_today,
                       label: 'Birth Date',
@@ -249,32 +322,6 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required IconData icon,
-    required String label,
-    TextInputType? keyboardType,
-    bool readOnly = false,
-    VoidCallback? onTap,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: TextFormField(
-        controller: controller,
-        readOnly: readOnly,
-        keyboardType: keyboardType,
-        onTap: onTap,
-        decoration: InputDecoration(
-          prefixIcon: Icon(icon),
-          labelText: label,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-        ),
-        validator: (value) =>
-        (value == null || value.trim().isEmpty) ? 'Required field' : null,
       ),
     );
   }

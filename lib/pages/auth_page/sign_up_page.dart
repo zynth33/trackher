@@ -100,6 +100,7 @@ class _SignUpPageState extends State<SignUpPage> {
       _showError(e.message ?? "Google sign-in failed.");
     } catch (e) {
       _showError("An unexpected error occurred. $e");
+      print(e);
     } finally {
       setState(() => _isLoading = false);
     }
@@ -328,7 +329,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       padding: EdgeInsets.symmetric(vertical: 10.0),
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(100),
                         gradient: LinearGradient(colors: [Colors.purple, Colors.pink]),
                       ),
                       child: Center(
