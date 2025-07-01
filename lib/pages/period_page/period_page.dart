@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../utils/components/bottom_nav_icon.dart';
@@ -50,7 +51,22 @@ class _PeriodPageState extends State<PeriodPage> {
                 ],
               ),
             ),
-            child: pages[page],
+            child: PageTransitionSwitcher(
+              duration: const Duration(milliseconds: 400),
+              transitionBuilder: (child, animation, secondaryAnimation) {
+                return SharedAxisTransition(
+                  animation: animation,
+                  secondaryAnimation: secondaryAnimation,
+                  transitionType: SharedAxisTransitionType.horizontal,
+                  child: child,
+                );
+              },
+              child: KeyedSubtree(
+                key: ValueKey<int>(page),
+                child: pages[page],
+              ),
+            ),
+
           ),
           Align(
             alignment: Alignment.bottomCenter,

@@ -1,10 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import '../../controllers/auth_controller.dart';
+import '../../pages/auth_page/profile_settings_page.dart';
+import '../../pages/auth_page/sign_out_page.dart';
 import '../../pages/auth_page/login_page.dart';
 import '../../pages/avatar_page/avatar_page.dart';
-import '../../pages/settings_page/_components/avatar.dart';
+import '../../utils/components/avatar.dart';
 import '../../sessions/user_session.dart';
 import '../../utils/constants.dart';
 
@@ -63,7 +64,7 @@ class SettingsPage extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () => UserSession().isLoggedIn
-                        ? ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Logged in")))
+                        ? Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileSettingsPage()))
                         : Navigator.push(context, MaterialPageRoute(builder: (context) => AvatarPage())),
                       child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 13.0, vertical: 20.0),
@@ -226,11 +227,7 @@ class SettingsPage extends StatelessWidget {
                       ),
                     ),
                     UserSession().isLoggedIn ? InkWell(
-                      onTap: () async{
-                        await AuthController().signOut();
-                        UserSession().userDetails.clear();
-                        UserSession().userNotifier.value++;
-                      },
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SignOutPage())),
                       child: Container(
                         width: MediaQuery.of(context).size.width,
                         padding: EdgeInsets.symmetric(horizontal: 13.0, vertical: 20.0),

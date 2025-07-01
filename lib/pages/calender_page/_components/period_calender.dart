@@ -161,15 +161,6 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
           ),
           weekNumbersVisible: false,
           onDaySelected: (selectedDay, focusedDay) {
-            final today = DateTime.now();
-
-            final selected = DateTime(selectedDay.year, selectedDay.month, selectedDay.day);
-            final now = DateTime(today.year, today.month, today.day);
-
-            if (selected.isAfter(now)) {
-              return;
-            }
-
             showModalBottomSheet(
               context: context,
               backgroundColor: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black,

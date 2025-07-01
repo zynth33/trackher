@@ -85,7 +85,7 @@ class _RoundedProgressPainter extends CustomPainter {
     );
 
     // Draw indicator (a small dot outside the arc)
-    final indicatorRadius = radius + strokeWidth / 2 - 18; // a bit outside
+    final indicatorRadius = radius + strokeWidth / 2 - 22; // a bit outside
     final angle = startAngle + sweepAngle;
 
     final indicatorOffset = Offset(
@@ -95,7 +95,7 @@ class _RoundedProgressPainter extends CustomPainter {
 
     final indicatorPaint = Paint()..color = Colors.pinkAccent.withValues(alpha: 0.5);
 
-    canvas.drawCircle(indicatorOffset, 7, indicatorPaint);
+    canvas.drawCircle(indicatorOffset, 9, indicatorPaint);
   }
 
   @override

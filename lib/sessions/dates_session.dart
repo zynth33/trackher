@@ -69,6 +69,8 @@ class DatesSession {
     dataForDate[key] = value;
     current[normalized] = dataForDate;
     _dataMapNotifier.value = current;
+
+    _saveToHive();
   }
 
   void removeEntryForDateKey(DateTime date, String key) {
@@ -78,6 +80,8 @@ class DatesSession {
     dataForDate.remove(key);
     current[normalized] = dataForDate;
     _dataMapNotifier.value = current;
+
+    _saveToHive();
   }
 
   void clearDataForDate(DateTime date) {

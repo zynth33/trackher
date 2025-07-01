@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../sessions/user_session.dart';
+import '../../sessions/user_session.dart';
 
 class Avatar extends StatelessWidget {
   final String? avatarUrl;
-  const Avatar({super.key, this.avatarUrl = ""});
+  final double size;
+  final bool isUpdate;
+  const Avatar({super.key, this.avatarUrl = "", this.size = 45.0, this.isUpdate = true});
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +32,8 @@ class Avatar extends StatelessWidget {
           ),
           child: (avatarUrl != null && avatarUrl!.isNotEmpty) 
             ? SizedBox(
-              height: 45,
-              width: 45,
+              height: size,
+              width: size,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(100),
                 child: Image.network(avatarUrl!) ,
@@ -39,15 +41,15 @@ class Avatar extends StatelessWidget {
             ) : session.selectedAvatar.isNotEmpty ? SvgPicture.asset(
               session.selectedAvatar,
               fit: BoxFit.contain,
-              height: 40,
-              width: 40,
+              height: size - 5,
+              width: size - 5,
             ) : const Icon(
               Symbols.person_2_rounded,
               color: Colors.red,
               size: 30,
             ),
         ),
-        Positioned(
+        isUpdate ? Positioned(
           bottom: 0,
           right: 0,
           child: Container(
@@ -58,7 +60,7 @@ class Avatar extends StatelessWidget {
             ),
             child: Icon(FontAwesomeIcons.pencil, color: Colors.deepPurpleAccent, size: 10,)
           ),
-        )
+        ) : SizedBox.shrink()
       ],
     );
   }

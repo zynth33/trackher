@@ -99,6 +99,7 @@ class _FlowSelectorState extends State<FlowSelector> {
                     if (_selected == level) {
                       _selected = null;
                       SymptomsSession().setSymptoms("flow", []);
+                      DatesSession().setEntryForDateKey(selectDate, "flow", null);
                     } else {
                       _selected = level;
                       SymptomsSession().setSymptoms("flow", ["$label Flow"]);

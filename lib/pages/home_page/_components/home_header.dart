@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../sessions/user_session.dart';
 import '../../../../utils/constants.dart';
 import '../../../utils/extensions/color.dart';
 
@@ -23,7 +24,7 @@ class HomeHeader extends StatelessWidget {
                 color: HexColor.fromHex(AppConstants.graySwatch1).withValues(alpha: 0.4),
                 fontSize: 14
               ),),
-              Text("User 👋", style: TextStyle(
+              Text("${UserSession().name ?? "User"} 👋", style: TextStyle(
                 color: Colors.black,
                 fontSize: 22,
                 fontWeight: FontWeight.bold

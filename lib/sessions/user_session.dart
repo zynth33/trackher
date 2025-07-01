@@ -7,29 +7,28 @@ class UserSession {
 
   UserSession._internal();
 
-  // Anonymous avatar-related state
   late Color selectedColor;
   late String selectedAvatar;
 
-  // User-specific profile data
   Map<String, dynamic> userDetails = {};
 
-  // Notifiers
   final ValueNotifier<int> anonNotifier = ValueNotifier(0);
   final ValueNotifier<int> userNotifier = ValueNotifier(0);
 
-  Future<void> init() async {
-    final box = Hive.box('avatarBox');
+  late Box _box;
 
-    // Anonymous fallback
-    final avatarPath = box.get('selectedAvatar');
-    final colorValue = box.get('selectedColor');
+  Future<void> init() async {
+    _box = Hive.box('avatarBox');
+
+    // Anonymous avatar state
+    final avatarPath = _box.get('selectedAvatar');
+    final colorValue = _box.get('selectedColor');
     selectedAvatar = avatarPath is String ? avatarPath : 'assets/avatars/avatar_1.svg';
-    selectedColor = colorValue is int ? Color(colorValue) : Colors.red.shade50;
+    selectedColor = (colorValue is int) ? Color(colorValue) : const Color(0xFFFFEBEE);
     anonNotifier.value++;
 
     // Logged-in user details
-    final storedDetails = box.get('userDetails');
+    final storedDetails = _box.get('userDetails');
     if (storedDetails is Map) {
       userDetails = Map<String, dynamic>.from(storedDetails);
       userNotifier.value++;
@@ -37,37 +36,52 @@ class UserSession {
   }
 
   // Anonymous setters
-  void setAvatar(String avatar) {
+  Future<void> setAvatar(String avatar) async {
     selectedAvatar = avatar;
-    Hive.box('avatarBox').put('selectedAvatar', avatar);
+    await _box.put('selectedAvatar', avatar);
     anonNotifier.value++;
   }
 
-  void setColor(Color color) {
+  Future<void> setColor(Color color) async {
     selectedColor = color;
-    Hive.box('avatarBox').put('selectedColor', color.value);
+    await _box.put('selectedColor', color.toARGB32());
     anonNotifier.value++;
   }
 
   // User profile setters
-  void setUserDetail(String key, dynamic value) {
+  Future<void> setUserDetail(String key, dynamic value) async {
     userDetails[key] = value;
-    Hive.box('avatarBox').put('userDetails', userDetails);
+    await _box.put('userDetails', userDetails);
     userNotifier.value++;
   }
 
-  void setMultipleUserDetails(Map<String, dynamic> details) {
+  Future<void> setMultipleUserDetails(Map<String, dynamic> details) async {
     userDetails.addAll(details);
-    Hive.box('avatarBox').put('userDetails', userDetails);
+    await _box.put('userDetails', userDetails);
     userNotifier.value++;
   }
 
-  // Getter helpers (optional)
+  // Clear session (logout)
+  Future<void> clearSession() async {
+    selectedAvatar = 'assets/avatars/avatar_1.svg';
+    selectedColor = const Color(0xFFFFEBEE);
+    userDetails.clear();
+    await _box.delete('selectedAvatar');
+    await _box.delete('selectedColor');
+    await _box.delete('userDetails');
+    anonNotifier.value++;
+    userNotifier.value++;
+  }
+
+  // Getter helpers
   bool get isLoggedIn => userDetails.isNotEmpty;
-  String? get name => userDetails['name'] as String?;
-  String? get email => userDetails['email'] as String?;
-  String? get profileImageUrl => userDetails['profileImageUrl'] as String?;
-  DateTime? get dateOfBirth => userDetails['dateOfBirth'] is String
-      ? DateTime.tryParse(userDetails['dateOfBirth'])
-      : userDetails['dateOfBirth'] as DateTime?;
+  String? get name => userDetails['name']?.toString();
+  String? get email => userDetails['email']?.toString();
+  String? get profileImageUrl => userDetails['profileImageUrl']?.toString();
+  DateTime? get dateOfBirth {
+    final dob = userDetails['dateOfBirth'];
+    if (dob is DateTime) return dob;
+    if (dob is String) return DateTime.tryParse(dob);
+    return null;
+  }
 }

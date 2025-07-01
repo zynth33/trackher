@@ -10,6 +10,8 @@ class DayDetailBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final canAddSymptomsAndActivities = !normalizeDate(date).isAfter(normalizeDate(DateTime.now()));
+
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(0),
@@ -41,6 +43,7 @@ class DayDetailBottomSheet extends StatelessWidget {
                       getMessageForDate(date),
                     ],
                   ),
+
                   Spacer(),
                   InkWell(
                     onTap: () => Navigator.pop(context),
@@ -56,7 +59,7 @@ class DayDetailBottomSheet extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
+            canAddSymptomsAndActivities ? Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -107,7 +110,7 @@ class DayDetailBottomSheet extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
+            ) : SizedBox.shrink(),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,

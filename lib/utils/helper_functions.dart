@@ -36,16 +36,31 @@ T? getValueForDateInMap<T>(DateTime target, Map<DateTime, T> map) {
 }
 
 Widget getMessageForDate(DateTime date) {
-  if (!isPastDate(date)) return const SizedBox.shrink();
+  String auxVerb = "Was";
+  if (isPastDate(date)) {
+    auxVerb = "Was";
+  } else {
+    auxVerb = "Will be";
+  }
 
   if (dateExistsInSet(date, PeriodSession().ovulationDays)) {
-    return const Text(
-      "Was a high chance to get pregnant",
+    return Text(
+      "$auxVerb a high chance to get pregnant",
       style: TextStyle(color: Colors.grey, fontSize: 14),
     );
   } else if (dateExistsInSet(date, PeriodSession().fertileDays)) {
-    return const Text(
-      "Was a chance to get pregnant",
+    return Text(
+      "$auxVerb a chance to get pregnant",
+      style: TextStyle(color: Colors.grey, fontSize: 14),
+    );
+  } else if (dateExistsInSet(date, PeriodSession().pmsDays)) {
+    return Text(
+      "$auxVerb a chance to get a period",
+      style: TextStyle(color: Colors.grey, fontSize: 14),
+    );
+  } else if (dateExistsInSet(date, PeriodSession().periodDays)) {
+    return Text(
+      "$auxVerb a high chance to get a period",
       style: TextStyle(color: Colors.grey, fontSize: 14),
     );
   }

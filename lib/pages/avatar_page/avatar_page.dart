@@ -4,7 +4,6 @@ import 'package:hive/hive.dart';
 
 import '../../sessions/user_session.dart';
 import '../../utils/constants.dart';
-import '../../utils/extensions/color.dart';
 import '../../utils/helper_functions.dart';
 
 class AvatarPage extends StatefulWidget {

@@ -76,17 +76,18 @@ class PeriodCycleCard extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        height: 50,
-                        width: 50,
+                        height: 155,
+                        width: 155,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(100),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.red.withValues(alpha: 0.4),
-                              blurRadius: 50,
-                              offset: Offset(1, 1),
-                            ),
-                          ],
+                          color: Colors.red.withValues(alpha: 0.1),
+                          // boxShadow: [
+                          //   BoxShadow(
+                          //     color: Colors.red.withValues(alpha: 1.0),
+                          //     blurRadius: 50,
+                          //     offset: Offset(1, 1),
+                          //   ),
+                          // ],
                         ),
                       ),
                       Container(
