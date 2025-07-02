@@ -26,4 +26,13 @@ class PeriodPrediction extends HiveObject {
     required this.fertileWindow,
     required this.pmsWindow,
   });
+
+  Map<String, dynamic> toJson() => {
+    'month': month,
+    'periodWindow': periodWindow,
+    'ovulation': ovulation,
+    'fertileWindow': fertileWindow,
+    'pmsWindow': pmsWindow,
+  };
 }
+

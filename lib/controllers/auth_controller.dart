@@ -54,7 +54,6 @@ class AuthController {
         });
       }
 
-
       await UserSession().setMultipleUserDetails({
         'id': uid,
         'name': user.displayName ?? '',

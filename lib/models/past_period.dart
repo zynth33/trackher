@@ -10,4 +10,8 @@ class PastPeriod extends HiveObject {
   PastPeriod({
     required this.pastPeriods
   });
+
+  Map<String, dynamic> toJson() => {
+    'pastPeriods': pastPeriods,
+  };
 }

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:table_calendar/table_calendar.dart';
+
 import '../../utils/components/day_circle.dart';
 import '../../pages/period_page/period_page.dart';
 import '../../models/past_period.dart';
@@ -60,8 +61,8 @@ class _PeriodDateSelectionPageState extends State<PeriodDateSelectionPage> {
 
     final extraMonth = DateTime(now.year, now.month + 1);
     final end = widget.allowFutureMonths
-        ? DateTime(now.year + 1, 12)
-        : extraMonth;
+      ? DateTime(now.year + 1, 12)
+      : extraMonth;
 
     _monthList = [];
     DateTime current = start;
@@ -136,11 +137,15 @@ class _PeriodDateSelectionPageState extends State<PeriodDateSelectionPage> {
               onTap: _selectedDates.isEmpty
                 ? null
                 : () {
-                  if(widget.allowFutureMonths) {
+                try {
+                  if (widget.allowFutureMonths) {
                     final normalizedSelected = _selectedDates.map(normalize).toSet();
                     final normalizedSession = PeriodSession().periodDays.map(normalize).toSet();
 
-                    if (normalizedSelected.length != normalizedSession.length && !normalizedSelected.containsAll(normalizedSession)) {
+                    final isSameLength = normalizedSelected.length == normalizedSession.length;
+                    final isSameSet = normalizedSelected.containsAll(normalizedSession);
+
+                    if (!isSameLength || !isSameSet) {
                       generatePeriods();
                       Future.delayed(const Duration(milliseconds: 500), () {
                         if (mounted && context.mounted) {
@@ -148,16 +153,31 @@ class _PeriodDateSelectionPageState extends State<PeriodDateSelectionPage> {
                         }
                       });
                     } else {
-                      Navigator.pop(context);
+                      if (mounted && context.mounted) {
+                        Navigator.pop(context);
+                      }
                     }
                   } else {
                     generatePeriods();
                     Future.delayed(const Duration(milliseconds: 500), () {
                       if (mounted && context.mounted) {
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PeriodPage()));
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => PeriodPage()),
+                        );
                       }
                     });
                   }
+                } catch (e) {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        e.toString().replaceAll("Exception:", "").trim(),
+                      ),
+                    ),
+                  );
+                }
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),

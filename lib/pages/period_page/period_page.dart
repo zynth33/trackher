@@ -1,6 +1,5 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../utils/components/bottom_nav_icon.dart';
 import '../home_page/home_page.dart';
@@ -37,8 +36,6 @@ class _PeriodPageState extends State<PeriodPage> {
   
   @override
   Widget build(BuildContext context) {
-    print('${dotenv.env['SUPABASE_URL']}');
-
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(
@@ -69,7 +66,6 @@ class _PeriodPageState extends State<PeriodPage> {
                 child: pages[page],
               ),
             ),
-
           ),
           Align(
             alignment: Alignment.bottomCenter,

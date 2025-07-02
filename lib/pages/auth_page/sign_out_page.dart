@@ -1,62 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../../utils/components/avatar.dart';
-import '../../controllers/auth_controller.dart';
 import '../../sessions/user_session.dart';
+import '../../utils/components/dialogs/sign_out_dialog.dart';
+
+import '_components/bullet_point.dart';
 
 class SignOutPage extends StatelessWidget {
   const SignOutPage({super.key});
-
-  void _showConfirmDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: const Text('Confirm Sign Out', textAlign: TextAlign.center,),
-        content: const Text('You\'ll need to sign in again to access your premium features and cloud sync.', textAlign: TextAlign.center,),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel', style: TextStyle(
-              color: Colors.black
-            ),),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              await AuthController().signOut();
-              UserSession().clearSession();
-              UserSession().userNotifier.value++;
-            },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('Sign Out', style: TextStyle(
-              color: Colors.white
-            ),),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBullet(String text, Color color) {
-    return Row(
-      children: [
-        Container(
-          width: 8,
-          height: 8,
-          margin: const EdgeInsets.only(right: 8),
-          decoration: BoxDecoration(
-            color: color,
-            shape: BoxShape.circle,
-          ),
-        ),
-        Expanded(
-          child: Text(
-            text,
-            style: const TextStyle(fontSize: 14),
-          ),
-        ),
-      ],
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,11 +65,11 @@ class SignOutPage extends StatelessWidget {
                       style: TextStyle(color: Colors.black87, fontSize: 14),
                     ),
                     const SizedBox(height: 16),
-                    _buildBullet("Your tracking data will be saved locally", Colors.pink),
+                    BulletPoint(text: "Your tracking data will be saved locally", color: Colors.pink),
                     const SizedBox(height: 6),
-                    _buildBullet("Premium features will be disabled", Colors.deepPurple),
+                    BulletPoint(text: "Premium features will be disabled", color: Colors.deepPurple),
                     const SizedBox(height: 6),
-                    _buildBullet("You can sign back in anytime", Colors.blue),
+                    BulletPoint(text: "You can sign back in anytime", color: Colors.blue),
                   ],
                 ),
               ),
@@ -208,7 +159,7 @@ class SignOutPage extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
                         ),
-                        onPressed: () => _showConfirmDialog(context),
+                        onPressed: () => showSignOutDialog(context),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -233,7 +184,6 @@ class SignOutPage extends StatelessWidget {
                   ],
                 ),
               ),
-
             ],
           ),
         ),

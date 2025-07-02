@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
+import '../services/firebase/firebase_sync_service.dart';
 import '../services/supabase/supabase_user_service.dart';
 
 class UserSession {
@@ -18,11 +19,11 @@ class UserSession {
 
   late Box _box;
   final _userService = SupabaseUserService();
+  final _firebaseSyncService = FirebaseSyncService();
 
   Future<void> init() async {
     _box = Hive.box('avatarBox');
 
-    // Load anonymous preferences
     final avatarPath = _box.get('selectedAvatar');
     final colorValue = _box.get('selectedColor');
     selectedAvatar = (avatarPath is String)
@@ -33,7 +34,6 @@ class UserSession {
         : const Color(0xFFFFEBEE);
     anonNotifier.value++;
 
-    // Get Firebase UID from Hive
     final firebaseUid = _box.get('firebaseUid');
     if (firebaseUid is String && firebaseUid.isNotEmpty) {
       userIdNotifier.value = firebaseUid;
@@ -55,6 +55,17 @@ class UserSession {
         }
       }
     }
+  }
+
+  Future<void> registerFirebaseUid(String uid) async {
+    userIdNotifier.value = uid;
+    await _box.put('firebaseUid', uid);
+    userNotifier.value++;
+  }
+
+  Future<void> syncPeriodData() async {
+    final uid = userIdNotifier.value;
+    await _firebaseSyncService.syncUserPeriodData(uid);
   }
 
   Future<void> setAvatar(String avatar) async {
@@ -95,12 +106,6 @@ class UserSession {
 
     userDetails.addAll(details);
     await _box.put('userDetails', userDetails);
-    userNotifier.value++;
-  }
-
-  Future<void> registerFirebaseUid(String uid) async {
-    userIdNotifier.value = uid;
-    await _box.put('firebaseUid', uid);
     userNotifier.value++;
   }
 

@@ -227,7 +227,10 @@ class SettingsPage extends StatelessWidget {
                       ),
                     ),
                     UserSession().isLoggedIn ? InkWell(
-                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SignOutPage())),
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(
+                            builder: (context) => SignOutPage()));
+                      },
                       child: Container(
                         width: MediaQuery.of(context).size.width,
                         padding: EdgeInsets.symmetric(horizontal: 13.0, vertical: 20.0),

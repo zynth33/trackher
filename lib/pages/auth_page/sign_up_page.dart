@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:trackher/pages/period_page/period_page.dart';
 import '../../controllers/auth_controller.dart';
 import '../../utils/components/app_title.dart';
+import '../../utils/components/dialogs/cloud_sync_dialog.dart';
 import 'email_verification_page.dart';
 import 'login_page.dart';
 import '../../utils/components/divider_with_text.dart';
-import '../../utils/components/gradient_rich_text.dart';
 import '../../utils/constants.dart';
 import '../../utils/extensions/color.dart';
 
@@ -19,21 +19,25 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
 
-
   bool _agreeToTerms = false;
   bool _isLoading = false;
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   Future<void> _signUp() async {
+    if (!_formKey.currentState!.validate()) return;
+
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
     final confirmPassword = _confirmPasswordController.text.trim();
 
-    if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
-      _showError("Email and password fields cannot be empty.");
+    if (!_agreeToTerms) {
+      _showError("You must agree to the terms and privacy policy.");
       return;
     }
 
@@ -42,27 +46,15 @@ class _SignUpPageState extends State<SignUpPage> {
       return;
     }
 
-    if (!_agreeToTerms) {
-      _showError("You must agree to the terms and privacy policy.");
-      return;
-    }
-
     try {
       setState(() => _isLoading = true);
-
       final user = await AuthController().registerUserWithEmail(email, password);
-
       if (user != null && !user.emailVerified) {
         await user.sendEmailVerification();
       }
-
       if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const EmailVerificationPage()),
-        );
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const EmailVerificationPage()));
       }
-
     } on FirebaseAuthException catch (e) {
       _showError(e.message ?? "Sign up failed.");
     } finally {
@@ -73,7 +65,6 @@ class _SignUpPageState extends State<SignUpPage> {
   Future<void> signUpWithGoogle() async {
     try {
       setState(() => _isLoading = true);
-
       final user = await AuthController().signInWithGoogle();
 
       if (user == null) {
@@ -83,24 +74,19 @@ class _SignUpPageState extends State<SignUpPage> {
 
       if (!user.emailVerified) {
         await user.sendEmailVerification();
-
         if (mounted) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (_) => const EmailVerificationPage()),
-          );
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const EmailVerificationPage()));
         }
       } else {
-        if(mounted) {
+        if (mounted) {
+          Navigator.of(context).pop();
           _showSuccess("Successfully Signed-in");
-          Navigator.pop(context);
+          showCloudSyncDialog(context);
         }
       }
-    } on FirebaseAuthException catch (e) {
-      _showError(e.message ?? "Google sign-in failed.");
     } catch (e) {
       _showError("An unexpected error occurred. $e");
-      print(e);
+      if (kDebugMode) print(e);
     } finally {
       setState(() => _isLoading = false);
     }
@@ -126,6 +112,8 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        width: double.infinity,
+        height: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
@@ -133,250 +121,191 @@ class _SignUpPageState extends State<SignUpPage> {
             colors: [Colors.white, Colors.pink.shade100],
           ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            AppTitle(),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              margin: EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
-              padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 20.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.white,
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color.fromARGB(20, 0, 0, 0),
-                    blurRadius: 20,
-                    offset: Offset(0, 10),
-                  ),
-                ],
-              ),
+        child: SingleChildScrollView(
+          child: Center(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 500),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 10,),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: Text("Create Account", style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w600
-                    ), textAlign: TextAlign.center,),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: Text("Start your wellness journey today", style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: HexColor.fromHex(AppConstants.graySwatch1)
-                    ), textAlign: TextAlign.center,),
-                  ),
-                  SizedBox(height: 20,),
-                  InkWell(
-                    onTap: () async {
-                      await signUpWithGoogle();
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: HexColor.fromHex(AppConstants.graySwatch1).withValues(alpha: 0.3))
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(FontAwesomeIcons.google, size: 16,),
-                          SizedBox(width: 5,),
-                          Text("Continue with Google", style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black
-                          ),)
-                        ],
-                      ),
+                  const SizedBox(height: 80),
+                  const AppTitle(),
+                  Container(
+                    margin: const EdgeInsets.all(15),
+                    padding: const EdgeInsets.all(25),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white,
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color.fromARGB(20, 0, 0, 0),
+                          blurRadius: 20,
+                          offset: Offset(0, 10),
+                        ),
+                      ],
                     ),
-                  ),
-                  SizedBox(height: 20,),
-                  DividerWithText(text: "OR CONTINUE WITH"),
-                  SizedBox(height: 20,),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Email", style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16
-                      ),),
-                      SizedBox(height: 5,),
-                      TextFormField(
-                        controller: _emailController,
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: Colors.grey)
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: Colors.deepPurple, width: 2, style: BorderStyle.solid)
-                          ),
-                          hintText: "Enter your Email",
-                          hintStyle: TextStyle(
-                            color: Colors.grey
-                          ),
-                          contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 0)
-                        ),
-                      ),
-                      SizedBox(height: 20,),
-                      Text("Password", style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16
-                      ),),
-                      SizedBox(height: 5,),
-                      TextFormField(
-                        controller: _passwordController,
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: Colors.grey)
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: Colors.deepPurple, width: 2, style: BorderStyle.solid)
-                          ),
-                          hintText: "Enter your Password",
-                          hintStyle: TextStyle(
-                            color: Colors.grey
-                          ),
-                          contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 0)
-                        ),
-                      ),
-                      SizedBox(height: 20,),
-                      Text("Confirm Password", style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16
-                      ),),
-                      SizedBox(height: 5,),
-                      TextFormField(
-                        controller: _confirmPasswordController,
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: Colors.grey)
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: Colors.deepPurple, width: 2, style: BorderStyle.solid)
-                          ),
-                          hintText: "Confirm your password",
-                          hintStyle: TextStyle(
-                            color: Colors.grey
-                          ),
-                          contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 0)
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 2,),
-                  Row(
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
                         children: [
-                          Transform.scale(
-                            scale: 0.8,
-                            child: Checkbox(
-                              value: _agreeToTerms,
-                              onChanged: (val) {
-                                setState(() {
-                                  _agreeToTerms = val ?? false;
-                                });
-                              },
+                          const Text("Create Account", style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600)),
+                          Text(
+                            "Start your wellness journey today",
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: HexColor.fromHex(AppConstants.graySwatch1)),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 20),
+                          InkWell(
+                            onTap: _isLoading ? null : signUpWithGoogle,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: HexColor.fromHex(AppConstants.graySwatch1).withValues(alpha: 0.3),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Icon(FontAwesomeIcons.google, size: 16),
+                                  SizedBox(width: 5),
+                                  Text("Continue with Google", style: TextStyle(fontWeight: FontWeight.w600)),
+                                ],
+                              ),
                             ),
                           ),
-                          RichText(
-                            text: TextSpan(
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500
+                          const SizedBox(height: 20),
+                          const DividerWithText(text: "OR CONTINUE WITH"),
+                          const SizedBox(height: 20),
+                          TextFormField(
+                            controller: _emailController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) return 'Please enter your email';
+                              if (!value.contains('@')) return 'Enter a valid email';
+                              return null;
+                            },
+                            decoration: _inputDecoration("Enter your Email"),
+                          ),
+                          const SizedBox(height: 20),
+                          TextFormField(
+                            controller: _passwordController,
+                            obscureText: _obscurePassword,
+                            validator: (value) {
+                              if (value == null || value.length < 6) return 'Password must be at least 6 characters';
+                              return null;
+                            },
+                            decoration: _inputDecoration("Enter your Password").copyWith(
+                              suffixIcon: IconButton(
+                                icon: Icon(_obscurePassword ? Icons.visibility_off : Icons.visibility),
+                                onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
                               ),
-                              children: [
-                                TextSpan(text: "I agree to the ", style: TextStyle(
-                                  color: Colors.black
-                                )),
-                                TextSpan(text: "Terms of Service", style: TextStyle(
-                                  color: Colors.deepPurple
-                                )),
-                                TextSpan(text: " and ", style: TextStyle(
-                                    color: Colors.black
-                                )),
-                                TextSpan(text: "Privacy Policy", style: TextStyle(
-                                    color: Colors.deepPurple
-                                )),
-                              ]
                             ),
+                          ),
+                          const SizedBox(height: 20),
+                          TextFormField(
+                            controller: _confirmPasswordController,
+                            obscureText: _obscureConfirmPassword,
+                            validator: (value) {
+                              if (value != _passwordController.text) return 'Passwords do not match';
+                              return null;
+                            },
+                            decoration: _inputDecoration("Confirm your password").copyWith(
+                              suffixIcon: IconButton(
+                                icon: Icon(_obscureConfirmPassword ? Icons.visibility_off : Icons.visibility),
+                                onPressed: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
+                              ),
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Checkbox(
+                                value: _agreeToTerms,
+                                onChanged: (val) => setState(() => _agreeToTerms = val ?? false),
+                              ),
+                              Expanded(
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                                    children: const [
+                                      TextSpan(text: "I agree to the ", style: TextStyle(color: Colors.black)),
+                                      TextSpan(text: "Terms of Service", style: TextStyle(color: Colors.deepPurple)),
+                                      TextSpan(text: " and ", style: TextStyle(color: Colors.black)),
+                                      TextSpan(text: "Privacy Policy", style: TextStyle(color: Colors.deepPurple)),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          GestureDetector(
+                            onTap: _isLoading ? null : _signUp,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                gradient: const LinearGradient(colors: [Colors.purple, Colors.pink]),
+                              ),
+                              child: Center(
+                                child: _isLoading
+                                    ? const CircularProgressIndicator(color: Colors.white)
+                                    : const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.person_add_alt_1_outlined, color: Colors.white),
+                                    SizedBox(width: 5),
+                                    Text("Create Account", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600)),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 25),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text("Already have an account?", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                              const SizedBox(width: 5),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoginPage()));
+                                },
+                                child: const Text("Sign in", style: TextStyle(fontSize: 16, color: Colors.deepPurple, fontWeight: FontWeight.w500)),
+                              ),
+                            ],
                           )
                         ],
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 10,),
-                  GestureDetector(
-                    onTap: _isLoading ? null : _signUp,
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 10.0),
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        gradient: LinearGradient(colors: [Colors.purple, Colors.pink]),
-                      ),
-                      child: Center(
-                        child: _isLoading
-                            ? CircularProgressIndicator(color: Colors.white)
-                            : Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.person_add_alt_1_outlined, color: Colors.white),
-                            SizedBox(width: 5),
-                            Text("Create Account", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600)),
-                          ],
-                        ),
-                      ),
                     ),
                   ),
-                  SizedBox(height: 25,),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text("Already have an account?", style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500
-                        ),textAlign: TextAlign.center,),
-                        SizedBox(width: 5,),
-                        InkWell(
-                          onTap: () {
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
-                          },
-                          child: Text("Sign in", style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.deepPurple,
-                            fontWeight: FontWeight.w500
-                          ),textAlign: TextAlign.center,),
-                        )
-                      ],
-                    ),
-                  )
                 ],
               ),
-            )
-          ],
+            ),
+          ),
         ),
       ),
+    );
+  }
+
+  InputDecoration _inputDecoration(String hintText) {
+    return InputDecoration(
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: Colors.grey),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: Colors.red, width: 2),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: Colors.deepPurple, width: 2),
+      ),
+      hintText: hintText,
+      hintStyle: const TextStyle(color: Colors.grey),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
     );
   }
 }

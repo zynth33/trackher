@@ -6,16 +6,16 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
-import './pages/period_date_selection_page/period_date_selection_page.dart';
-import './services/navigation_service.dart';
-import './services/notification_service.dart';
-import './sessions/settings_session.dart';
-import './sessions/symptoms_session.dart';
-import './sessions/user_session.dart';
-import './utils/enums.dart';
-import './repositories/period_repository.dart';
-import './sessions/period_session.dart';
-import './pages/period_page/period_page.dart';
+import 'pages/period_date_selection_page/period_date_selection_page.dart';
+import 'services/navigation_service.dart';
+import 'services/notification_service.dart';
+import 'sessions/settings_session.dart';
+import 'sessions/symptoms_session.dart';
+import 'sessions/user_session.dart';
+import 'utils/enums.dart';
+import 'repositories/period_repository.dart';
+import 'sessions/period_session.dart';
+import 'pages/period_page/period_page.dart';
 
 import 'firebase_options.dart';
 import 'models/past_period.dart';
