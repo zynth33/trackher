@@ -1,7 +1,12 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:trackher/utils/components/mixins/glowing_background_mixin.dart';
+import 'package:trackher/utils/constants.dart';
+import 'package:trackher/utils/extensions/color.dart';
 
+import '../../utils/components/screen_title.dart';
 import '../../utils/enums.dart';
 import '../../sessions/dates_session.dart';
 import '../../sessions/period_session.dart';
@@ -16,7 +21,7 @@ import '_components/period_data_cards.dart';
 import '_components/symptom.dart';
 import '_components/top_calender.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatelessWidget with GlowingBackgroundMixin {
   final VoidCallback onSettingsTap;
 
   const HomePage({
@@ -83,34 +88,38 @@ class HomePage extends StatelessWidget {
                       : const SizedBox.shrink(key: ValueKey('empty')),
                 ),
               ),
-              body: AnimatedContainer(
-                duration: const Duration(milliseconds: 1000),
-                curve: Curves.easeInOut,
-                decoration: BoxDecoration(
-                  gradient: backgroundGradient,
-                ),
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(7.0),
-                  child: Column(
-                    children: [
-                      SizedBox(height: Platform.isIOS ? 40 : 20),
-                      HomeHeader(onSettingsTap: onSettingsTap),
-                      const SizedBox(height: 20),
-                      TopCalender(),
-                      const SizedBox(height: 20),
-                      PeriodCycleCard(),
-                      const SizedBox(height: 20),
-                      MenstrualFlow(),
-                      const SizedBox(height: 20),
-                      Mood(),
-                      const SizedBox(height: 20),
-                      Symptoms(),
-                      const SizedBox(height: 20),
-                      PeriodDataCards(),
-                      const SizedBox(height: 20),
-                      StaticPeriodCalendar(),
-                      const SizedBox(height: 100),
-                    ],
+              body: withGlowingBackground(
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 1000),
+                  curve: Curves.easeInOut,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    // gradient: backgroundGradient,
+                  ),
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(7.0),
+                    child: Column(
+                      children: [
+                        SizedBox(height: Platform.isIOS ? 40 : 20),
+                        ScreenTitle(title: "Ovlo Home",),
+                        HomeHeader(onSettingsTap: onSettingsTap),
+                        // const SizedBox(height: 20),
+                        TopCalender(),
+                        const SizedBox(height: 20),
+                        PeriodCycleCard(),
+                        const SizedBox(height: 20),
+                        MenstrualFlow(),
+                        const SizedBox(height: 20),
+                        Mood(),
+                        const SizedBox(height: 20),
+                        Symptoms(),
+                        const SizedBox(height: 20),
+                        PeriodDataCards(),
+                        const SizedBox(height: 20),
+                        StaticPeriodCalendar(),
+                        const SizedBox(height: 150),
+                      ],
+                    ),
                   ),
                 ),
               ),

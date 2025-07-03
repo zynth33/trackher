@@ -26,12 +26,15 @@ class _YearlyPeriodPageState extends State<YearlyPeriodPage> {
     final Set<DateTime> pastPeriodDays = {};
     final Set<DateTime> pmsDays = PeriodSession().pmsDays;
     final Set<DateTime> fertileDays = PeriodSession().fertileDays;
+    final Set<DateTime> ovulationDays = PeriodSession().ovulationDays;
+
 
     return CalendarData(
       periodDays: periodDays,
       pastPeriodDays: pastPeriodDays,
       pmsDays: pmsDays,
       fertileDays: fertileDays,
+      ovulationDays: ovulationDays,
     );
   }
 
@@ -54,6 +57,7 @@ class _YearlyPeriodPageState extends State<YearlyPeriodPage> {
         return Padding(
           padding: const EdgeInsets.all(0.0),
           child: GridView.count(
+            physics: NeverScrollableScrollPhysics(),
             padding: EdgeInsets.zero,
             crossAxisCount: 3,
             childAspectRatio: 0.85,
@@ -66,6 +70,7 @@ class _YearlyPeriodPageState extends State<YearlyPeriodPage> {
                 pastPeriodDays: data.pastPeriodDays,
                 pmsDays: data.pmsDays,
                 fertileDays: data.fertileDays,
+                ovulationDays: data.ovulationDays,
               );
             }),
           ),

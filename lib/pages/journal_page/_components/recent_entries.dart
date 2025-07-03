@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:trackher/utils/assets.dart';
+import 'package:trackher/utils/constants.dart';
+import 'package:trackher/utils/extensions/color.dart';
 
 import '../_components/recent_entry_card.dart';
 import '../../../models/journal_entry.dart';
@@ -15,34 +17,44 @@ class RecentEntries extends StatelessWidget {
     return ValueListenableBuilder<List<JournalEntry>>(
       valueListenable: PeriodRepository().recentEntriesNotifier,
       builder: (context, entries, _) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: entries.isNotEmpty
-              ? [
-            const Text("Recent Entries", style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            )),
-            const SizedBox(height: 15),
-            ...entries.map((entry) => Padding(
-              padding: const EdgeInsets.only(bottom: 15),
-              child: RecentEntryCard(entry: entry),
-            )),
-          ] : [
-            Text("No entries found!", style: TextStyle(
-              fontFamily: "Mali",
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              color: Colors.pinkAccent
-            ), textAlign: TextAlign.center,),
-            Center(
-              child: Image.asset(
-                AppAssets.postNoJournalEntries,
-                height: 160,
-                width: 160,
-              ),
+        return Container(
+          padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: HexColor.fromHex(AppConstants.primaryWhite),
+            border: Border.all(
+              color: Colors.black.withValues(alpha: 0.27)
             )
-          ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: entries.isNotEmpty ? [
+              Text("Your Journal", style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: HexColor.fromHex(AppConstants.primaryText)
+              )),
+              const SizedBox(height: 15),
+              ...entries.map((entry) => Padding(
+                padding: const EdgeInsets.only(bottom: 15),
+                child: RecentEntryCard(entry: entry),
+              )),
+            ] : [
+              Text("No entries found!", style: TextStyle(
+                fontFamily: "Mali",
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Colors.pinkAccent
+              ), textAlign: TextAlign.center,),
+              Center(
+                child: Image.asset(
+                  AppAssets.postNoJournalEntries,
+                  height: 160,
+                  width: 160,
+                ),
+              )
+            ],
+          ),
         );
       },
     );

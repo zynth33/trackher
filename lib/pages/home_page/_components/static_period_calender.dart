@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:trackher/utils/constants.dart';
+import 'package:trackher/utils/extensions/color.dart';
 
 import '../../../sessions/period_session.dart';
 import '../../../utils/components/day_circle.dart';
@@ -31,29 +33,33 @@ class _StaticPeriodCalendarState extends State<StaticPeriodCalendar> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 13.0, vertical: 10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 13.0, vertical: 10),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   DateFormat('MMMM').format(DateTime.now()),
                   style: TextStyle(
-                    color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
-                    fontSize: 20,
+                      color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600
                   ),
                 ),
-                const Spacer(),
                 Text(
                   DateFormat('y').format(DateTime.now()),
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    fontSize: 16,
+                  style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.black.withValues(alpha: 0.4),
+                      fontWeight: FontWeight.w600
                   ),
                 ),
               ],
             ),
           ),
+          SizedBox(height: 10,),
           TableCalendar(
             firstDay: DateTime(2020),
             lastDay:  DateTime(2030),
@@ -70,10 +76,24 @@ class _StaticPeriodCalendarState extends State<StaticPeriodCalendar> {
             daysOfWeekHeight: 20,
             availableGestures: AvailableGestures.none,
 
+            startingDayOfWeek: StartingDayOfWeek.monday,
+            weekendDays: [DateTime.sunday],
+
+            daysOfWeekStyle: DaysOfWeekStyle(
+              weekdayStyle: TextStyle(
+                  color: HexColor.fromHex(AppConstants.weekDayIndicator),
+                  fontWeight: FontWeight.w600
+              ),
+              weekendStyle: TextStyle(
+                  color: HexColor.fromHex(AppConstants.weekEndIndicator),
+                  fontWeight: FontWeight.w600
+              ),
+            ),
+
             calendarBuilders: CalendarBuilders(
               todayBuilder: (ctx, day, fd) => buildCircle(
                 day: day,
-                fill: Colors.pink,
+                fill: HexColor.fromHex(AppConstants.calenderTodayIndicator),
                 textColor: Colors.white,
               ),
 
@@ -81,9 +101,9 @@ class _StaticPeriodCalendarState extends State<StaticPeriodCalendar> {
                 if (_periodDays.any((d) => _isSameDay(d, day))) {
                   return buildCircle(
                     day: day,
-                    fill: Colors.pink.withValues(alpha: 0.35),
-                    textColor: Colors.pink,
-                    showDot: !_isSameDay(day, DateTime.now()),
+                    fill: HexColor.fromHex(AppConstants.calenderPeriodIndicator),
+                    textColor: Colors.black,
+                    showDot: false,
                     isNormal: false
                   );
                 }
@@ -91,20 +111,20 @@ class _StaticPeriodCalendarState extends State<StaticPeriodCalendar> {
                 if (_lightFutureDays.any((d) => _isSameDay(d, day))) {
                   return buildCircle(
                     day: day,
-                    fill: Colors.yellow.withValues(alpha: 0.1),
-                    textColor: Colors.orange,
-                    border: Colors.yellow,
+                    fill: HexColor.fromHex(AppConstants.calenderPredictedIndicator),
+                    textColor: Colors.black,
                     isNormal: false,
-                    isFuture: true
+                    isFuture: true,
+                    showBorder: false
                   );
                 }
 
                 if (_ovulationDays.any((d) => _isSameDay(d, day))) {
                   return buildCircle(
                       day: day,
-                      fill: Colors.white,
+                      fill: HexColor.fromHex(AppConstants.calenderOvulationIndicator),
                       textColor: Colors.black,
-                      border: Colors.blueGrey,
+                      border: Colors.black,
                       isNormal: false,
                       isFuture: true,
                       showBorder: true
@@ -114,8 +134,8 @@ class _StaticPeriodCalendarState extends State<StaticPeriodCalendar> {
                 if (_fertileDays.any((d) => _isSameDay(d, day))) {
                   return buildCircle(
                       day: day,
-                      fill: Colors.blueGrey.withValues(alpha: 0.4),
-                      textColor: Colors.white,
+                      fill: HexColor.fromHex(AppConstants.calenderFertileIndicator),
+                      textColor: Colors.black,
                       isNormal: false,
                       isFuture: true,
                       showBorder: false
@@ -135,10 +155,6 @@ class _StaticPeriodCalendarState extends State<StaticPeriodCalendar> {
               titleCentered: true,
               leftChevronVisible: false,
               rightChevronVisible: false,
-            ),
-            daysOfWeekStyle: const DaysOfWeekStyle(
-              weekdayStyle: TextStyle(color: Colors.grey),
-              weekendStyle: TextStyle(color: Colors.grey),
             ),
           ),
         ],

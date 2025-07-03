@@ -106,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: HexColor.fromHex(AppConstants.graySwatch1).withOpacity(0.3)),
+                                border: Border.all(color: HexColor.fromHex(AppConstants.graySwatch1).withValues(alpha: 0.3)),
                               ),
                               child: const Row(
                                 mainAxisAlignment: MainAxisAlignment.center,

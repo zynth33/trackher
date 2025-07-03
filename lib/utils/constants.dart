@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:trackher/utils/extensions/color.dart';
 
 import '../pages/settings_page/_pages/theme_page.dart';
 import '../pages/settings_page/_pages/faqs_page.dart';
@@ -22,12 +23,48 @@ class AppConstants {
 
   static const String graySwatch1 = "#595555";
 
+  static const String backgroundLight = "#F6DDF8";
+  static const String primaryColorLight = "#6B21A8";
+  static const String primaryPink = "#DB4193";
+  static const String secondaryPink = "#F06BAD";
+  static const String primaryPurple = "#DFC2FE";
+  static const String secondaryPurple = "#BA78F9";
+  static const String tertiaryPurple = "#5E00B3";
+
+  static const String primaryWhite = "#FFFDFE";
+
+  static const String primaryText = "#6B21A8";
+
+  static const String navHome = "#F8ADD5";
+  static const String navCalender = "#DBE3FE";
+  static const String navJournal = "#C6B0A9";
+  static const String navAiChat = "#B8F2E6";
+
+  static const String calenderPeriodIndicator = "#FAA3A3";
+  static const String calenderPredictedIndicator = "#BCE5F9";
+  static const String calenderFertileIndicator = "#C8FFE3";
+  static const String calenderOvulationIndicator = "#E2FFF0";
+  static const String calenderTodayIndicator = "#EC4F7C";
+
+  static const String weekEndIndicator = "#DB4193";
+  static const String weekDayIndicator = "#B3B3B3";
+
+  static LinearGradient pillGradient = LinearGradient(
+    begin: Alignment.bottomCenter,
+    end: Alignment.topRight,
+    colors: [
+      HexColor.fromHex("#FFFFFF"),
+      HexColor.fromHex("#DFC2FE"),
+    ]
+  );
+
   static const kCircleSize = 45.0;
   static const kDotSize = 8.0;
 
   static const List<String> options = [
     "Period",
     "Predicted",
+    "Fertile",
     "Ovulation"
   ];
 

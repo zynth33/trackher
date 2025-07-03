@@ -1,5 +1,8 @@
+import 'package:dashed_circle/dashed_circle.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:trackher/utils/constants.dart';
+import 'package:trackher/utils/extensions/color.dart';
 import '../../period_date_selection_page/period_date_selection_page.dart';
 import '../../../sessions/period_session.dart';
 import '../../../utils/helper_functions.dart';
@@ -51,53 +54,31 @@ class PeriodCycleCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                        width: 25,
-                        height: 25,
-                        decoration: BoxDecoration(
-                          color: Colors.deepPurpleAccent.shade100,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
                       Text(
                         'Period Cycle',
                         style: TextStyle(
-                          fontSize: 22,
+                          fontSize: 18,
                           color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
-                          fontWeight: FontWeight.w500
+                          fontWeight: FontWeight.w600
                         ),
                       )
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 5),
                   Stack(
                     alignment: Alignment.center,
+                    clipBehavior: Clip.none,
                     children: [
-                      SizedBox(
-                        width: 170,
-                        height: 170,
-                        child: RoundedCircularProgress(
-                          day: currentDay.toDouble(),
-                          strokeWidth: 6,
-                          backgroundColor: Colors.grey.withValues(alpha: 0.1),
-                          progressColor: Colors.purple,
-                          size: 120,
-                        ),
-                      ),
-                      Container(
-                        height: 155,
-                        width: 155,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: Colors.red.withValues(alpha: 0.1),
-                          // boxShadow: [
-                          //   BoxShadow(
-                          //     color: Colors.red.withValues(alpha: 1.0),
-                          //     blurRadius: 50,
-                          //     offset: Offset(1, 1),
-                          //   ),
-                          // ],
+                      Center(
+                        child: Container(
+                          margin: EdgeInsets.all(10.0),
+                          child: RoundedCircularProgressWithIcon(
+                            day: currentDay.toDouble(),
+                            strokeWidth: 6,
+                            backgroundColor: Colors.grey.withValues(alpha: 0.1),
+                            progressColor: Colors.purple,
+                            size: 160,
+                          ),
                         ),
                       ),
                       Container(
@@ -151,42 +132,73 @@ class PeriodCycleCard extends StatelessWidget {
                       Text(
                         'Day $currentDay of your cycle',
                         textAlign: TextAlign.center,
-                        style: const TextStyle(color: Colors.grey, fontSize: 15),
+                        style: const TextStyle(color: Colors.grey, fontSize: 15, fontWeight: FontWeight.w500),
                       ),
-                      Text(
-                        ' \u2022 ',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(color: Colors.grey, fontSize: 24, fontWeight: FontWeight.bold),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                        child: Transform.translate(
+                          offset: Offset(0, -1),
+                          child: Text(
+                            '\u2022',
+                            // textAlign: TextAlign.center,
+                            style: const TextStyle(color: Colors.grey, fontSize: 24, fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ),
                       Text(
                         nextPeriodText,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(color: Colors.grey, fontSize: 15),
+                        style: const TextStyle(color: Colors.grey, fontSize: 15, fontWeight: FontWeight.w500),
                       ),
                     ],
                   ),
                   const SizedBox(height: 5),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => PeriodDateSelectionPage(allowFutureMonths: true,)));
-                      },
-                      icon: const Icon(FontAwesomeIcons.penToSquare, size: 16),
-                      label: const Text("Edit Period", style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500
-                      ),),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.deepPurpleAccent.shade100,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => PeriodDateSelectionPage(allowFutureMonths: true,)));
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(vertical: 10.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: HexColor.fromHex(AppConstants.primaryPurple).withValues(alpha: 0.54)
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(FontAwesomeIcons.penToSquare, size: 16, color: HexColor.fromHex(AppConstants.primaryColorLight),),
+                          SizedBox(width: 10,),
+                          Text("Edit Period", style: TextStyle(
+                            fontSize: 14,
+                            color: HexColor.fromHex(AppConstants.primaryColorLight),
+                            fontWeight: FontWeight.w600
+                          ),),
+                        ],
                       ),
                     ),
                   ),
+                  // SizedBox(
+                  //   width: double.infinity,
+                  //   child: ElevatedButton.icon(
+                  //     onPressed: () {
+                  //       Navigator.push(context, MaterialPageRoute(builder: (context) => PeriodDateSelectionPage(allowFutureMonths: true,)));
+                  //     },
+                  //     icon: const Icon(FontAwesomeIcons.penToSquare, size: 16),
+                  //     label: const Text("Edit Period", style: TextStyle(
+                  //         fontSize: 14,
+                  //         fontWeight: FontWeight.w500
+                  //     ),),
+                  //     style: ElevatedButton.styleFrom(
+                  //       backgroundColor: HexColor.fromHex(AppConstants.primaryPurple),
+                  //       foregroundColor: Colors.white,
+                  //       shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(16),
+                  //       ),
+                  //       padding: const EdgeInsets.symmetric(vertical: 12),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             );

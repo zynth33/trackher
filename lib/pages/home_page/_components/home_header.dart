@@ -25,9 +25,9 @@ class HomeHeader extends StatelessWidget {
                 fontSize: 14
               ),),
               Text("${UserSession().name ?? "User"} 👋", style: TextStyle(
-                color: Colors.black,
-                fontSize: 22,
-                fontWeight: FontWeight.bold
+                color: HexColor.fromHex(AppConstants.primaryColorLight),
+                fontSize: 20,
+                fontWeight: FontWeight.w600
               ),)
             ],
           ),
@@ -40,7 +40,7 @@ class HomeHeader extends StatelessWidget {
                 color: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black,
                 borderRadius: BorderRadius.circular(100),
               ),
-              child: Icon(Icons.settings_outlined, color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white, weight: 300, size: 20,),
+              child: Icon(Icons.settings_outlined, color: Theme.of(context).brightness == Brightness.light ? HexColor.fromHex(AppConstants.primaryColorLight) : Colors.white, weight: 300, size: 20,),
             ),
           )
         ],

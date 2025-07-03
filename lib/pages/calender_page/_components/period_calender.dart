@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:trackher/utils/constants.dart';
+import 'package:trackher/utils/extensions/color.dart';
 import '../../../models/past_period.dart';
 import '../../../models/period_prediction.dart';
 import '../../../sessions/period_session.dart';
@@ -136,17 +138,30 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 13.0, vertical: 7),
+          padding: const EdgeInsets.symmetric(horizontal: 13.0, vertical: 10),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 _monthName(focusDay),
-                style: TextStyle(color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white, fontSize: 20),
+                style: TextStyle(
+                  color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600
+                ),
+              ),
+              Text(
+                "${widget.year}",
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.black.withValues(alpha: 0.4),
+                  fontWeight: FontWeight.w600
+                ),
               ),
             ],
           ),
         ),
+        SizedBox(height: 10,),
         TableCalendar(
           firstDay: DateTime(oldestYear),
           lastDay: DateTime(limitYear + 1),
@@ -157,7 +172,7 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
           calendarStyle: const CalendarStyle(
             todayDecoration: BoxDecoration(),
             selectedDecoration: BoxDecoration(),
-            outsideDaysVisible: true,
+            outsideDaysVisible: false,
           ),
           weekNumbersVisible: false,
           onDaySelected: (selectedDay, focusedDay) {
@@ -175,16 +190,16 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
           calendarBuilders: CalendarBuilders(
             todayBuilder: (ctx, day, fd) => buildCircle(
               day: day,
-              fill: Colors.pink,
+              fill: HexColor.fromHex(AppConstants.calenderTodayIndicator),
               textColor: Colors.white,
             ),
             defaultBuilder: (ctx, day, fd) {
               if (_periodDays.any((d) => _isSameDay(d, day))) {
                 return buildCircle(
                   day: day,
-                  fill: Colors.pink.withValues(alpha: 0.35),
-                  textColor: Colors.pink,
-                  showDot: !_isSameDay(day, DateTime.now()),
+                  fill: HexColor.fromHex(AppConstants.calenderPeriodIndicator),
+                  textColor: Colors.black,
+                  showDot: false,
                   isNormal: false,
                 );
               }
@@ -192,22 +207,22 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
               if (_predictedDays.any((d) => _isSameDay(d, day))) {
                 return buildCircle(
                   day: day,
-                  fill: Colors.yellow.withValues(alpha: 0.1),
-                  textColor: Colors.orange,
-                  border: Colors.yellow,
-                  showDot: !_isSameDay(day, DateTime.now()),
-                  dotColor: Colors.orangeAccent,
+                  fill: HexColor.fromHex(AppConstants.calenderPredictedIndicator),
+                  textColor: Colors.black,
+                  border: Colors.transparent,
+                  showDot: false,
                   isNormal: false,
                   isFuture: true,
+                  showBorder: false
                 );
               }
 
               if (_ovulationDays.any((d) => _isSameDay(d, day))) {
                 return buildCircle(
                     day: day,
-                    fill: Colors.white,
+                    fill: HexColor.fromHex(AppConstants.calenderOvulationIndicator),
                     textColor: Colors.black,
-                    border: Colors.blueGrey,
+                    border: Colors.black,
                     isNormal: false,
                     isFuture: true,
                     showBorder: true
@@ -217,8 +232,8 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
               if (_fertileDays.any((d) => _isSameDay(d, day))) {
                 return buildCircle(
                   day: day,
-                  fill: Colors.blueGrey.withValues(alpha: 0.4),
-                  textColor: Colors.white,
+                  fill: HexColor.fromHex(AppConstants.calenderFertileIndicator),
+                  textColor: Colors.black,
                   isNormal: false,
                   isFuture: true,
                   showBorder: false
@@ -238,13 +253,23 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
             leftChevronVisible: false,
             rightChevronVisible: false,
           ),
-          daysOfWeekVisible: false,
+          daysOfWeekVisible: true,
 
-          daysOfWeekStyle: const DaysOfWeekStyle(
-            weekdayStyle: TextStyle(color: Colors.grey),
-            weekendStyle: TextStyle(color: Colors.grey),
+          startingDayOfWeek: StartingDayOfWeek.monday,
+          weekendDays: [DateTime.sunday],
+
+          daysOfWeekStyle: DaysOfWeekStyle(
+            weekdayStyle: TextStyle(
+              color: HexColor.fromHex(AppConstants.weekDayIndicator),
+              fontWeight: FontWeight.w600
+            ),
+            weekendStyle: TextStyle(
+              color: HexColor.fromHex(AppConstants.weekEndIndicator),
+              fontWeight: FontWeight.w600
+            ),
           ),
         ),
+        SizedBox(height: 20,),
       ],
     );
   }

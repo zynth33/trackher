@@ -30,9 +30,9 @@ class Symptoms extends StatelessWidget {
               Icon(Symbols.earthquake_rounded, color: Colors.purple,),
               SizedBox(width: 10,),
               Text("Symptoms", style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white
               ),)
             ],
           ),

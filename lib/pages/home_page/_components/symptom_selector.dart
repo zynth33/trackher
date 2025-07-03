@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../../utils/constants.dart';
+import '../../../utils/extensions/color.dart';
 import '../../../sessions/dates_session.dart';
 import '../../../sessions/symptoms_session.dart';
 
@@ -31,7 +33,6 @@ class _SymptomSelectorState extends State<SymptomSelector> {
     return null;
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -46,8 +47,6 @@ class _SymptomSelectorState extends State<SymptomSelector> {
       valueListenable: DatesSession().selectedDateNotifier,
       builder: (context, selectedDate, _) {
         final symptomNames = DatesSession().getValueForKey(selectedDate, "symptoms");
-
-        print(symptomNames);
 
         if (_lastDate != selectedDate) {
           _lastDate = selectedDate;
@@ -65,47 +64,33 @@ class _SymptomSelectorState extends State<SymptomSelector> {
           }
         }
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        return SizedBox(
+          width: double.infinity,
           child: Wrap(
-            spacing: 10,
-            runSpacing: 12,
+            spacing: 5,
+            runSpacing: 5,
             children: Symptom.values.map((symptom) {
               final isSelected = _selectedSymptoms.contains(symptom);
 
               String emoji;
-              Color color;
-              Color textColor;
               switch (symptom) {
                 case Symptom.bleeding:
                   emoji = "🩸";
-                  color = Colors.redAccent;
-                  textColor = Colors.redAccent;
                   break;
                 case Symptom.cramps:
                   emoji = "🔄";
-                  color = Colors.purple;
-                  textColor = Colors.purple;
                   break;
                 case Symptom.headache:
                   emoji = "🤕";
-                  color = Colors.blue;
-                  textColor = Colors.blue;
                   break;
                 case Symptom.fatigue:
                   emoji = "😴";
-                  color = Colors.blueGrey;
-                  textColor = Colors.blueGrey;
                   break;
                 case Symptom.bloating:
                   emoji = "🎈";
-                  color = Colors.yellow;
-                  textColor = Colors.orange;
                   break;
                 case Symptom.backPain:
                   emoji = "🔴️";
-                  color = Colors.orange;
-                  textColor = Colors.red;
                   break;
               }
 
@@ -113,44 +98,51 @@ class _SymptomSelectorState extends State<SymptomSelector> {
                   .replaceAllMapped(RegExp(r'([A-Z])'), (match) => ' ${match.group(0)}')
                   .replaceFirstMapped(RegExp(r'^.'), (m) => m.group(0)!.toUpperCase());
 
-              return InkWell(
-                onTap: () {
-                  setState(() {
-                    if (isSelected) {
-                      _selectedSymptoms.remove(symptom);
-                    } else {
-                      _selectedSymptoms.add(symptom);
-                      DatesSession().setEntryForDateKey(selectedDate, "symptoms", _selectedSymptoms.map((e) => e.name).toList());
-                    }
-                  });
+              return IntrinsicWidth(
+                child: InkWell(
+                  onTap: () {
+                    setState(() {
+                      if (isSelected) {
+                        _selectedSymptoms.remove(symptom);
+                      } else {
+                        _selectedSymptoms.add(symptom);
+                        DatesSession().setEntryForDateKey(selectedDate, "symptoms", _selectedSymptoms.map((e) => e.name).toList());
+                      }
+                    });
 
-                  SymptomsSession().setSymptoms("symptoms", _selectedSymptoms.map((e) => e.name).toList());
-                },
-                child: Container(
-                  width: 95,
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  decoration: BoxDecoration(
-                    color: isSelected ? color.withValues(alpha: 0.1) : Colors.transparent,
-                    borderRadius: BorderRadius.circular(12),
-                    border: isSelected ? Border.all(
-                      color: color.withValues(alpha: 0.6),
-                      width: 2,
-                    ) : null,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(emoji, style: const TextStyle(fontSize: 20)),
-                      const SizedBox(height: 6),
-                      Text(
-                        label,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: isSelected ? textColor : Colors.grey.shade600,
-                          fontSize: 16,
-                        ),
+                    SymptomsSession().setSymptoms("symptoms", _selectedSymptoms.map((e) => e.name).toList());
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
+                    decoration: isSelected ? BoxDecoration(
+                      color: isSelected ? HexColor.fromHex(AppConstants.primaryPurple).withValues(alpha: 0.54) : Colors.transparent,
+                      borderRadius: BorderRadius.circular(100),
+                      border: Border.all(
+                        color: Colors.transparent,
+                        width: 2,
                       ),
-                    ],
+                    ) : BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      border: Border.all(
+                        color: Colors.black.withValues(alpha: 0.1),
+                        width: 2,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(emoji, style: const TextStyle(fontSize: 20)),
+                        const SizedBox(width: 6),
+                        Text(
+                          label,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: isSelected ? Colors.black : Colors.grey,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );

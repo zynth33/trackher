@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../utils/constants.dart';
 import '../../../sessions/period_session.dart';
+import '../../../utils/extensions/color.dart';
 import '../../../utils/helper_functions.dart';
 
 class PeriodDataCards extends StatelessWidget {
@@ -32,7 +34,14 @@ class PeriodDataCards extends StatelessWidget {
               width: MediaQuery.of(context).size.width / 2.2,
               padding: EdgeInsets.all(13.0),
               decoration: BoxDecoration(
-                color: Colors.greenAccent.shade100,
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    Colors.white,
+                    HexColor.fromHex("#E1FCEB"),
+                  ]
+                ),
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: const [
                   BoxShadow(
@@ -47,7 +56,14 @@ class PeriodDataCards extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.all(13.0),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                        colors: [
+                          Colors.white,
+                          HexColor.fromHex("#E1FCEB"),
+                        ]
+                      ),
                       borderRadius: BorderRadius.circular(100)
                     ),
                     child: Icon(Icons.calendar_today_outlined, color: Colors.green,),
@@ -74,7 +90,15 @@ class PeriodDataCards extends StatelessWidget {
               width: MediaQuery.of(context).size.width / 2.2,
               padding: EdgeInsets.all(13.0),
               decoration: BoxDecoration(
-                color: Colors.deepPurple.shade50,
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topRight,
+                  colors: [
+                    Colors.white,
+                    Colors.white.withValues(alpha: 0.2),
+                    HexColor.fromHex("#DB4193").withAlpha(90),
+                  ]
+                ),
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: const [
                   BoxShadow(
@@ -87,12 +111,13 @@ class PeriodDataCards extends StatelessWidget {
               child: Row(
                 children: [
                   Container(
-                    padding: EdgeInsets.all(13.0),
+                    padding: EdgeInsets.all(5.0),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(100)
+                      borderRadius: BorderRadius.circular(100),
+                      border: Border.all(color: Colors.grey)
                     ),
-                    child: Icon(Icons.add, color: Colors.deepPurple,),
+                    child: Icon(Icons.add, color: HexColor.fromHex(AppConstants.secondaryPurple), size: 25,),
                   ),
                   SizedBox(width: 20,),
                   Column(
@@ -120,9 +145,9 @@ class PeriodDataCards extends StatelessWidget {
           children: [
             Container(
               width: MediaQuery.of(context).size.width / 2.2,
+              height: 100,
               padding: EdgeInsets.all(13.0),
               decoration: BoxDecoration(
-                color: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black,
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: const [
                   BoxShadow(
@@ -131,6 +156,15 @@ class PeriodDataCards extends StatelessWidget {
                     offset: Offset(0, 10),
                   ),
                 ],
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomLeft,
+                  colors: [
+                    Colors.white,
+                    Colors.white,
+                    HexColor.fromHex("#FFEBE5")
+                  ]
+                )
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -143,9 +177,9 @@ class PeriodDataCards extends StatelessWidget {
                   ),),
                   SizedBox(height: 5,),
                   Text(formattedNextDate, style: TextStyle(
-                    color: Colors.red,
+                    color: HexColor.fromHex(AppConstants.secondaryPink),
                     fontWeight: FontWeight.bold,
-                    fontSize: 18
+                    fontSize: 16
                   ),),
                   Text("in $daysUntilNext days", style: TextStyle(
                     color: Colors.grey,
@@ -157,6 +191,7 @@ class PeriodDataCards extends StatelessWidget {
             ),
             Container(
               width: MediaQuery.of(context).size.width / 2.2,
+              height: 100,
               padding: EdgeInsets.all(13.0),
               decoration: BoxDecoration(
                 color: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black,
@@ -180,9 +215,9 @@ class PeriodDataCards extends StatelessWidget {
                   ),),
                   SizedBox(height: 5,),
                   Text("$cycleLength Days", style: TextStyle(
-                      color: Colors.deepPurpleAccent,
+                      color: HexColor.fromHex(AppConstants.secondaryPurple),
                       fontWeight: FontWeight.bold,
-                      fontSize: 18
+                      fontSize: 16
                   ),),
                   Text("average", style: TextStyle(
                     color: Colors.grey,

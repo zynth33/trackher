@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:trackher/utils/constants.dart';
+import 'package:trackher/utils/extensions/color.dart';
 
 import '../../../sessions/dates_session.dart';
 import '../../../sessions/period_session.dart';
@@ -57,8 +59,6 @@ class _FlowSelectorState extends State<FlowSelector> {
     return ValueListenableBuilder<DateTime>(
       valueListenable: DatesSession().selectedDateNotifier,
       builder: (context, selectDate, _) {
-        final flowName = DatesSession().getValueForKey(selectDate, "flow");
-
         if (_lastDate != selectDate) {
           _lastDate = selectDate;
 
@@ -71,25 +71,9 @@ class _FlowSelectorState extends State<FlowSelector> {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 2.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: FlowLevel.values.map((level) {
+            spacing: 10,
+            children: FlowLevel.values.where((level) => level != FlowLevel.spotting).map((level) {
               final isSelected = _selected == level;
-
-              Color dotColor;
-              switch (level) {
-                case FlowLevel.light:
-                  dotColor = Colors.pink.withValues(alpha: 0.3);
-                  break;
-                case FlowLevel.medium:
-                  dotColor = Colors.pink.withValues(alpha: 0.7);
-                  break;
-                case FlowLevel.heavy:
-                  dotColor = Colors.pink;
-                  break;
-                case FlowLevel.spotting:
-                  dotColor = Colors.orangeAccent;
-                  break;
-              }
 
               String label = level.name[0].toUpperCase() + level.name.substring(1);
 
@@ -109,28 +93,22 @@ class _FlowSelectorState extends State<FlowSelector> {
                   _resetInactivityTimer();
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  width: 85,
+                  padding: EdgeInsets.symmetric(vertical: 5),
+                  width: 80,
                   decoration: isSelected ? BoxDecoration(
-                    color: dotColor.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: dotColor.withValues(alpha: 0.4), width: 2),
-                  ) : null,
+                    color: HexColor.fromHex(AppConstants.primaryPurple).withValues(alpha: 0.54),
+                    borderRadius: BorderRadius.circular(100),
+                    border: Border.all(color: Colors.transparent, width: 2),
+                  ) : BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    border: Border.all(color: Colors.black.withValues(alpha: 0.1), width: 2),
+                  ),
                   child: Column(
                     children: [
-                      Container(
-                        height: 10,
-                        width: 10,
-                        decoration: BoxDecoration(
-                          color: dotColor,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                      ),
-                      const SizedBox(height: 6),
                       Text(
                         label,
                         style: TextStyle(
-                          color: isSelected ? Colors.red : Colors.grey,
+                          color: isSelected ? Colors.black : Colors.black.withValues(alpha: 0.4),
                           fontWeight: FontWeight.normal,
                         ),
                       ),

@@ -1,6 +1,10 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:trackher/utils/assets.dart';
+import 'package:trackher/utils/constants.dart';
+import 'package:trackher/utils/extensions/color.dart';
 import '../../utils/components/bottom_nav_icon.dart';
 import '../home_page/home_page.dart';
 import '../calender_page/calender_page.dart';
@@ -91,8 +95,12 @@ class _PeriodPageState extends State<PeriodPage> {
                   spacing: 10,
                   children: [
                     BottomNavIcon(
-                      backgroundColor: Colors.pinkAccent.shade100,
-                      icon: Symbols.home_rounded,
+                      backgroundColor: HexColor.fromHex(AppConstants.navHome),
+                      icon: SizedBox(
+                        height: 22,
+                        width: 22,
+                        child: SvgPicture.asset(AppAssets.iconNavHome)
+                      ),
                       name: "Home",
                       onTap: () {
                         setState(() {
@@ -122,8 +130,12 @@ class _PeriodPageState extends State<PeriodPage> {
                       doubleTapped: doubleTapped == 0,
                     ),
                     BottomNavIcon(
-                      backgroundColor: Colors.deepPurple.shade100,
-                      icon: Icons.calendar_today_outlined,
+                      backgroundColor: HexColor.fromHex(AppConstants.navCalender),
+                      icon: SizedBox(
+                        height: 22,
+                        width: 22,
+                        child: SvgPicture.asset(AppAssets.iconNavCalender)
+                      ),
                       name: "Calender",
                       onTap: () {
                         setState(() {
@@ -153,9 +165,13 @@ class _PeriodPageState extends State<PeriodPage> {
                       doubleTapped: doubleTapped == 1,
                     ),
                     BottomNavIcon(
-                      backgroundColor: Colors.blue.shade100,
-                      icon: Symbols.import_contacts_rounded,
-                      name: "Journal",
+                      backgroundColor: HexColor.fromHex(AppConstants.navJournal).withValues(alpha: 0.5),
+                      icon: SizedBox(
+                        height: 22,
+                        width: 22,
+                        child: SvgPicture.asset(AppAssets.iconNavJournal)
+                      ),
+                      name: "Notes",
                       onTap: () {
                         setState(() {
                           if(page == 2) {
@@ -184,8 +200,12 @@ class _PeriodPageState extends State<PeriodPage> {
                       doubleTapped: doubleTapped == 2,
                     ),
                     BottomNavIcon(
-                      backgroundColor: Colors.greenAccent.shade100,
-                      icon: FontAwesomeIcons.comment,
+                      backgroundColor: HexColor.fromHex(AppConstants.navAiChat),
+                      icon: SizedBox(
+                        height: 22,
+                        width: 22,
+                        child: SvgPicture.asset(AppAssets.iconNavAiChat)
+                      ),
                       name: "AI Chat",
                       onTap: () {
                        setState(() {

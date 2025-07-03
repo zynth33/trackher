@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class BottomNavIcon extends StatelessWidget {
   final Color backgroundColor;
-  final IconData icon;
+  final Widget icon;
   final VoidCallback onTap;
   final bool selected;
   final bool doubleTapped;
@@ -36,7 +36,7 @@ class BottomNavIcon extends StatelessWidget {
               child: doubleTapped ? Text(name, style: TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 14
-              ),) : Icon(icon, color: selected ? Colors.white : Colors.black,),
+              ),) : icon,
             )
           ),
           (selected && !doubleTapped) ? Positioned(

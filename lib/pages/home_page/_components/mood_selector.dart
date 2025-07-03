@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:trackher/utils/constants.dart';
+import 'package:trackher/utils/extensions/color.dart';
 
 import '../../../sessions/dates_session.dart';
 import '../../../sessions/symptoms_session.dart';
@@ -42,8 +44,6 @@ class _MoodSelectorState extends State<MoodSelector> {
       child: ValueListenableBuilder<DateTime>(
         valueListenable: DatesSession().selectedDateNotifier,
         builder: (context, selectedDate, _) {
-          final moodName = DatesSession().getValueForKey(selectedDate, "mood");
-
           if (_lastDate != selectedDate) {
             _lastDate = selectedDate;
 
@@ -53,51 +53,38 @@ class _MoodSelectorState extends State<MoodSelector> {
                 : null;
           }
 
-          return SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: MoodLevel.values.map((level) {
-                final isSelected = _selected == level;
+          return Wrap(
+            spacing: 5,
+            runSpacing: 5,
+            children: MoodLevel.values.map((level) {
+              final isSelected = _selected == level;
 
-                String emoji;
-                Color color;
-                Color textColor;
-                switch (level) {
-                  case MoodLevel.happy:
-                    emoji = "😊";
-                    color = Colors.green;
-                    textColor = Colors.green;
-                    break;
-                  case MoodLevel.calm:
-                    emoji = "😌";
-                    color = Colors.blue;
-                    textColor = Colors.blue;
-                    break;
-                  case MoodLevel.anxious:
-                    emoji = "😟";
-                    color = Colors.yellow;
-                    textColor = Colors.orange;
-                    break;
-                  case MoodLevel.tired:
-                    emoji = "😴";
-                    color = Colors.grey;
-                    textColor = Colors.grey;
-                    break;
-                  case MoodLevel.sad:
-                    emoji = "😔";
-                    color = Colors.purple;
-                    textColor = Colors.purple;
-                    break;
-                  case MoodLevel.angry:
-                    emoji = "😡";
-                    color = Colors.red;
-                    textColor = Colors.red;
-                    break;
-                }
+              String emoji;
+              switch (level) {
+                case MoodLevel.happy:
+                  emoji = "😊";
+                  break;
+                case MoodLevel.calm:
+                  emoji = "😌";
+                  break;
+                case MoodLevel.anxious:
+                  emoji = "😟";
+                  break;
+                case MoodLevel.tired:
+                  emoji = "😴";
+                  break;
+                case MoodLevel.sad:
+                  emoji = "😔";
+                  break;
+                case MoodLevel.angry:
+                  emoji = "😡";
+                  break;
+              }
 
-                String label = level.name[0].toUpperCase() + level.name.substring(1);
+              String label = level.name[0].toUpperCase() + level.name.substring(1);
 
-                return InkWell(
+              return IntrinsicWidth(
+                child: InkWell(
                   onTap: () {
                     setState(() {
                       if (_selected == level) {
@@ -111,21 +98,23 @@ class _MoodSelectorState extends State<MoodSelector> {
                     });
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    width: 58,
+                    padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 8),
                     decoration: isSelected ? BoxDecoration(
-                      color: color.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: color.withValues(alpha: 0.4), width: 2),
-                    ) : null,
-                    child: Column(
+                      color: HexColor.fromHex(AppConstants.primaryPurple).withValues(alpha: 0.54),
+                      borderRadius: BorderRadius.circular(100),
+                      border: Border.all(color: Colors.transparent, width: 2),
+                    ) : BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      border: Border.all(color: Colors.black.withValues(alpha: 0.1), width: 2),
+                    ),
+                    child: Row(
                       children: [
                         Text(emoji, style: const TextStyle(fontSize: 20)),
-                        const SizedBox(height: 6),
+                        const SizedBox(width: 6),
                         Text(
                           label,
                           style: TextStyle(
-                            color: isSelected ? textColor : Colors.grey,
+                            color: isSelected ? Colors.black : Colors.grey,
                             fontWeight: FontWeight.normal,
                             fontSize: 14,
                           ),
@@ -133,9 +122,9 @@ class _MoodSelectorState extends State<MoodSelector> {
                       ],
                     ),
                   ),
-                );
-              }).toList(),
-            ),
+                ),
+              );
+            }).toList(),
           );
         },
       ),

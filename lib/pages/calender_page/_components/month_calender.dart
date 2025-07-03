@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:trackher/utils/constants.dart';
+import 'package:trackher/utils/extensions/color.dart';
 
 class MonthCalendarWidget extends StatelessWidget {
   final int year;
@@ -8,6 +10,7 @@ class MonthCalendarWidget extends StatelessWidget {
   final Set<DateTime> pastPeriodDays;
   final Set<DateTime> pmsDays;
   final Set<DateTime> fertileDays;
+  final Set<DateTime> ovulationDays;
 
   const MonthCalendarWidget({
     super.key,
@@ -17,6 +20,7 @@ class MonthCalendarWidget extends StatelessWidget {
     required this.pastPeriodDays,
     required this.pmsDays,
     required this.fertileDays,
+    required this.ovulationDays,
   });
 
   @override
@@ -36,11 +40,11 @@ class MonthCalendarWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
-              .map((d) => Expanded(
-              child: Center(
-                  child: Text(d,
-                      style: const TextStyle(fontSize: 10, color: Colors.black)))))
-              .toList(),
+            .map((d) => Expanded(
+            child: Center(
+              child: Text(d,
+                  style: const TextStyle(fontSize: 10, color: Colors.black)))))
+            .toList(),
         ),
         const SizedBox(height: 4),
         GridView.builder(
@@ -61,11 +65,15 @@ class MonthCalendarWidget extends StatelessWidget {
 
             Color bgColor = Colors.transparent;
             if (periodDays.contains(date) || pastPeriodDays.contains(date)) {
-              bgColor = Colors.red.shade100;
+              bgColor = HexColor.fromHex(AppConstants.calenderPeriodIndicator);
             } else if (pmsDays.contains(date)) {
-              bgColor = Colors.yellow.shade100;
+              bgColor = HexColor.fromHex(AppConstants.calenderPredictedIndicator);
             } else if (fertileDays.contains(date)) {
-              bgColor = Colors.blueGrey.shade100;
+              if (ovulationDays.contains(date)) {
+                bgColor = HexColor.fromHex(AppConstants.calenderOvulationIndicator);
+              } else {
+                bgColor = HexColor.fromHex(AppConstants.calenderFertileIndicator);
+              }
             }
 
             return Center(

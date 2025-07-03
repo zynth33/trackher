@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:trackher/utils/constants.dart';
+import 'package:trackher/utils/extensions/color.dart';
 
 import 'flow_selector.dart';
 
@@ -38,9 +40,9 @@ class MenstrualFlow extends StatelessWidget {
               ),
               SizedBox(width: 10,),
               Text("Menstrual Flow", style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Theme.of(context).brightness == Brightness.light ? HexColor.fromHex(AppConstants.primaryColorLight) : Colors.white
               ),)
             ],
           ),

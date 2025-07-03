@@ -30,4 +30,8 @@ class AppAssets {
   static const iconFlowMedium = 'assets/icons/flow_light.svg';
   static const iconFlowHeavy = 'assets/icons/flow_light.svg';
   static const iconShare = 'assets/icons/share.svg';
+  static const iconNavHome = 'assets/icons/nav_home.svg';
+  static const iconNavCalender = 'assets/icons/nav_calender.svg';
+  static const iconNavJournal = 'assets/icons/nav_journal.svg';
+  static const iconNavAiChat = 'assets/icons/nav_ai_chat.svg';
 }

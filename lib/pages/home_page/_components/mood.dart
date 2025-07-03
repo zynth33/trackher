@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:trackher/utils/constants.dart';
+import 'package:trackher/utils/extensions/color.dart';
 
 import 'mood_selector.dart';
 
@@ -32,7 +34,7 @@ class Mood extends StatelessWidget {
               Text("Mood", style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
-                  color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white
+                  color: Theme.of(context).brightness == Brightness.light ? HexColor.fromHex(AppConstants.primaryColorLight) : Colors.white
               ),)
             ],
           ),
