@@ -22,6 +22,8 @@ class DatesSession {
 
   final ValueNotifier<Map<DateTime, Map<String, dynamic>>> _dataMapNotifier = ValueNotifier({});
 
+  final ValueNotifier<bool> isSelectedDatePastTodayNotifier = ValueNotifier(false);
+
   // Load from Hive at startup
   Future<void> _loadFromHive() async {
     final box = Hive.box<Map>('datesData');
@@ -62,6 +64,10 @@ class DatesSession {
     _dataMapNotifier.value = current;
   }
 
+  void setSelectedDatePastToday(bool isPastToday) {
+    isSelectedDatePastTodayNotifier.value = isPastToday;
+  }
+
   void setEntryForDateKey(DateTime date, String key, dynamic value) {
     final normalized = normalizeDate(date);
     final current = Map<DateTime, Map<String, dynamic>>.from(_dataMapNotifier.value);
@@ -97,6 +103,7 @@ class DatesSession {
   }
 
   DateTime get selectedDate => selectedDateNotifier.value;
+  bool get isSelectedDatePastToday => isSelectedDatePastTodayNotifier.value;
 
   Map<DateTime, Map<String, dynamic>> get dataMap => _dataMapNotifier.value;
 

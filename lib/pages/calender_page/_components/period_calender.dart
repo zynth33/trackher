@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:trackher/utils/constants.dart';
 import 'package:trackher/utils/extensions/color.dart';
@@ -9,6 +10,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../../../utils/components/day_circle.dart';
 import '../../../utils/components/day_detail_bottom_sheet.dart';
+import '../../period_date_selection_page/period_date_selection_page.dart';
 
 class PeriodCalendar extends StatefulWidget {
   final int month;
@@ -140,13 +142,13 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 13.0, vertical: 10),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            spacing: 5,
             children: [
               Text(
                 _monthName(focusDay),
                 style: TextStyle(
-                  color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
-                  fontSize: 20,
+                  color: Theme.of(context).brightness == Brightness.light ? Colors.black.withValues(alpha: 0.7) : Colors.white,
+                  fontSize: 15,
                   fontWeight: FontWeight.w600
                 ),
               ),
@@ -154,8 +156,47 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
                 "${widget.year}",
                 style: TextStyle(
                   fontSize: 13,
-                  color: Colors.black.withValues(alpha: 0.4),
+                  color: Colors.black.withValues(alpha: 0.7),
                   fontWeight: FontWeight.w600
+                ),
+              ),
+              Spacer(),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PeriodDateSelectionPage(allowFutureMonths: true),
+                    ),
+                  );
+                },
+                child: IntrinsicWidth(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      color: HexColor.fromHex(AppConstants.primaryPurple).withAlpha((0.54 * 255).toInt()),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.penToSquare,
+                          size: 16,
+                          color: HexColor.fromHex("#333333"),
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          "Edit Period",
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: HexColor.fromHex("#333333"),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -261,11 +302,11 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
           daysOfWeekStyle: DaysOfWeekStyle(
             weekdayStyle: TextStyle(
               color: HexColor.fromHex(AppConstants.weekDayIndicator),
-              fontWeight: FontWeight.w600
+              fontWeight: FontWeight.bold
             ),
             weekendStyle: TextStyle(
               color: HexColor.fromHex(AppConstants.weekEndIndicator),
-              fontWeight: FontWeight.w600
+              fontWeight: FontWeight.bold
             ),
           ),
         ),

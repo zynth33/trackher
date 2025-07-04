@@ -61,25 +61,6 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           title: 'TrackHer',
           debugShowCheckedModeBanner: false,
-          themeMode: switch(theme) {
-            ThemeModeOption.light => ThemeMode.light,
-            ThemeModeOption.dark => ThemeMode.dark,
-            ThemeModeOption.system => ThemeMode.system,
-          },
-          navigatorKey: navigatorKey,
-          theme: ThemeData(
-            appBarTheme: AppBarTheme(
-              systemOverlayStyle: SystemUiOverlayStyle.dark
-            )
-          ),
-          darkTheme: ThemeData.dark().copyWith(
-            appBarTheme: AppBarTheme(
-              systemOverlayStyle: SystemUiOverlayStyle.dark,
-              iconTheme: IconThemeData(
-                color: Colors.black
-              )
-            )
-          ),
           home: PeriodSession().periodDays.isNotEmpty ? PeriodPage() : PeriodDateSelectionPage(),
         );
       },

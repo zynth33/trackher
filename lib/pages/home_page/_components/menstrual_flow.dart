@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:trackher/utils/assets.dart';
 import 'package:trackher/utils/constants.dart';
 import 'package:trackher/utils/extensions/color.dart';
 
@@ -18,6 +19,9 @@ class MenstrualFlow extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: Colors.black.withValues(alpha: 0.1)
+        ),
         boxShadow: const [
           BoxShadow(
             color: Color.fromARGB(20, 0, 0, 0),
@@ -36,13 +40,13 @@ class MenstrualFlow extends StatelessWidget {
               SizedBox(
                 height: 20,
                 width: 20,
-                child: SvgPicture.asset('assets/icons/flow_light.svg',)
+                child: SvgPicture.asset(AppAssets.iconFlow,)
               ),
               SizedBox(width: 10,),
               Text("Menstrual Flow", style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Theme.of(context).brightness == Brightness.light ? HexColor.fromHex(AppConstants.primaryColorLight) : Colors.white
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Theme.of(context).brightness == Brightness.light ? HexColor.fromHex(AppConstants.graySwatch1) : Colors.white
               ),)
             ],
           ),

@@ -1,17 +1,15 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:trackher/utils/assets.dart';
-import 'package:trackher/utils/constants.dart';
-import 'package:trackher/utils/extensions/color.dart';
+
+import '../../utils/assets.dart';
+import '../../utils/constants.dart';
+import '../../utils/extensions/color.dart';
 import '../../utils/components/bottom_nav_icon.dart';
 import '../home_page/home_page.dart';
 import '../calender_page/calender_page.dart';
 import '../ai_chat_page/ai_chat_page.dart';
 import '../journal_page/journal_page.dart';
-import '../settings_page/settings_page.dart';
-import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 class PeriodPage extends StatefulWidget {
   const PeriodPage({super.key});
@@ -34,41 +32,29 @@ class _PeriodPageState extends State<PeriodPage> {
       CalenderPage(),
       JournalPage(),
       AIChatPage(),
-      SettingsPage()
     ];
   }
   
   @override
   Widget build(BuildContext context) {
+    // throw Exception("The following assertion was thrown while dispatching notifications for ValueNotifier<bool>:setState() or markNeedsBuild() called during build.");
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Colors.white,
-                  Colors.pink.shade100,
-                ],
-              ),
-            ),
-            child: PageTransitionSwitcher(
-              duration: const Duration(milliseconds: 400),
-              transitionBuilder: (child, animation, secondaryAnimation) {
-                return SharedAxisTransition(
-                  animation: animation,
-                  secondaryAnimation: secondaryAnimation,
-                  transitionType: SharedAxisTransitionType.horizontal,
-                  child: child,
-                );
-              },
-              child: KeyedSubtree(
-                key: ValueKey<int>(page),
-                child: pages[page],
-              ),
+          PageTransitionSwitcher(
+            duration: const Duration(milliseconds: 400),
+            transitionBuilder: (child, animation, secondaryAnimation) {
+              return SharedAxisTransition(
+                animation: animation,
+                secondaryAnimation: secondaryAnimation,
+                transitionType: SharedAxisTransitionType.horizontal,
+                child: child,
+              );
+            },
+            child: KeyedSubtree(
+              key: ValueKey<int>(page),
+              child: pages[page],
             ),
           ),
           Align(

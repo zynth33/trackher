@@ -45,129 +45,132 @@ class _CalenderPageState extends State<CalenderPage> with GlowingBackgroundMixin
 
   @override
   Widget build(BuildContext context) {
-    return withGlowingBackground(
-      SizedBox(
-        height: double.infinity,
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(7.0),
-            child: Column(
-              children: [
-                SizedBox(height: Platform.isIOS ? 45 : 30),
-                ScreenTitle(title: "Ovlo Calender",),
-                HeaderRow(
-                  incrementMonth: () {
-                    setState(() {
-                      if(year < PeriodSession().limitYear) {
-                        if (isMonth) {
-                          if (month > 11) {
-                            month = 1;
-                            year = year + 1;
-                          } else {
-                            month = month + 1;
-                          }
-                          heading = "${DateFormat.MMMM().format(DateTime(1, month))}, $year";
-                        } else {
-                          year = year + 1;
-                          heading = "$year";
-                        }
-                      }
-                    });
-                  },
-                  decrementMonth: () {
-                    setState(() {
-                      if (year > PeriodSession().oldestYear - 1) {
-                        if(isMonth) {
-                          if (month == 0) {
-                            month = 11;
-                            year = year - 1;
-                          } else {
-                            month = month - 1;
-                          }
-
-                          heading = "${DateFormat.MMMM().format(DateTime(1, month))}, $year";
-                        } else {
-                          year = year - 1;
-                          heading = "$year";
-                        }
-                      }
-                    });
-                  },
-
-                  toggleMonthYear: () {
-                    setState(() {
-                      isLoading = true;
-                    });
-
-                    Future.delayed(const Duration(milliseconds: 50), () {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: withGlowingBackground(
+        SizedBox(
+          height: double.infinity,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(7.0),
+              child: Column(
+                children: [
+                  SizedBox(height: Platform.isIOS ? 45 : 30),
+                  ScreenTitle(title: "Ovlo Calender",),
+                  HeaderRow(
+                    incrementMonth: () {
                       setState(() {
-                        isMonth = !isMonth;
-                        heading = isMonth
-                            ? "${DateFormat.MMMM().format(DateTime(1, month))}, $year"
-                            : "$year";
-                        isLoading = false;
+                        if(year < PeriodSession().limitYear) {
+                          if (isMonth) {
+                            if (month > 11) {
+                              month = 1;
+                              year = year + 1;
+                            } else {
+                              month = month + 1;
+                            }
+                            heading = "${DateFormat.MMMM().format(DateTime(1, month))}, $year";
+                          } else {
+                            year = year + 1;
+                            heading = "$year";
+                          }
+                        }
                       });
-                    });
-                  },
+                    },
+                    decrementMonth: () {
+                      setState(() {
+                        if (year > PeriodSession().oldestYear - 1) {
+                          if(isMonth) {
+                            if (month == 0) {
+                              month = 11;
+                              year = year - 1;
+                            } else {
+                              month = month - 1;
+                            }
 
-                  isMonth: isMonth,
-                  text: heading,
-                ),
-                const SizedBox(height: 35),
-                const PeriodLegacy(),
-                const SizedBox(height: 35),
-                isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                  height: isMonth ? 425 : 590,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withAlpha(40),
-                        blurRadius: 10,
-                        offset: const Offset(1, 1),
-                      ),
-                    ],
+                            heading = "${DateFormat.MMMM().format(DateTime(1, month))}, $year";
+                          } else {
+                            year = year - 1;
+                            heading = "$year";
+                          }
+                        }
+                      });
+                    },
+
+                    toggleMonthYear: () {
+                      setState(() {
+                        isLoading = true;
+                      });
+
+                      Future.delayed(const Duration(milliseconds: 50), () {
+                        setState(() {
+                          isMonth = !isMonth;
+                          heading = isMonth
+                              ? "${DateFormat.MMMM().format(DateTime(1, month))}, $year"
+                              : "$year";
+                          isLoading = false;
+                        });
+                      });
+                    },
+
+                    isMonth: isMonth,
+                    text: heading,
                   ),
-                  padding: const EdgeInsets.all(8.0),
-                  child: isMonth
-                      ? SingleChildScrollView(
-                    child: PeriodCalendar(month: month, year: year),
-                  )
-                      : YearlyPeriodPage(year: year),
-                ),
-                const SizedBox(height: 20),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => PeriodDateSelectionPage(allowFutureMonths: true,)));
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 15.0),
+                  const SizedBox(height: 35),
+                  const PeriodLegacy(),
+                  const SizedBox(height: 35),
+                  isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    height: isMonth ? 425 : 590,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: HexColor.fromHex(AppConstants.primaryPurple).withValues(alpha: 0.54)
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(FontAwesomeIcons.penToSquare, size: 16, color: HexColor.fromHex(AppConstants.primaryColorLight),),
-                        SizedBox(width: 10,),
-                        Text("Edit Dates", style: TextStyle(
-                            fontSize: 14,
-                            color: HexColor.fromHex(AppConstants.primaryColorLight),
-                            fontWeight: FontWeight.w600
-                        ),),
+                      color: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withAlpha(40),
+                          blurRadius: 10,
+                          offset: const Offset(1, 1),
+                        ),
                       ],
                     ),
+                    padding: const EdgeInsets.all(8.0),
+                    child: isMonth
+                        ? SingleChildScrollView(
+                      child: PeriodCalendar(month: month, year: year),
+                    )
+                        : YearlyPeriodPage(year: year),
                   ),
-                ),
-                SizedBox(height: 100,),
-              ],
+                  const SizedBox(height: 20),
+                  // InkWell(
+                  //   onTap: () {
+                  //     Navigator.push(context, MaterialPageRoute(builder: (context) => PeriodDateSelectionPage(allowFutureMonths: true,)));
+                  //   },
+                  //   child: Container(
+                  //     width: double.infinity,
+                  //     padding: EdgeInsets.symmetric(vertical: 15.0),
+                  //     decoration: BoxDecoration(
+                  //         borderRadius: BorderRadius.circular(10),
+                  //         color: HexColor.fromHex(AppConstants.primaryPurple).withValues(alpha: 0.54)
+                  //     ),
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       children: [
+                  //         Icon(FontAwesomeIcons.penToSquare, size: 16, color: HexColor.fromHex(AppConstants.primaryColorLight),),
+                  //         SizedBox(width: 10,),
+                  //         Text("Edit Dates", style: TextStyle(
+                  //             fontSize: 14,
+                  //             color: HexColor.fromHex(AppConstants.primaryColorLight),
+                  //             fontWeight: FontWeight.w600
+                  //         ),),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  // SizedBox(height: 100,),
+                ],
+              ),
             ),
           ),
         ),

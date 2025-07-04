@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../pages/settings_page/settings_page.dart';
 import '../../../sessions/user_session.dart';
 import '../../../../utils/constants.dart';
 import '../../../utils/extensions/color.dart';
@@ -25,7 +26,7 @@ class HomeHeader extends StatelessWidget {
                 fontSize: 14
               ),),
               Text("${UserSession().name ?? "User"} 👋", style: TextStyle(
-                color: HexColor.fromHex(AppConstants.primaryColorLight),
+                color: HexColor.fromHex(AppConstants.graySwatch1),
                 fontSize: 20,
                 fontWeight: FontWeight.w600
               ),)
@@ -33,14 +34,16 @@ class HomeHeader extends StatelessWidget {
           ),
           Spacer(),
           InkWell(
-            onTap: onSettingsTap,
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage()));
+            },
             child: Container(
               padding: EdgeInsets.all(10.0),
               decoration: BoxDecoration(
                 color: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black,
                 borderRadius: BorderRadius.circular(100),
               ),
-              child: Icon(Icons.settings_outlined, color: Theme.of(context).brightness == Brightness.light ? HexColor.fromHex(AppConstants.primaryColorLight) : Colors.white, weight: 300, size: 20,),
+              child: Icon(Icons.settings_outlined, color: Theme.of(context).brightness == Brightness.light ? HexColor.fromHex(AppConstants.graySwatch1) : Colors.white, weight: 300, size: 20,),
             ),
           )
         ],

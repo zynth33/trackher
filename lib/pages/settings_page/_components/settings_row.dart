@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:trackher/utils/constants.dart';
+import 'package:trackher/utils/extensions/color.dart';
 
 import '../../../models/settings_item.dart';
 
@@ -27,15 +29,8 @@ class _SettingsRowState extends State<SettingsRow> {
           Container(
             padding: EdgeInsets.all(7.0),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: const [
-                BoxShadow(
-                  color: Color.fromARGB(20, 0, 0, 0),
-                  blurRadius: 10,
-                  offset: Offset(0, 5),
-                ),
-              ],
+              color: HexColor.fromHex(AppConstants.secondaryBackgroundLight),
+              borderRadius: BorderRadius.circular(100),
             ),
             child: widget.setting.icon,
           ),
@@ -45,14 +40,12 @@ class _SettingsRowState extends State<SettingsRow> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(widget.setting.title, style: TextStyle(
-                  color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500
+                color: HexColor.fromHex(AppConstants.primaryText),
+                fontSize: 12,
               ),),
               Text(widget.setting.subtitle, style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500
+                color: HexColor.fromHex("#333333").withValues(alpha: 0.4),
+                fontSize: 10,
               ),)
             ],
           ),
@@ -68,7 +61,7 @@ class _SettingsRowState extends State<SettingsRow> {
                 switchValue = value;
               });
             },
-          ) : Icon(Icons.chevron_right, color: Colors.grey, size: 25,)
+          ) : Icon(Icons.chevron_right, color: HexColor.fromHex(AppConstants.primaryText), size: 35,)
         ],
       ),
     );

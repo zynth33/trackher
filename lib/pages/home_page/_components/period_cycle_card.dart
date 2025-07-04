@@ -1,27 +1,63 @@
-import 'package:dashed_circle/dashed_circle.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:trackher/utils/constants.dart';
-import 'package:trackher/utils/extensions/color.dart';
+
+import '../../../sessions/dates_session.dart';
+import '../../../utils/constants.dart';
+import '../../../utils/extensions/color.dart';
 import '../../period_date_selection_page/period_date_selection_page.dart';
 import '../../../sessions/period_session.dart';
 import '../../../utils/helper_functions.dart';
 import 'rounded_circular_progress.dart';
 
-class PeriodCycleCard extends StatelessWidget {
-  const PeriodCycleCard({
-    super.key,
-  });
+class PeriodCycleCard extends StatefulWidget {
+  const PeriodCycleCard({super.key});
+
+  @override
+  State<PeriodCycleCard> createState() => _PeriodCycleCardState();
+}
+
+class _PeriodCycleCardState extends State<PeriodCycleCard> {
+  double _previousDay = 0.0;
+  double _animatedDay = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    DatesSession().selectedDateNotifier.addListener(_onDateChanged);
+    _updateDay();
+  }
+
+  @override
+  void dispose() {
+    DatesSession().selectedDateNotifier.removeListener(_onDateChanged);
+    super.dispose();
+  }
+
+  void _onDateChanged() {
+    setState(() {
+      _updateDay();
+    });
+  }
+
+  void _updateDay() {
+    final day = getValueForDateInMap(
+      DatesSession().selectedDate,
+      PeriodSession().cycleNumbersNotifier.value,
+    )?.toDouble() ??
+        0.0;
+    _previousDay = _animatedDay;
+    _animatedDay = day;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<Map<DateTime, int>> (
+    return ValueListenableBuilder<Map<DateTime, int>>(
       valueListenable: PeriodSession().cycleNumbersNotifier,
       builder: (context, cycleNumbers, _) {
-        return ValueListenableBuilder<int> (
+        return ValueListenableBuilder<int>(
           valueListenable: PeriodSession().cycleLengthNotifier,
           builder: (context, cycleLength, _) {
-            final currentDay = getValueForDateInMap(DateTime.now(), cycleNumbers) ?? 0;
+            final currentDay = getValueForDateInMap(DatesSession().selectedDate, cycleNumbers) ?? 0;
             final periodLength = PeriodSession().periodLength;
             final daysUntilNext = cycleLength - currentDay;
 
@@ -34,177 +70,88 @@ class PeriodCycleCard extends StatelessWidget {
               nextPeriodText = 'Next period in $daysUntilNext days';
             }
 
-            return Container(
+            return AnimatedContainer(
               padding: const EdgeInsets.all(20),
+              duration: const Duration(milliseconds: 500),
               decoration: BoxDecoration(
-                color: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black,
+                color: Colors.transparent,
                 borderRadius: BorderRadius.circular(20),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color.fromARGB(20, 0, 0, 0),
-                    blurRadius: 20,
-                    offset: Offset(0, 10),
-                  ),
-                ],
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Period Cycle',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
-                          fontWeight: FontWeight.w600
-                        ),
-                      )
-                    ],
+                  const Text(
+                    'Period Cycle',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   const SizedBox(height: 5),
-                  Stack(
-                    alignment: Alignment.center,
-                    clipBehavior: Clip.none,
-                    children: [
-                      Center(
-                        child: Container(
-                          margin: EdgeInsets.all(10.0),
-                          child: RoundedCircularProgressWithIcon(
-                            day: currentDay.toDouble(),
-                            strokeWidth: 6,
-                            backgroundColor: Colors.grey.withValues(alpha: 0.1),
-                            progressColor: Colors.purple,
-                            size: 160,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 65,
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black26,
-                              blurRadius: 3,
-                              offset: Offset(1, 1),
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              'DAY',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.red,
-                              ),
-                            ),
-                            Text(
-                              '$currentDay',
-                              style: const TextStyle(
-                                fontSize: 28,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.redAccent,
-                              ),
-                            ),
-                            Text(
-                              'of $cycleLength',
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: Colors.red,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
+                  Text(
+                    'Day $currentDay',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w500,
+                      color: HexColor.fromHex("#EC4F7C"),
+                    ),
                   ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Day $currentDay of your cycle',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(color: Colors.grey, fontSize: 15, fontWeight: FontWeight.w500),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                        child: Transform.translate(
-                          offset: Offset(0, -1),
-                          child: Text(
-                            '\u2022',
-                            // textAlign: TextAlign.center,
-                            style: const TextStyle(color: Colors.grey, fontSize: 24, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      Text(
-                        nextPeriodText,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(color: Colors.grey, fontSize: 15, fontWeight: FontWeight.w500),
-                      ),
-                    ],
+                  const SizedBox(height: 15),
+                  Text(
+                    nextPeriodText,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black.withValues(alpha: 0.44),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500
+                    ),
                   ),
-                  const SizedBox(height: 5),
+
+                  const SizedBox(height: 15),
                   InkWell(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => PeriodDateSelectionPage(allowFutureMonths: true,)));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PeriodDateSelectionPage(allowFutureMonths: true),
+                        ),
+                      );
                     },
-                    child: Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(vertical: 10.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: HexColor.fromHex(AppConstants.primaryPurple).withValues(alpha: 0.54)
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(FontAwesomeIcons.penToSquare, size: 16, color: HexColor.fromHex(AppConstants.primaryColorLight),),
-                          SizedBox(width: 10,),
-                          Text("Edit Period", style: TextStyle(
-                            fontSize: 14,
-                            color: HexColor.fromHex(AppConstants.primaryColorLight),
-                            fontWeight: FontWeight.w600
-                          ),),
-                        ],
+                    child: IntrinsicWidth(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          color: HexColor.fromHex(AppConstants.primaryPurple).withAlpha((0.54 * 255).toInt()),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.penToSquare,
+                              size: 16,
+                              color: HexColor.fromHex("#333333"),
+                            ),
+                            const SizedBox(width: 10),
+                            Text(
+                              "Edit Period",
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: HexColor.fromHex("#333333"),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                  // SizedBox(
-                  //   width: double.infinity,
-                  //   child: ElevatedButton.icon(
-                  //     onPressed: () {
-                  //       Navigator.push(context, MaterialPageRoute(builder: (context) => PeriodDateSelectionPage(allowFutureMonths: true,)));
-                  //     },
-                  //     icon: const Icon(FontAwesomeIcons.penToSquare, size: 16),
-                  //     label: const Text("Edit Period", style: TextStyle(
-                  //         fontSize: 14,
-                  //         fontWeight: FontWeight.w500
-                  //     ),),
-                  //     style: ElevatedButton.styleFrom(
-                  //       backgroundColor: HexColor.fromHex(AppConstants.primaryPurple),
-                  //       foregroundColor: Colors.white,
-                  //       shape: RoundedRectangleBorder(
-                  //         borderRadius: BorderRadius.circular(16),
-                  //       ),
-                  //       padding: const EdgeInsets.symmetric(vertical: 12),
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
             );
           },
         );
-      }
+      },
     );
   }
 }

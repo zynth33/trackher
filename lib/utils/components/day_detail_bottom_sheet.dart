@@ -111,45 +111,45 @@ class DayDetailBottomSheet extends StatelessWidget {
                 ],
               ),
             ) : SizedBox.shrink(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              spacing: 10,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: Text("My daily insights",style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
-                      fontSize: 18
-                  ),),
-                ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    child: Row (
-                      spacing: 5,
-                      children: List.filled(20, Container(
-                        height: 150,
-                        width: 130,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: Colors.red, width: 2)
-                        ),
-                        child: Container(
-                          margin: EdgeInsets.all(4.0),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(17),
-                              color: Colors.red
-                          ),
-                        ),
-                      )),
-                    ),
-                  ),
-                ),
-              ],
-            )
+            // Column(
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   mainAxisAlignment: MainAxisAlignment.start,
+            //   spacing: 10,
+            //   children: [
+            //     Padding(
+            //       padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            //       child: Text("My daily insights",style: TextStyle(
+            //           fontWeight: FontWeight.w500,
+            //           color: Colors.black,
+            //           fontSize: 18
+            //       ),),
+            //     ),
+            //     SingleChildScrollView(
+            //       scrollDirection: Axis.horizontal,
+            //       child: Padding(
+            //         padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            //         child: Row (
+            //           spacing: 5,
+            //           children: List.filled(20, Container(
+            //             height: 150,
+            //             width: 130,
+            //             decoration: BoxDecoration(
+            //                 borderRadius: BorderRadius.circular(20),
+            //                 border: Border.all(color: Colors.red, width: 2)
+            //             ),
+            //             child: Container(
+            //               margin: EdgeInsets.all(4.0),
+            //               decoration: BoxDecoration(
+            //                   borderRadius: BorderRadius.circular(17),
+            //                   color: Colors.red
+            //               ),
+            //             ),
+            //           )),
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // )
             // const SizedBox(height: 24),
             // ElevatedButton(
             //   onPressed: () => Navigator.pop(context),

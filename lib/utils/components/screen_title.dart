@@ -5,8 +5,9 @@ import '../extensions/color.dart';
 
 class ScreenTitle extends StatelessWidget {
   final String title;
+  final double size;
   const ScreenTitle({
-    super.key, required this.title,
+    super.key, required this.title, this.size = 24,
   });
 
   @override
@@ -17,7 +18,7 @@ class ScreenTitle extends StatelessWidget {
         Text(title, style: TextStyle(
             color: HexColor.fromHex(AppConstants.primaryColorLight),
             fontWeight: FontWeight.bold,
-            fontSize: 24,
+            fontSize: size,
             shadows: [
               BoxShadow(
                 color: Colors.black.withAlpha(60),

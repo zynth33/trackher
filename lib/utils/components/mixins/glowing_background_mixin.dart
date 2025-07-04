@@ -25,7 +25,7 @@ mixin GlowingBackgroundMixin {
               color: Colors.transparent,
               boxShadow: [
                 BoxShadow(
-                  color: glowColor ?? HexColor.fromHex(AppConstants.backgroundLight).withValues(alpha: 0.6),
+                  color: glowColor ?? HexColor.fromHex(AppConstants.primaryBackgroundLight).withValues(alpha: 0.6),
                   blurRadius: 60,
                   spreadRadius: 50,
                 ),

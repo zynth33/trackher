@@ -1,11 +1,8 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:trackher/utils/components/mixins/glowing_background_mixin.dart';
-import 'package:trackher/utils/constants.dart';
-import 'package:trackher/utils/extensions/color.dart';
 
+import '../../utils/components/mixins/glowing_background_mixin.dart';
 import '../../utils/components/screen_title.dart';
 import '../../utils/enums.dart';
 import '../../sessions/dates_session.dart';
@@ -52,77 +49,69 @@ class HomePage extends StatelessWidget with GlowingBackgroundMixin {
                 (PeriodSession().periodDays.contains(today) ||
                 PeriodSession().pmsDays.contains(today));
 
-            final backgroundGradient = showBanner ? LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Colors.white,
-                Colors.pink.shade50,
-              ],
-            ) : LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Colors.white,
-                switch(flow) {
-                  FlowLevel.light => Colors.pink.shade100,
-                  FlowLevel.medium => Colors.pink.shade300,
-                  FlowLevel.heavy => Colors.pink.shade700,
-                  FlowLevel.spotting => Colors.yellow.shade200,
-                  null => Colors.pink.shade50,
-                },
-              ],
-            );
-            return Scaffold(
-              appBar: PreferredSize(
-                preferredSize: const Size.fromHeight(100),
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
-                  transitionBuilder: (child, animation) => SizeTransition(
-                    sizeFactor: animation,
-                    axisAlignment: -1,
-                    child: child,
-                  ),
-                  child: showBanner
-                      ? BannerWidget(key: const ValueKey('banner'))
-                      : const SizedBox.shrink(key: ValueKey('empty')),
-                ),
-              ),
-              body: withGlowingBackground(
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 1000),
-                  curve: Curves.easeInOut,
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    // gradient: backgroundGradient,
-                  ),
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(7.0),
-                    child: Column(
-                      children: [
-                        SizedBox(height: Platform.isIOS ? 40 : 20),
-                        ScreenTitle(title: "Ovlo Home",),
-                        HomeHeader(onSettingsTap: onSettingsTap),
-                        // const SizedBox(height: 20),
-                        TopCalender(),
-                        const SizedBox(height: 20),
-                        PeriodCycleCard(),
-                        const SizedBox(height: 20),
-                        MenstrualFlow(),
-                        const SizedBox(height: 20),
-                        Mood(),
-                        const SizedBox(height: 20),
-                        Symptoms(),
-                        const SizedBox(height: 20),
-                        PeriodDataCards(),
-                        const SizedBox(height: 20),
-                        StaticPeriodCalendar(),
-                        const SizedBox(height: 150),
-                      ],
+            return ValueListenableBuilder<bool>(
+              valueListenable: DatesSession().isSelectedDatePastTodayNotifier,
+              builder: (context, isPastToday, _) {
+                return Scaffold(
+                  backgroundColor: Colors.white,
+                  appBar: PreferredSize(
+                    preferredSize: const Size.fromHeight(100),
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      transitionBuilder: (child, animation) => SizeTransition(
+                        sizeFactor: animation,
+                        axisAlignment: -1,
+                        child: child,
+                      ),
+                      child: showBanner
+                          ? BannerWidget(key: const ValueKey('banner'))
+                          : const SizedBox.shrink(key: ValueKey('empty')),
                     ),
                   ),
-                ),
-              ),
+                  body: withGlowingBackground(
+                    Padding(
+                      padding: const EdgeInsets.all(0.0),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 1000),
+                        curve: Curves.easeInOut,
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          // gradient: backgroundGradient,
+                        ),
+                        child: SingleChildScrollView(
+                          padding: const EdgeInsets.all(7.0),
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 20),
+                              ScreenTitle(title: "Ovlo Home",),
+                              HomeHeader(onSettingsTap: onSettingsTap),
+                              // const SizedBox(height: 20),
+                              TopCalender(),
+                              const SizedBox(height: 20),
+                              PeriodCycleCard(),
+                              isPastToday ? Column(
+                                children: [
+                                  const SizedBox(height: 20),
+                                  MenstrualFlow(),
+                                  const SizedBox(height: 20),
+                                  Mood(),
+                                  const SizedBox(height: 20),
+                                  Symptoms(),
+                                  const SizedBox(height: 20),
+                                  PeriodDataCards(),
+                                ],
+                              ) : SizedBox.shrink(),
+                              const SizedBox(height: 20),
+                              StaticPeriodCalendar(),
+                              const SizedBox(height: 150),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }
             );
           }
         );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:trackher/utils/extensions/color.dart';
 import '../../sessions/user_session.dart';
 
 class Avatar extends StatelessWidget {
@@ -53,12 +54,13 @@ class Avatar extends StatelessWidget {
           bottom: 0,
           right: 0,
           child: Container(
-            padding: EdgeInsets.all(3.0),
+            height: 20,
+            width: 20,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(100),
-              color: Colors.pink.shade100
+              color: HexColor.fromHex("#652E94")
             ),
-            child: Icon(FontAwesomeIcons.pencil, color: Colors.deepPurpleAccent, size: 10,)
+            child: Icon(FontAwesomeIcons.pencil, color: HexColor.fromHex("#E6E6E6"), size: 9,)
           ),
         ) : SizedBox.shrink()
       ],

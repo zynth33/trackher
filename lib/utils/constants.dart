@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:trackher/models/popular_topic.dart';
+import 'package:trackher/utils/assets.dart';
 import 'package:trackher/utils/extensions/color.dart';
 
 import '../pages/settings_page/_pages/theme_page.dart';
@@ -21,19 +23,24 @@ class AppConstants {
 
   static final _random = Random();
 
-  static const String graySwatch1 = "#595555";
+  static const String primaryBackgroundLight = "#F6DDF8";
+  static const String secondaryBackgroundLight = "#F5EAF6";
 
-  static const String backgroundLight = "#F6DDF8";
   static const String primaryColorLight = "#6B21A8";
+
   static const String primaryPink = "#DB4193";
   static const String secondaryPink = "#F06BAD";
+
   static const String primaryPurple = "#DFC2FE";
   static const String secondaryPurple = "#BA78F9";
   static const String tertiaryPurple = "#5E00B3";
 
   static const String primaryWhite = "#FFFDFE";
+  static const String graySwatch1 = "#333333";
 
   static const String primaryText = "#6B21A8";
+
+  static const String primaryIcon = "#672A98";
 
   static const String navHome = "#F8ADD5";
   static const String navCalender = "#DBE3FE";
@@ -74,6 +81,25 @@ class AppConstants {
     RecentChat("Fertility Signs", "What's the best tracking app?")
   ];
 
+  static const List<String> titles = [
+    "Menstrual Health",
+    "Period Insights",
+    "PMS Symptoms",
+    "Ovulation Signs",
+    "Cycle Length",
+  ];
+
+  static List<PopularTopic> topics = [
+    PopularTopic("Recommendations yoga poses", AppAssets.iconWand),
+    PopularTopic("Recommendations yoga poses", AppAssets.iconBulb),
+    PopularTopic("Recommendations yoga poses", AppAssets.iconWand),
+    PopularTopic("How to track fertility phase signs?", AppAssets.iconBulb),
+    PopularTopic("How to track fertility phase signs?", AppAssets.iconWand),
+    PopularTopic("How to track fertility phase signs?", AppAssets.iconBulb),
+    PopularTopic("How to track fertility phase signs?", AppAssets.iconWand),
+    PopularTopic("How to track fertility phase signs?", AppAssets.iconBulb)
+  ];
+
   static const List<Chat> chats = [
     Chat("hi", ChatType.user),
     Chat("I'd be happy to help you with \"hi\". This is general guidance and should not replace professional medical advice. Here's what I can tell you about this topic...", ChatType.ai),
@@ -92,19 +118,19 @@ class AppConstants {
 
   static List<SettingsItem> accountSettings = [
     SettingsItem(
-        Icon(Symbols.person, color: Colors.black, size: 18,),
+        Icon(Symbols.person, color: HexColor.fromHex(AppConstants.primaryIcon), size: 18,),
         "Profile Settings",
         "Update your personal information",
             (){}
     ),
     SettingsItem(
-        Icon(Symbols.calendar_today, color: Colors.black, size: 18,),
+        Icon(Symbols.calendar_today, color: HexColor.fromHex(AppConstants.primaryIcon), size: 18,),
         "Cycle Preferences",
         "Customize your tracking settings",
             (){}
     ),
     SettingsItem(
-        Icon(Symbols.border_color_rounded, color: Colors.black, size: 18,),
+        Icon(Symbols.border_color_rounded, color: HexColor.fromHex(AppConstants.primaryIcon), size: 18,),
         "Data Export",
         "Download your health data",
             (){}
@@ -113,13 +139,13 @@ class AppConstants {
 
   static List<SettingsItem> appearanceSettings = [
     SettingsItem(
-        Icon(Symbols.palette_rounded, color: Colors.black, size: 18,),
+        Icon(Symbols.palette_rounded, color: HexColor.fromHex(AppConstants.primaryIcon), size: 18,),
         "Theme",
         "Light or dark mode",
           () => navigatorKey.currentState?.push(MaterialPageRoute(builder: (_) => const ThemePage())),
     ),
     // SettingsItem(
-    //     Icon(Symbols.language, color: Colors.black, size: 18,),
+    //     Icon(Symbols.language, color: HexColor.fromHex(AppConstants.primaryIcon), size: 18,),
     //     "Language",
     //     "Choose your language",
     //         (){}
@@ -128,21 +154,21 @@ class AppConstants {
 
   static List<SettingsItem> notificationsSettings = [
     SettingsItem(
-        Icon(Symbols.notifications_rounded, color: Colors.black, size: 18,),
+        Icon(Symbols.notifications_rounded, color: HexColor.fromHex(AppConstants.primaryIcon), size: 18,),
         "Push Notifications",
         "Receive period reminders",
         isSwitch: true,
             (){}
     ),
     SettingsItem(
-        Icon(Symbols.dark_mode_rounded, color: Colors.black, size: 18,),
+        Icon(Symbols.dark_mode_rounded, color: HexColor.fromHex(AppConstants.primaryIcon), size: 18,),
         "Do Not Disturb",
         "Quiet hours 10 PM - 8 AM",
         isSwitch: true,
             (){}
     ),
     SettingsItem(
-        Icon(Symbols.volume_up_rounded, color: Colors.black, size: 18,),
+        Icon(Symbols.volume_up_rounded, color: HexColor.fromHex(AppConstants.primaryIcon), size: 18,),
         "Sound Effects",
         "App interaction sounds",
         isSwitch: true,
@@ -152,13 +178,13 @@ class AppConstants {
 
   static List<SettingsItem> privacyAndSecuritySettings = [
     SettingsItem(
-        Icon(Symbols.shield_rounded, color: Colors.black, size: 18,),
+        Icon(Symbols.shield_rounded, color: HexColor.fromHex(AppConstants.primaryIcon), size: 18,),
         "Data Privacy",
         "Control your data sharing",
             (){}
     ),
     SettingsItem(
-        Icon(Symbols.database_rounded, color: Colors.black, size: 18,),
+        Icon(Symbols.database_rounded, color: HexColor.fromHex(AppConstants.primaryIcon), size: 18,),
         "Backup & Sync",
         "Cloud data backup",
         isSwitch: true,
@@ -168,7 +194,7 @@ class AppConstants {
 
   static List<SettingsItem> supportSettings = [
     SettingsItem(
-        Icon(Symbols.help, color: Colors.black, size: 18,),
+        Icon(Symbols.help, color: HexColor.fromHex(AppConstants.primaryIcon), size: 18,),
         "Help Center",
         "FAQs and support articles",
             () => navigatorKey.currentState?.push(MaterialPageRoute(builder: (_) => const FaqsPage())),
