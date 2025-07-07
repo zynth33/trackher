@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:trackher/utils/extensions/color.dart';
 import '../../utils/constants.dart';
 
 import '_components/categories_card.dart';
@@ -19,21 +20,17 @@ class _CategoryPageState extends State<CategoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Colors.white,
-              Colors.pink.shade100,
-            ],
-          ),
-        ),
+      backgroundColor: Colors.white,
+      body: SizedBox(
+        height: double.infinity,
+        width: double.infinity,
         child: Stack(
           children: [
+            // Positioned(
+            //   top: -90,
+            //   left: -190,
+            //   child: Image.asset('assets/gradients/grad_2.png'),
+            // ),
             SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(13.0),
@@ -125,6 +122,11 @@ class _CategoryPageState extends State<CategoryPage> {
                 ),
               ),
             ),
+            // Positioned(
+            //   bottom: 0,
+            //   right: -100,
+            //   child: Image.asset('assets/gradients/grad_3.png'),
+            // ),
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 500),
               switchInCurve: Curves.linear,
@@ -156,7 +158,7 @@ class _CategoryPageState extends State<CategoryPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     width: MediaQuery.of(context).size.width - 50,
                     decoration: BoxDecoration(
-                      color: Colors.pink,
+                      color: HexColor.fromHex(AppConstants.primaryText),
                       borderRadius: BorderRadius.circular(100),
                     ),
                     child: const Text(
@@ -175,7 +177,6 @@ class _CategoryPageState extends State<CategoryPage> {
                 key: ValueKey('empty-space'),
               ),
             ),
-
           ],
         ),
       ),

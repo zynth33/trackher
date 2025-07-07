@@ -25,6 +25,7 @@ class AppConstants {
 
   static const String primaryBackgroundLight = "#F6DDF8";
   static const String secondaryBackgroundLight = "#F5EAF6";
+  static const String tertiaryBackgroundLight = "#F1E3FE";
 
   static const String primaryColorLight = "#6B21A8";
 

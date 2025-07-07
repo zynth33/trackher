@@ -8,7 +8,7 @@ mixin GlowingBackgroundMixin {
   Widget withGlowingBackground(
       Widget child, {
         double size = 400,
-        double offset = -100,
+        double offset = -95,
         Color? glowColor,
       }) {
     return Stack(
@@ -20,6 +20,7 @@ mixin GlowingBackgroundMixin {
           child: Container(
             height: size,
             width: size,
+            // child: Image.asset('assets/gradients/grad_1.png'),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.transparent,

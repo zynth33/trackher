@@ -2,13 +2,18 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:timezone/data/latest.dart' as tz;
+
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'pages/period_date_selection_page/period_date_selection_page.dart';
 import 'services/navigation_service.dart';
 import 'services/notification_service.dart';
+import 'services/language_service.dart';
 import 'sessions/settings_session.dart';
 import 'sessions/symptoms_session.dart';
 import 'sessions/user_session.dart';
@@ -16,6 +21,7 @@ import 'utils/enums.dart';
 import 'repositories/period_repository.dart';
 import 'sessions/period_session.dart';
 import 'pages/period_page/period_page.dart';
+import 'pages/language_test_page.dart'; // Add this for testing
 
 import 'firebase_options.dart';
 import 'models/past_period.dart';
@@ -42,13 +48,22 @@ void main() async {
   /// Load any app-specific state
   await PeriodRepository().loadRecentJournalEntries();
   await UserSession().init();
+  
+  /// Initialize language service
+  await LanguageService().loadLanguage();
 
   /// Run the app
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
@@ -58,15 +73,30 @@ class MyApp extends StatelessWidget {
     return ValueListenableBuilder<ThemeModeOption>(
       valueListenable: SettingsSession().themeModeNotifier,
       builder: (context, theme, _) {
-        return MaterialApp(
-          title: 'TrackHer',
-          debugShowCheckedModeBanner: false,
-          home: PeriodSession().periodDays.isNotEmpty ? PeriodPage() : PeriodDateSelectionPage(),
+        return ListenableBuilder(
+          listenable: LanguageService(),
+          builder: (context, _) {
+            return MaterialApp(
+              title: 'TrackHer',
+              debugShowCheckedModeBanner: false,
+              locale: LanguageService().currentLocale,
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: LanguageService().supportedLocales,
+              // home: const LanguageTestPage(), // Temporary for testing
+              home: PeriodSession().periodDays.isNotEmpty ? PeriodPage() : PeriodDateSelectionPage(),
+            );
+          },
         );
       },
     );
   }
 }
+
 
 void setData() {
   final Box<PeriodPrediction> periodPredictionBox = Hive.box<PeriodPrediction>('predictions');

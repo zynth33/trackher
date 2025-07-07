@@ -499,6 +499,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  flutter_localizations:
+    dependency: "direct main"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
   flutter_native_splash:
     dependency: "direct dev"
     description:
@@ -1298,6 +1303,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  string_extractor_intl:
+    dependency: "direct dev"
+    description:
+      name: string_extractor_intl
+      sha256: baacc07971e64ffe801e44b4e749f2f725413d7c4e1c029a62878ba2c4d79308
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.4"
   string_scanner:
     dependency: transitive
     description:

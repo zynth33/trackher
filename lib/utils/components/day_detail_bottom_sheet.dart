@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:trackher/utils/constants.dart';
+import 'package:trackher/utils/extensions/color.dart';
 import '../../pages/category_page/category_page.dart';
 import '../../sessions/period_session.dart';
 import '../helper_functions.dart';
@@ -36,11 +38,11 @@ class DayDetailBottomSheet extends StatelessWidget {
                         "${DateFormat('d MMM').format(date)}${getValueForDateInMap(date, PeriodSession().cycleNumbers) == -1 ? "" : " \u2022 Cycle Day ${getValueForDateInMap(date, PeriodSession().cycleNumbers)}" }",
                         style: TextStyle(
                           color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
-                          fontSize: 24,
+                          fontSize: 16,
                           fontWeight: FontWeight.w600
                         ),
                       ),
-                      getMessageForDate(date),
+                      // getMessageForDate(date),
                     ],
                   ),
 
@@ -53,7 +55,7 @@ class DayDetailBottomSheet extends StatelessWidget {
                           borderRadius: BorderRadius.circular(100),
                           color: Colors.grey
                       ),
-                      child: Icon(Icons.close, color: Colors.white, size: 20,),
+                      child: Icon(Icons.close, color: Colors.white, size: 15,),
                     ),
                   )
                 ],
@@ -67,32 +69,33 @@ class DayDetailBottomSheet extends StatelessWidget {
                 spacing: 10,
                 children: [
                   Text('Symptoms and activities', style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500
+                    fontSize: 13,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500
                   ),),
                   InkWell(
                     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryPage(date: date,))),
                     borderRadius: BorderRadius.circular(20),
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                      padding: EdgeInsets.symmetric(vertical: 25, horizontal: 20),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Theme.of(context).brightness == Brightness.light ? Colors.grey.shade100 : Colors.grey.withValues(alpha: 0.3)
+                        borderRadius: BorderRadius.circular(20),
+                        color: Theme.of(context).brightness == Brightness.light ? Colors.grey.shade100 : Colors.grey.withValues(alpha: 0.3)
                       ),
+
                       child: Row(
                         children: [
                           Text("Add weight, mood & symptoms", style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500
+                            color: Colors.grey,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500
                           ),),
                           Spacer(),
                           Container(
-                            height: 55,
-                            width: 55,
+                            height: 45,
+                            width: 45,
                             decoration: BoxDecoration(
-                                color: Colors.teal,
+                                color: HexColor.fromHex(AppConstants.primaryText),
                                 borderRadius: BorderRadius.circular(100),
                                 boxShadow: [
                                   BoxShadow(

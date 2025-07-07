@@ -138,9 +138,11 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
       : focusDay;
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 13.0, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10),
           child: Row(
             spacing: 5,
             children: [
@@ -203,110 +205,113 @@ class _PeriodCalendarState extends State<PeriodCalendar> {
           ),
         ),
         SizedBox(height: 10,),
-        TableCalendar(
-          firstDay: DateTime(oldestYear),
-          lastDay: DateTime(limitYear + 1),
-          focusedDay: clampedFocusDay,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5.0),
+          child: TableCalendar(
+            firstDay: DateTime(oldestYear),
+            lastDay: DateTime(limitYear + 1),
+            focusedDay: clampedFocusDay,
 
-          headerVisible: false,
-          availableGestures: AvailableGestures.none,
-          calendarStyle: const CalendarStyle(
-            todayDecoration: BoxDecoration(),
-            selectedDecoration: BoxDecoration(),
-            outsideDaysVisible: false,
-          ),
-          weekNumbersVisible: false,
-          onDaySelected: (selectedDay, focusedDay) {
-            showModalBottomSheet(
-              context: context,
-              backgroundColor: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-              ),
-              builder: (_) => DayDetailBottomSheet(date: selectedDay),
-            );
-          },
-          selectedDayPredicate: (_) => false,
-          daysOfWeekHeight: 20,
-          calendarBuilders: CalendarBuilders(
-            todayBuilder: (ctx, day, fd) => buildCircle(
-              day: day,
-              fill: HexColor.fromHex(AppConstants.calenderTodayIndicator),
-              textColor: Colors.white,
+            headerVisible: false,
+            availableGestures: AvailableGestures.none,
+            calendarStyle: const CalendarStyle(
+              todayDecoration: BoxDecoration(),
+              selectedDecoration: BoxDecoration(),
+              outsideDaysVisible: false,
             ),
-            defaultBuilder: (ctx, day, fd) {
-              if (_periodDays.any((d) => _isSameDay(d, day))) {
-                return buildCircle(
-                  day: day,
-                  fill: HexColor.fromHex(AppConstants.calenderPeriodIndicator),
-                  textColor: Colors.black,
-                  showDot: false,
-                  isNormal: false,
-                );
-              }
-
-              if (_predictedDays.any((d) => _isSameDay(d, day))) {
-                return buildCircle(
-                  day: day,
-                  fill: HexColor.fromHex(AppConstants.calenderPredictedIndicator),
-                  textColor: Colors.black,
-                  border: Colors.transparent,
-                  showDot: false,
-                  isNormal: false,
-                  isFuture: true,
-                  showBorder: false
-                );
-              }
-
-              if (_ovulationDays.any((d) => _isSameDay(d, day))) {
-                return buildCircle(
-                    day: day,
-                    fill: HexColor.fromHex(AppConstants.calenderOvulationIndicator),
-                    textColor: Colors.black,
-                    border: Colors.black,
-                    isNormal: false,
-                    isFuture: true,
-                    showBorder: true
-                );
-              }
-
-              if (_fertileDays.any((d) => _isSameDay(d, day))) {
-                return buildCircle(
-                  day: day,
-                  fill: HexColor.fromHex(AppConstants.calenderFertileIndicator),
-                  textColor: Colors.black,
-                  isNormal: false,
-                  isFuture: true,
-                  showBorder: false
-                );
-              }
-
-              return buildCircle(
-                day: day,
-                textColor: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
-                fill: Colors.transparent,
+            weekNumbersVisible: false,
+            onDaySelected: (selectedDay, focusedDay) {
+              showModalBottomSheet(
+                context: context,
+                backgroundColor: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                ),
+                builder: (_) => DayDetailBottomSheet(date: selectedDay),
               );
             },
-          ),
-          headerStyle: const HeaderStyle(
-            formatButtonVisible: false,
-            titleCentered: true,
-            leftChevronVisible: false,
-            rightChevronVisible: false,
-          ),
-          daysOfWeekVisible: true,
+            selectedDayPredicate: (_) => false,
+            daysOfWeekHeight: 20,
+            calendarBuilders: CalendarBuilders(
+              todayBuilder: (ctx, day, fd) => buildCircle(
+                day: day,
+                fill: HexColor.fromHex(AppConstants.calenderTodayIndicator),
+                textColor: Colors.white,
+              ),
+              defaultBuilder: (ctx, day, fd) {
+                if (_periodDays.any((d) => _isSameDay(d, day))) {
+                  return buildCircle(
+                    day: day,
+                    fill: HexColor.fromHex(AppConstants.calenderPeriodIndicator),
+                    textColor: Colors.black,
+                    showDot: false,
+                    isNormal: false,
+                  );
+                }
 
-          startingDayOfWeek: StartingDayOfWeek.monday,
-          weekendDays: [DateTime.sunday],
+                if (_predictedDays.any((d) => _isSameDay(d, day))) {
+                  return buildCircle(
+                    day: day,
+                    fill: HexColor.fromHex(AppConstants.calenderPredictedIndicator),
+                    textColor: Colors.black,
+                    border: Colors.transparent,
+                    showDot: false,
+                    isNormal: false,
+                    isFuture: true,
+                    showBorder: false
+                  );
+                }
 
-          daysOfWeekStyle: DaysOfWeekStyle(
-            weekdayStyle: TextStyle(
-              color: HexColor.fromHex(AppConstants.weekDayIndicator),
-              fontWeight: FontWeight.bold
+                if (_ovulationDays.any((d) => _isSameDay(d, day))) {
+                  return buildCircle(
+                      day: day,
+                      fill: HexColor.fromHex(AppConstants.calenderOvulationIndicator),
+                      textColor: Colors.black,
+                      border: Colors.black,
+                      isNormal: false,
+                      isFuture: true,
+                      showBorder: true
+                  );
+                }
+
+                if (_fertileDays.any((d) => _isSameDay(d, day))) {
+                  return buildCircle(
+                    day: day,
+                    fill: HexColor.fromHex(AppConstants.calenderFertileIndicator),
+                    textColor: Colors.black,
+                    isNormal: false,
+                    isFuture: true,
+                    showBorder: false
+                  );
+                }
+
+                return buildCircle(
+                  day: day,
+                  textColor: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white,
+                  fill: Colors.transparent,
+                );
+              },
             ),
-            weekendStyle: TextStyle(
-              color: HexColor.fromHex(AppConstants.weekEndIndicator),
-              fontWeight: FontWeight.bold
+            headerStyle: const HeaderStyle(
+              formatButtonVisible: false,
+              titleCentered: true,
+              leftChevronVisible: false,
+              rightChevronVisible: false,
+            ),
+            daysOfWeekVisible: true,
+
+            startingDayOfWeek: StartingDayOfWeek.monday,
+            weekendDays: [DateTime.sunday],
+
+            daysOfWeekStyle: DaysOfWeekStyle(
+              weekdayStyle: TextStyle(
+                color: HexColor.fromHex(AppConstants.weekDayIndicator),
+                fontWeight: FontWeight.bold
+              ),
+              weekendStyle: TextStyle(
+                color: HexColor.fromHex(AppConstants.weekEndIndicator),
+                fontWeight: FontWeight.bold
+              ),
             ),
           ),
         ),

@@ -18,20 +18,21 @@ class HeaderRow extends StatelessWidget {
       children: [
         InkWell(
           onTap: decrementMonth,
+          borderRadius: BorderRadius.circular(100),
           child: Container(
-            padding: EdgeInsets.all(5.0),
+            padding: EdgeInsets.all(7.0),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                color: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.2),
-                    blurRadius: 20,
-                    offset: Offset(1, 1),
-                  ),
-                ]
+              borderRadius: BorderRadius.circular(100),
+              color: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.2),
+                  blurRadius: 20,
+                  offset: Offset(1, 1),
+                ),
+              ]
             ),
-            child: Icon(Icons.chevron_left, color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white, size: 35,),
+            child: Icon(Icons.chevron_left, color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white, size: 30,),
           ),
         ),
         Row(
@@ -109,18 +110,19 @@ class HeaderRow extends StatelessWidget {
         ),
         InkWell(
           onTap: incrementMonth,
+          borderRadius: BorderRadius.circular(100),
           child: Container(
             padding: EdgeInsets.all(5.0),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                color: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.2),
-                    blurRadius: 20,
-                    offset: Offset(1, 1),
-                  ),
-                ]
+              borderRadius: BorderRadius.circular(100),
+              // color: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black,
+              // boxShadow: [
+              //   BoxShadow(
+              //     color: Colors.black.withValues(alpha: 0.2),
+              //     blurRadius: 20,
+              //     offset: Offset(1, 1),
+              //   ),
+              // ]
             ),
             child: Icon(Icons.chevron_right, color: Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white, size: 35,),
           ),

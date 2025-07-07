@@ -1,12 +1,12 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:trackher/utils/constants.dart';
 
 import '../../utils/components/mixins/glowing_background_mixin.dart';
 import '../../utils/components/screen_title.dart';
 import '../../utils/enums.dart';
 import '../../sessions/dates_session.dart';
 import '../../sessions/period_session.dart';
+import '../../utils/extensions/color.dart';
 import '../../utils/helper_functions.dart';
 import '_components/banner_widget.dart';
 import '_components/static_period_calender.dart';
@@ -54,22 +54,37 @@ class HomePage extends StatelessWidget with GlowingBackgroundMixin {
               builder: (context, isPastToday, _) {
                 return Scaffold(
                   backgroundColor: Colors.white,
-                  appBar: PreferredSize(
-                    preferredSize: const Size.fromHeight(100),
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
-                      transitionBuilder: (child, animation) => SizeTransition(
-                        sizeFactor: animation,
-                        axisAlignment: -1,
-                        child: child,
-                      ),
-                      child: showBanner
-                          ? BannerWidget(key: const ValueKey('banner'))
-                          : const SizedBox.shrink(key: ValueKey('empty')),
+                  // appBar: PreferredSize(
+                  //   preferredSize: const Size.fromHeight(100),
+                  //   child: AnimatedSwitcher(
+                  //     duration: const Duration(milliseconds: 300),
+                  //     transitionBuilder: (child, animation) => SizeTransition(
+                  //       sizeFactor: animation,
+                  //       axisAlignment: -1,
+                  //       child: child,
+                  //     ),
+                  //     child: showBanner
+                  //         ? BannerWidget(key: const ValueKey('banner'))
+                  //         : const SizedBox.shrink(key: ValueKey('empty')),
+                  //   ),
+                  // ),
+                  body: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.centerLeft,
+                        colors: [
+                          HexColor.fromHex("#F6DDF8"),
+                          HexColor.fromHex("#F6DDF8"),
+                          HexColor.fromHex("#F6DDF8").withValues(alpha: 0.3),
+                          HexColor.fromHex("#FFFFFF").withValues(alpha: 0.33),
+                          HexColor.fromHex("#FFFFFF"),
+                          HexColor.fromHex("#FDFCFD").withValues(alpha: 0.9),
+                          HexColor.fromHex("#FDFCFD").withValues(alpha: 0.9),
+                        ]
+                      )
                     ),
-                  ),
-                  body: withGlowingBackground(
-                    Padding(
+                    child: Padding(
                       padding: const EdgeInsets.all(0.0),
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 1000),

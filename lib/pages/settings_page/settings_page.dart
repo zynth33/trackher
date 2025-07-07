@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 import '../../utils/components/mixins/glowing_background_mixin.dart';
@@ -12,12 +13,15 @@ import '../../sessions/user_session.dart';
 import '../../utils/constants.dart';
 import '../../utils/extensions/color.dart';
 import '_components/settings_card.dart';
+import '_components/language_selector_card.dart';
 
 class SettingsPage extends StatelessWidget with GlowingBackgroundMixin {
   const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       body: ValueListenableBuilder<int>(
         valueListenable: UserSession().userNotifier,
@@ -54,14 +58,14 @@ class SettingsPage extends StatelessWidget with GlowingBackgroundMixin {
                                 ),
                               ),
                               Spacer(),
-                              ScreenTitle(title: "Settings", size: 24,),
+                              ScreenTitle(title: l10n.settings, size: 24,),
                               Spacer()
                             ],
                           ),
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width,
-                          child: Text("Customize your TrackHer experience", style: TextStyle(
+                          child: Text(l10n.customizeExperience, style: TextStyle(
                             color: HexColor.fromHex(AppConstants.primaryText).withValues(alpha: 0.7),
                             fontSize: 16,
                             fontWeight: FontWeight.w600
@@ -135,9 +139,9 @@ class SettingsPage extends StatelessWidget with GlowingBackgroundMixin {
                                                 ]
                                             ),
                                           ),
-                                          child: const Center(
+                                          child: Center(
                                             child: Text(
-                                              "Login",
+                                              l10n.login,
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 14,
@@ -185,10 +189,11 @@ class SettingsPage extends StatelessWidget with GlowingBackgroundMixin {
                           ),
 
                           // SettingsCard(settings: AppConstants.accountSettings, title: "Account",),
-                          SettingsCard(settings: AppConstants.appearanceSettings, title: "Appearance",),
+                          SettingsCard(settings: AppConstants.appearanceSettings, title: l10n.appearance,),
                           // SettingsCard(settings: AppConstants.notificationsSettings, title: "Notifications",),
                           // SettingsCard(settings: AppConstants.privacyAndSecuritySettings, title: "Privacy And Security",),
-                          SettingsCard(settings: AppConstants.supportSettings, title: "Support",),
+                          SettingsCard(settings: AppConstants.supportSettings, title: l10n.support,),
+                          // const LanguageSelectorCard(),
                           Container(
                             width: double.infinity,
                             padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
