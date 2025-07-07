@@ -67,7 +67,7 @@ class _DayNavigatorState extends State<DayNavigator> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         IconButton(
-          icon: const Icon(Icons.chevron_left, color: Colors.black, size: 35),
+          icon: const Icon(Icons.chevron_left, color: Colors.black, size: 25),
           onPressed: _goToPreviousDay,
         ),
         Column(
@@ -76,7 +76,7 @@ class _DayNavigatorState extends State<DayNavigator> {
               _getDayLabel(),
               style: const TextStyle(
                 color: Colors.black,
-                fontSize: 22,
+                fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -84,13 +84,13 @@ class _DayNavigatorState extends State<DayNavigator> {
               cycle,
               style: const TextStyle(
                 color: Colors.grey,
-                fontSize: 14,
+                fontSize: 11,
               ),
             ) : SizedBox.shrink(),
           ],
         ),
         IconButton(
-          icon: Icon(Icons.chevron_right, color: _canGoForward ? Colors.black : Colors.grey, size: 35),
+          icon: Icon(Icons.chevron_right, color: _canGoForward ? Colors.black : Colors.grey, size: 25),
           onPressed: _goToNextDay,
         ),
       ],

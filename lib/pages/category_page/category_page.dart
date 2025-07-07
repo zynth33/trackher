@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:trackher/utils/extensions/color.dart';
+
+import '../../utils/extensions/color.dart';
 import '../../utils/constants.dart';
 
 import '_components/categories_card.dart';
@@ -26,49 +27,70 @@ class _CategoryPageState extends State<CategoryPage> {
         width: double.infinity,
         child: Stack(
           children: [
-            // Positioned(
-            //   top: -90,
-            //   left: -190,
-            //   child: Image.asset('assets/gradients/grad_2.png'),
-            // ),
+            Positioned(
+              top: -100,
+              left: -195,
+              child: Image.asset('assets/gradients/grad_2.png'),
+            ),
             SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(13.0),
+                padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 15,
+                  spacing: 25,
                   children: [
                     SizedBox(height: 20),
-                    InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(Icons.close, color: Colors.black, size: 35,),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: 15,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 13.0),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Icon(Icons.close, color: Colors.black, size: 20,),
+                          ),
+                        ),
+                        DayNavigator(date: widget.date,),
+                      ],
                     ),
-                    DayNavigator(date: widget.date,),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 13.0, vertical: 15.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        color: Colors.grey.shade100
-                      ),
-                      child: Row(
-                        spacing: 20,
-                        children: [
-                          Icon(Icons.search, color: Colors.grey, size: 30,),
-                          Text("Search", style: TextStyle(
-                            color: Colors.grey.withValues(alpha: 0.5),
-                            fontWeight: FontWeight.w600
-                          ),)
-                        ],
-                      ),
+                    Column(
+                      spacing: 10,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 10.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color: HexColor.fromHex("#D9D9D9").withValues(alpha: 0.27),
+                            border: Border.all(
+                              color: Colors.black.withValues(alpha: 0.2)
+                            )
+                          ),
+                          child: Row(
+                            spacing: 10,
+                            children: [
+                              Icon(Icons.search, color: Colors.black.withValues(alpha: 0.6), size: 20,),
+                              Text("Search", style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black.withValues(alpha: 0.44),
+                                fontWeight: FontWeight.w600
+                              ),)
+                            ],
+                          ),
+                        ),
+                        Text("Categories", style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black
+                        ),),
+                      ],
                     ),
-                    Text("Categories", style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black
-                    ),),
                     CategoriesCard(
                       categories: AppConstants.categoryMood,
                       title: "Mood",
@@ -122,11 +144,11 @@ class _CategoryPageState extends State<CategoryPage> {
                 ),
               ),
             ),
-            // Positioned(
-            //   bottom: 0,
-            //   right: -100,
-            //   child: Image.asset('assets/gradients/grad_3.png'),
-            // ),
+            Positioned(
+              bottom: -110,
+              right: -80,
+              child: Image.asset('assets/gradients/grad_3.png'),
+            ),
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 500),
               switchInCurve: Curves.linear,
@@ -172,8 +194,7 @@ class _CategoryPageState extends State<CategoryPage> {
                     ),
                   ),
                 ),
-              )
-                  : const SizedBox.shrink(
+              ) : const SizedBox.shrink(
                 key: ValueKey('empty-space'),
               ),
             ),

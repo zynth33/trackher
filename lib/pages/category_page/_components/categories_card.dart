@@ -42,7 +42,7 @@ class _CategoriesCardState extends State<CategoriesCard> {
         padding: const EdgeInsets.symmetric(horizontal: 13.0, vertical: 20.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-            color: HexColor.fromHex("#FBEEF5").withValues(alpha: 0.5),
+            color: HexColor.fromHex("#FBEEF5").withValues(alpha: 0.27),
           border: Border.all(
             color: Colors.black.withValues(alpha: 0.2)
           )
@@ -60,8 +60,8 @@ class _CategoriesCardState extends State<CategoriesCard> {
             ),
             const SizedBox(height: 20),
             Wrap(
-              spacing: 10,
-              runSpacing: 10,
+              spacing: 5,
+              runSpacing: 5,
               children: List.generate(widget.categories.length, (index) {
                 final category = widget.categories[index];
                 final isSelected = widget.selectedIndexes.contains(widget.categories[index].name);
@@ -95,6 +95,8 @@ class _CategoriesCardState extends State<CategoriesCard> {
                       children: [
                         Row(
                           mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             SizedBox(
                               height: 30,
@@ -102,16 +104,15 @@ class _CategoriesCardState extends State<CategoriesCard> {
                               child: Center(
                                 child: Text(
                                   category.emoji,
-                                  style: const TextStyle(fontSize: 12),
+                                  style: const TextStyle(fontSize: 13),
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 5),
                             Text(
                               category.name,
                               style: TextStyle(
                                 color: isSelected ? Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white : Colors.black,
-                                fontSize: 12,
+                                fontSize: 13,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
