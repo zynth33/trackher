@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:trackher/utils/assets.dart';
-import 'package:trackher/utils/constants.dart';
-import 'package:trackher/utils/extensions/color.dart';
 
-import '../_components/recent_entry_card.dart';
+import '../../../utils/assets.dart';
+import '../../../utils/constants.dart';
+import '../../../utils/extensions/color.dart';
 import '../../../models/journal_entry.dart';
 import '../../../repositories/period_repository.dart';
+
+import 'recent_entry_card.dart';
 
 class RecentEntries extends StatelessWidget {
   const RecentEntries({super.key});
@@ -27,7 +28,7 @@ class RecentEntries extends StatelessWidget {
             )
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: entries.isNotEmpty ? [
               Text("Your Journal", style: TextStyle(
                 fontSize: 20,
@@ -44,7 +45,7 @@ class RecentEntries extends StatelessWidget {
                 fontFamily: "Mali",
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
-                color: Colors.pinkAccent
+                color: HexColor.fromHex(AppConstants.primaryText)
               ), textAlign: TextAlign.center,),
               Center(
                 child: Image.asset(

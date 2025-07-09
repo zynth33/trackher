@@ -21,7 +21,40 @@ class AuthController {
       email: email,
       password: password,
     );
-    return res.user;
+
+    final user = res.user;
+
+    if (user != null) {
+      final uid = user.uid;
+      await UserSession().registerFirebaseUid(uid);
+
+      final supabaseUserService = SupabaseUserService();
+      final existingProfile = await supabaseUserService.getUserProfile(uid);
+
+      if (existingProfile == null) {
+        await supabaseUserService.createUserProfile({
+          'id': uid,
+          'name': user.displayName ?? '',
+          'email': user.email ?? '',
+          'profile_pic_url': user.photoURL ?? '',
+          'created_at': DateTime.now().toIso8601String(),
+        });
+      }
+
+      await UserSession().setMultipleUserDetails({
+        'id': uid,
+        'name': user.displayName ?? _generateUserName(email: user.email),
+        'email': user.email ?? '',
+        'profileImageUrl': user.photoURL ?? '',
+        'isAnonymous': user.isAnonymous,
+        'providerId': user.providerData.first.providerId,
+        'dateOfBirth': '',
+      });
+
+      await UserSession().init();
+    }
+
+    return user;
   }
 
   Future<User?> signInWithGoogle() async {
@@ -74,5 +107,12 @@ class AuthController {
   Future<void> signOut() async {
     await _auth.signOut();
     await _googleSignIn.signOut();
+  }
+
+  String _generateUserName({required String? email}) {
+    final emailPrefix = email?.split('@').first ?? '';
+    final cleaned = emailPrefix.replaceAll(RegExp(r'[^a-zA-Z]'), '');
+
+    return cleaned.isNotEmpty ? cleaned : 'User';
   }
 }

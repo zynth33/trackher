@@ -6,7 +6,11 @@
   "@appTitle": {
     "description": "The title of the application"
   },
-  
+  "appSloganGeneral": "Your personal wellness companion",
+  "appSloganSignUp": "Start your wellness journey today",
+  "appSloganSignIn": "Sign In to continue your wellness journey",
+  "appSloganAi": "Your smart assistant is ready",
+
   "@_GENERAL": {},
   "settings": "Settings",
   "user": "User",
@@ -23,6 +27,47 @@
   "error": "Error",
   "success": "Success",
   "loading": "Loading...",
+  "editPeriod": "Edit Period",
+  "seeAll": "See All",
+  "sendResetLink": "Send Reset Link",
+  "resendEmail": "Resend Email",
+  "xCharacters": "{chars} characters",
+  "@xCharacters": {
+    "description": "Shows how many characters ae written",
+    "placeholders": {
+      "chars": {
+        "type": "int"
+      }
+    }
+  },
+  "nextPeriodInXDays": "Next period in {days, plural, =0{{periodIsOngoing}} =1{{nextPeriodTomorrow}} other{Next period in {days} days}}",
+  "@nextPeriodInXDays": {
+    "description": "Shows how many days until next period, or a special message if it's ongoing or tomorrow",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "nextPeriodTomorrow": "Next period tomorrow",
+  "@nextPeriodTomorrow": {
+    "description": "Label shown when next period is in 1 day"
+  },
+  "periodIsOngoing": "Period is ongoing",
+  "@periodIsOngoing": {
+    "description": "Label shown when period is ongoing (0 days left)"
+  },
+  "hiGoodMorning": "Hi, Good Morning",
+  "hiGoodEvening": "Hi, Good Evening",
+  "hiUser": "{name} 👋",
+  "@hiUser": {
+    "description": "Greeting the user by name",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   
   "@_SETTINGS": {},
   "customizeExperience": "Customize your OvloTracker experience",
@@ -38,6 +83,8 @@
   
   "@_PERIOD_TRACKING": {},
   "periodTracking": "Period Tracking",
+  "cycle": "Cycle",
+  "periodCycle": "Period Cycle",
   "cycleLength": "Cycle Length",
   "periodLength": "Period Length",
   "nextPeriod": "Next Period",
@@ -45,21 +92,33 @@
   "fertile": "Fertile",
   "pms": "PMS",
   "period": "Period",
+  "predicted": "Predicted",
   "flow": "Flow",
+  "menstrualFlow": "Menstrual Flow",
   "symptoms": "Symptoms",
   "mood": "Mood",
   "notes": "Notes",
-  "light": "Light",
-  "medium": "Medium",
-  "heavy": "Heavy",
-  "spotting": "Spotting",
-  
+  "saveDay": "Save Day",
+  "average": "average",
+  "inXDays": "in {days, plural, =0{{periodIsOngoing}} =1{{nextPeriodTomorrow}} other{Next period in {days} days}}",
+  "@inXDays": {
+    "description": "Shows how many days until next period, or a special message if it's ongoing or tomorrow",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
   "@_JOURNAL": {},
   "journal": "Journal",
   "addEntry": "Add Entry",
   "recentEntries": "Recent Entries",
   "enterYourThoughts": "Enter your thoughts...",
   "howAreYouFeeling": "How are you feeling?",
+  "howDoYouFeelToday": "How do you feel today?",
+  "feelingHint": "Write how you're feeling today... Share your thoughts, symptoms, mood, or anything on your mind. This is is your safe space. 🌸",
+  "noEntriesFound": "No entries found",
   "selectMood": "Select Mood",
   "selectSymptoms": "Select Symptoms",
   "selectFlow": "Select Flow",
@@ -68,8 +127,12 @@
   "signIn": "Sign In",
   "signUp": "Sign Up",
   "email": "Email",
+  "enterYourEmail": "Enter Your Email",
+  "enterYourPassword": "Enter Your Password",
+  "confirmYourPassword": "Confirm Your Password",
   "password": "Password",
   "confirmPassword": "Confirm Password",
+  "rememberMe": "Remember Me",
   "forgotPassword": "Forgot Password?",
   "createAccount": "Create Account",
   "alreadyHaveAccount": "Already have an account?",
@@ -78,10 +141,41 @@
   "emailVerification": "Email Verification",
   "verifyEmail": "Verify Email",
   "resendVerification": "Resend Verification",
-  
+  "iAgreeToThe": "I Agree to the",
+  "termsOfService": "Terms Of Service",
+  "and": "and",
+  "privacyPolicy": "Privacy Policy",
+  "welcomeBack": "Welcome Back",
+  "orContinueWith": "Or Continue With",
+  "successfullySignedUp": "Successfully Signed-up",
+  "googleSignInCancelled": "Google sign-in was cancelled.",
+  "agreeToTermsAndConditions": "You must agree to the terms and privacy policy.",
+  "passwordsDoNotMatch": "Passwords do not match.",
+  "successfullySignedIn": "Successfully Signed-in",
+  "signUpFailed": "Sign up failed.",
+  "signInFailed": "Sign in failed.",
+  "sendPasswordResetLink": "Enter your email and we'll send you a password reset link.",
+  "verificationEmailSent": "A verification email has been sent to your email address.",
+  "verificationEmailResent": "Verification email resent",
+  "pleaseCheckYourInbox": "Please check your inbox.",
+  "pleaseCheckYourSpam": "(Occasionally check your spam folder)",
+  "resendEmailInX": "You can send another email in {time}",
+  "@resendEmailInX": {
+    "description": "Shows how many days until next period, or a special message if it's ongoing or tomorrow",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+
   "@_AI_CHAT": {},
   "aiChat": "AI Chat",
+  "aiGreeting": "Hi there! I'm Ovlo AI - ask me anything, period.",
+  "aiAssist": "Hi! How can i assist you today?",
+  "popularTopics": "Popular Topics",
   "askQuestion": "Ask a question...",
+  "typeAMessage": "Type a message...",
   "recentChats": "Recent Chats",
   "quickQuestions": "Quick Questions",
   "chatWithAI": "Chat with AI",
@@ -90,6 +184,7 @@
   "calendar": "Calendar",
   "today": "Today",
   "month": "Month",
+  "year": "Year",
   "week": "Week",
   "day": "Day",
   
@@ -133,5 +228,27 @@
   "september": "September",
   "october": "October",
   "november": "November",
-  "december": "December"
+  "december": "December",
+
+  "@_ENUMS": {},
+  "light": "Light",
+  "medium": "Medium",
+  "heavy": "Heavy",
+  "spotting": "Spotting",
+  "happy": "Happy",
+  "calm": "Calm",
+  "anxious": "Anxious",
+  "tired": "Tired",
+  "sad": "Sad",
+  "angry": "Angry",
+  "bleeding": "Bleeding",
+  "cramps": "Cramps",
+  "headache": "Headache",
+  "fatigue": "Fatigue",
+  "bloating": "Bloating",
+  "backPain": "Back Pain",
+  "menstrualHealth": "Menstrual Health",
+  "periodInsights": "Period Insights",
+  "pmsSymptoms": "PMS Symptoms",
+  "ovulationSigns": "Ovulation Signs"
 }

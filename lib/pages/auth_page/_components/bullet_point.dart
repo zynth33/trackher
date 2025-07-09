@@ -2,34 +2,37 @@ import 'package:flutter/material.dart';
 
 class BulletPoint extends StatelessWidget {
   final String text;
-  final Color color;
+  final Widget icon;
 
   const BulletPoint({
     super.key,
     required this.text,
-    required this.color,
+    required this.icon,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          width: 8,
-          height: 8,
-          margin: const EdgeInsets.only(right: 8),
-          decoration: BoxDecoration(
-            color: color,
-            shape: BoxShape.circle,
+    return Padding(
+      padding: const EdgeInsets.only(left: 11.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 8,
+            height: 8,
+            child: icon,
           ),
-        ),
-        Expanded(
-          child: Text(
-            text,
-            style: const TextStyle(fontSize: 14),
+          SizedBox(width: 35,),
+          Padding(
+            padding: const EdgeInsets.only(top: 3.0),
+            child: Text(
+              text,
+              style: const TextStyle(fontSize: 10),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

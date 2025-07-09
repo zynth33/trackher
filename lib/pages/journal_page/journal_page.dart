@@ -8,33 +8,32 @@ import '../../utils/components/screen_title.dart';
 import '_components/enter_entry_card.dart';
 import '_components/recent_entries.dart';
 
-class JournalPage extends StatelessWidget with GlowingBackgroundMixin {
+class JournalPage extends StatelessWidget {
   const JournalPage({super.key});
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: withGlowingBackground(
-        SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 7.0, vertical: 10.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(height: Platform.isIOS ? 40 : 20),
-                  ScreenTitle(title: "Ovlo Notes",),
-                  TopCalender(),
-                  SizedBox(height: 25,),
-                  EnterEntryCard(),
-                  SizedBox(height: 20,),
-                  RecentEntries(),
-                  SizedBox(height: 100,),
-                ],
-              ),
+      body: SizedBox(
+        height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 7.0, vertical: 10.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: Platform.isIOS ? 40 : 20),
+                ScreenTitle(title: "Ovlo Notes",),
+                TopCalender(),
+                SizedBox(height: 25,),
+                EnterEntryCard(),
+                SizedBox(height: 20,),
+                RecentEntries(),
+                SizedBox(height: 100,),
+              ],
             ),
           ),
         ),

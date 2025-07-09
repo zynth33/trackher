@@ -1,10 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
@@ -79,6 +77,7 @@ class _MyAppState extends State<MyApp> {
             return MaterialApp(
               title: 'TrackHer',
               debugShowCheckedModeBanner: false,
+              navigatorKey: navigatorKey,
               locale: LanguageService().currentLocale,
               localizationsDelegates: const [
                 AppLocalizations.delegate,
@@ -96,7 +95,6 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
 
 void setData() {
   final Box<PeriodPrediction> periodPredictionBox = Hive.box<PeriodPrediction>('predictions');
@@ -200,4 +198,5 @@ Future<void> initLocalDBs() async {
   await Hive.openBox('settingsData');
   await Hive.openBox<Map>('datesData');
   await Hive.openBox('avatarBox');
+  await Hive.openBox('authBox');
 }

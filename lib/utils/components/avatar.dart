@@ -22,14 +22,14 @@ class Avatar extends StatelessWidget {
           decoration: BoxDecoration(
             color: (avatarUrl != null && avatarUrl!.isNotEmpty) ? Colors.transparent : session.selectedColor,
             borderRadius: BorderRadius.circular(100),
-            border: Border.all(color: Colors.white, width: 2),
-            boxShadow: const [
-              BoxShadow(
-                color: Color.fromARGB(20, 0, 0, 0),
-                blurRadius: 10,
-                offset: Offset(0, 5),
-              ),
-            ],
+            // border: Border.all(color: Colors.white, width: 2),
+            // boxShadow: const [
+            //   BoxShadow(
+            //     color: Color.fromARGB(20, 0, 0, 0),
+            //     blurRadius: 10,
+            //     offset: Offset(0, 5),
+            //   ),
+            // ],
           ),
           child: (avatarUrl != null && avatarUrl!.isNotEmpty) 
             ? SizedBox(

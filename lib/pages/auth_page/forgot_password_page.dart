@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../../utils/constants.dart';
+import '../../utils/extensions/color.dart';
 import '../../utils/assets.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
@@ -42,12 +45,25 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Colors.white, Colors.pink.shade100],
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [
+              HexColor.fromHex("#F6DDF8").withValues(alpha: 0.7),
+              HexColor.fromHex("#F6DDF8").withValues(alpha: 0.7),
+              HexColor.fromHex("#F6DDF8").withValues(alpha: 0.3),
+              HexColor.fromHex("#FFFFFF").withValues(alpha: 0.33),
+              HexColor.fromHex("#FFFFFF"),
+              HexColor.fromHex("#FFFFFF"),
+              HexColor.fromHex("#FFFFFF"),
+              HexColor.fromHex("#FFFFFF"),
+              HexColor.fromHex("#FFFFFF"),
+              HexColor.fromHex("#FDFCFD").withValues(alpha: 0.9),
+              HexColor.fromHex("#FDFCFD").withValues(alpha: 0.9),
+            ]
           ),
         ),
         child: Padding(
@@ -57,24 +73,25 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 20,),
+                SizedBox(height: 50,),
                 Row(
                   children: [
                     InkWell(
+                      borderRadius: BorderRadius.circular(100),
                       onTap: () => Navigator.pop(context),
-                      child: Icon(Icons.arrow_back)
+                      child: Icon(Icons.chevron_left, size: 27,)
                     ),
-                    SizedBox(width: 20,),
+                    SizedBox(width: 15,),
                     Text("Forgot Password", style: TextStyle(
-                      fontSize: 22
+                      fontSize: 16
                     ),)
                   ],
                 ),
                 // SizedBox(height: 20,),
                 // AppTitle(),
                 Spacer(),
-                Image.asset(AppAssets.postForgotPassword, height: 300, width: 300,),
-                SizedBox(height: 40,),
+                Image.asset(AppAssets.postForgotPassword, height: 150, width: 150,),
+                SizedBox(height: 90,),
                 const Text(
                   "Enter your email and we’ll send you a password reset link.",
                   textAlign: TextAlign.center,
@@ -95,8 +112,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     ),
                     hintText: "Enter your email",
                     hintStyle: const TextStyle(color: Colors.grey),
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 0),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 0),
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -107,12 +123,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.purple,
-                          Colors.pink
-                        ]
-                      )
+                      color: HexColor.fromHex(AppConstants.primaryText)
                     ),
                     child: Text("Send Reset Link", style: TextStyle(
                       color: Colors.white,
@@ -137,7 +148,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         onTap: () => Navigator.pop(context),
                         child: Text("Sign in", style: TextStyle(
                           fontSize: 16,
-                          color: Colors.deepPurple,
+                          color: HexColor.fromHex(AppConstants.primaryText),
                           fontWeight: FontWeight.w500
                         ),textAlign: TextAlign.center,),
                       )

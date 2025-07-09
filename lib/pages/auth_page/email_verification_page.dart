@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:trackher/utils/constants.dart';
 import '../../utils/assets.dart';
+import '../../utils/extensions/color.dart';
 import 'login_page.dart';
 
 class EmailVerificationPage extends StatefulWidget {
@@ -96,9 +98,21 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Colors.white, Colors.pink.shade100],
-            ),
+              end: Alignment.centerRight,
+              colors: [
+                HexColor.fromHex("#F6DDF8"),
+                HexColor.fromHex("#F6DDF8"),
+                HexColor.fromHex("#F6DDF8").withValues(alpha: 0.3),
+                HexColor.fromHex("#FFFFFF").withValues(alpha: 0.33),
+                HexColor.fromHex("#FFFFFF"),
+                HexColor.fromHex("#FFFFFF"),
+                HexColor.fromHex("#FFFFFF"),
+                HexColor.fromHex("#FFFFFF"),
+                HexColor.fromHex("#FFFFFF"),
+                HexColor.fromHex("#FDFCFD").withValues(alpha: 0.9),
+                HexColor.fromHex("#FDFCFD").withValues(alpha: 0.9),
+              ]
+            )
           ),
           child: Center(
             child: _isVerified
@@ -119,10 +133,10 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 16),
                 ),
-                const Text(
+                Text(
                   "(Occasionally check your spam folder)",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                  style: TextStyle(fontSize: 16, color: Colors.black.withValues(alpha: 0.4)),
                 ),
                 const SizedBox(height: 40),
                 InkWell(
@@ -130,14 +144,18 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                       ? () async {
                     try {
                       await _auth.currentUser?.sendEmailVerification();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Verification email resent")),
-                      );
+                      if(mounted && context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("Verification email resent")),
+                        );
+                      }
                       _startCooldownTimer();
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Error: ${e.toString()}")),
-                      );
+                      if(mounted && context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Error: ${e.toString()}")),
+                        );
+                      }
                     }
                   } : null,
                   child: Opacity(
@@ -147,7 +165,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                       width: 160,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(100),
-                        gradient: const LinearGradient(colors: [Colors.purple, Colors.pink]),
+                        color: HexColor.fromHex(AppConstants.primaryText)
                       ),
                       child: const Center(
                         child: Text(
