@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:trackher/pages/ai_chat_page/ai_chatting_page/chatting_page.dart';
-import 'package:trackher/utils/assets.dart';
-import 'package:trackher/utils/constants.dart';
-import 'package:trackher/utils/extensions/color.dart';
+
+import '../../../pages/ai_chat_page/ai_chatting_page/chatting_page.dart';
+import '../../../utils/assets.dart';
+import '../../../utils/constants.dart';
+import '../../../utils/extensions/color.dart';
 
 class ChatBar extends StatefulWidget {
   final VoidCallback onSearch;
-  const ChatBar({super.key, required this.onSearch});
+  final bool fromChattingPage;
+  const ChatBar({super.key, required this.onSearch, this.fromChattingPage = false});
 
   @override
   State<ChatBar> createState() => _ChatBarState();
@@ -44,7 +46,7 @@ class _ChatBarState extends State<ChatBar> {
         children: [
           Expanded(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(100),
                 color: HexColor.fromHex(AppConstants.secondaryBackgroundLight),
@@ -55,9 +57,10 @@ class _ChatBarState extends State<ChatBar> {
                 controller: _textEditingController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(left: 10),
                   hintText: 'Type a message...',
                   hintStyle: TextStyle(
-                    color: HexColor.fromHex(AppConstants.primaryText).withValues(alpha: 0.7),
+                    color: widget.fromChattingPage ? HexColor.fromHex(AppConstants.primaryText) : HexColor.fromHex("#666666"),
                   ),
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,
@@ -66,8 +69,9 @@ class _ChatBarState extends State<ChatBar> {
                   setState(() {});
                 },
                 style: TextStyle(
-                  color: HexColor.fromHex(AppConstants.primaryText),
+                  color: HexColor.fromHex("#666666"),
                 ),
+                cursorColor: HexColor.fromHex("#666666"),
               ),
             ),
           ),

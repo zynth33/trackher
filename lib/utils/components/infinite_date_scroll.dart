@@ -5,7 +5,8 @@ import '../../utils/extensions/color.dart';
 import '../../sessions/dates_session.dart';
 
 class InfiniteDateScroll extends StatefulWidget {
-  const InfiniteDateScroll({super.key});
+  final bool fromNotes;
+  const InfiniteDateScroll({super.key, this.fromNotes = false});
 
   @override
   State<InfiniteDateScroll> createState() => _InfiniteDateScrollState();
@@ -84,7 +85,7 @@ class _InfiniteDateScrollState extends State<InfiniteDateScroll> {
                       child: Container(
                         margin: const EdgeInsets.symmetric(vertical: 14, horizontal: 2),
                         decoration: BoxDecoration(
-                          gradient: isSelected
+                          gradient: widget.fromNotes ? null : isSelected
                               ? AppConstants.pillGradient
                               : isToday
                               ? LinearGradient(
@@ -101,7 +102,16 @@ class _InfiniteDateScrollState extends State<InfiniteDateScroll> {
                             ),
                           ] : null,
                           borderRadius: BorderRadius.circular(100),
-                          color: isSelected || isToday ? null : Colors.transparent,
+                          border: Border.all(
+                            color: widget.fromNotes && isSelected ? HexColor.fromHex(AppConstants.primaryText) : Colors.transparent
+                          ),
+                          color: widget.fromNotes && isSelected
+                              ? Colors.white
+                              : widget.fromNotes && isToday
+                                ? Colors.white
+                                : isSelected || isToday
+                                  ? null
+                                  : Colors.transparent,
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,

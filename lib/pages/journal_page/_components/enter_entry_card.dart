@@ -32,7 +32,7 @@ class _EnterEntryCardState extends State<EnterEntryCard> {
         color: HexColor.fromHex(AppConstants.primaryWhite),
         boxShadow: const [
           BoxShadow(
-            color: Color.fromARGB(20, 0, 0, 0),
+            color: Color.fromARGB(60, 0, 0, 0),
             blurRadius: 10,
             offset: Offset(0, 5),
           ),
@@ -49,13 +49,13 @@ class _EnterEntryCardState extends State<EnterEntryCard> {
             padding: const EdgeInsets.only(left: 8.0),
             child: Text(DateFormat('MMMM dd, yyyy').format(DateTime.now()), style: TextStyle(
               fontSize: 22,
-              color: HexColor.fromHex(AppConstants.primaryText).withValues(alpha: 0.9),
+              color: Colors.black.withValues(alpha: 0.7),
               fontWeight: FontWeight.w600
             ),),
           ),
           TextField(
             maxLines: 9,
-            cursorColor: Colors.deepPurpleAccent,
+            cursorColor: Colors.black,
             controller: textEditingController,
             decoration: InputDecoration(
               hintText: "Write how you’re feeling today... Share your thoughts, symptoms, mood, or anything on your mind. This is your safe space. 🌸",
@@ -72,13 +72,13 @@ class _EnterEntryCardState extends State<EnterEntryCard> {
                   borderSide: BorderSide(color: Colors.transparent, width: 1)
               ),
               hintStyle: TextStyle(
-                  color: HexColor.fromHex(AppConstants.primaryText).withValues(alpha: 0.7),
+                  color: Colors.black.withValues(alpha: 0.7),
                   fontSize: 14
               ),
               contentPadding: EdgeInsets.only(left: 10, top: 20, right: 10),
             ),
             style: TextStyle(
-              color: HexColor.fromHex(AppConstants.primaryText)
+              color: Colors.black
             ),
             onChanged: (value) {
               setState(() {});

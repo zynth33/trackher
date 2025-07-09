@@ -76,10 +76,23 @@
   "account": "Account",
   "notifications": "Notifications",
   "privacyAndSecurity": "Privacy And Security",
+  "helpCenter": "Help Center",
+  "helpCenterSubtitle": "FAQs and support articles",
   "theme": "Theme",
+  "themeSubtitle": "Light or dark mode",
   "lightTheme": "Light",
   "darkTheme": "Dark",
   "systemTheme": "System",
+  "version": "Version {version}",
+  "@version": {
+    "description": "Showing the version by number like 1.0.0",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "builtWith": "Built with ♥️",
   
   "@_PERIOD_TRACKING": {},
   "periodTracking": "Period Tracking",

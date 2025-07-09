@@ -35,7 +35,7 @@ class SettingsCard extends StatelessWidget {
           Text(title, style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: HexColor.fromHex(AppConstants.primaryText)
+            color: Colors.black
           ),),
           SizedBox(height: 10,),
           Column(

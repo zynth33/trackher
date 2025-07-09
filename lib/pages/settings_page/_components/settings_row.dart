@@ -23,15 +23,11 @@ class _SettingsRowState extends State<SettingsRow> {
     return InkWell(
       onTap: widget.setting.onTap,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             padding: EdgeInsets.all(7.0),
-            decoration: BoxDecoration(
-              color: HexColor.fromHex(AppConstants.secondaryBackgroundLight),
-              borderRadius: BorderRadius.circular(100),
-            ),
             child: widget.setting.icon,
           ),
           SizedBox(width: 10,),
@@ -40,7 +36,7 @@ class _SettingsRowState extends State<SettingsRow> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(widget.setting.title, style: TextStyle(
-                color: HexColor.fromHex(AppConstants.primaryText),
+                color: Colors.black.withValues(alpha: 0.7),
                 fontSize: 12,
               ),),
               Text(widget.setting.subtitle, style: TextStyle(
@@ -61,7 +57,7 @@ class _SettingsRowState extends State<SettingsRow> {
                 switchValue = value;
               });
             },
-          ) : Icon(Icons.chevron_right, color: HexColor.fromHex(AppConstants.primaryText), size: 35,)
+          ) : Icon(Icons.chevron_right, color: Colors.black, size: 30,)
         ],
       ),
     );

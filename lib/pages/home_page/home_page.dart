@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:trackher/utils/constants.dart';
 
@@ -97,7 +99,7 @@ class HomePage extends StatelessWidget with GlowingBackgroundMixin {
                           padding: const EdgeInsets.all(7.0),
                           child: Column(
                             children: [
-                              const SizedBox(height: 20),
+                              SizedBox(height: Platform.isIOS ? 35 : 30),
                               ScreenTitle(title: "Ovlo Home",),
                               HomeHeader(onSettingsTap: onSettingsTap),
                               // const SizedBox(height: 20),

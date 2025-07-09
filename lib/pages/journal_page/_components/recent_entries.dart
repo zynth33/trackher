@@ -23,17 +23,24 @@ class RecentEntries extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: HexColor.fromHex(AppConstants.primaryWhite),
+            boxShadow: const [
+              BoxShadow(
+                color: Color.fromARGB(60, 0, 0, 0),
+                blurRadius: 10,
+                offset: Offset(0, 5),
+              ),
+            ],
             border: Border.all(
               color: Colors.black.withValues(alpha: 0.27)
             )
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: entries.isNotEmpty ? [
               Text("Your Journal", style: TextStyle(
-                fontSize: 20,
+                fontSize: 22,
                 fontWeight: FontWeight.bold,
-                color: HexColor.fromHex(AppConstants.primaryText)
+                color: Colors.black.withValues(alpha: 0.7)
               )),
               const SizedBox(height: 15),
               ...entries.map((entry) => Padding(

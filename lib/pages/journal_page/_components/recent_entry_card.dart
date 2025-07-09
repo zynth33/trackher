@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:trackher/utils/constants.dart';
-import 'package:trackher/utils/extensions/color.dart';
 
+import '../../../utils/constants.dart';
+import '../../../utils/extensions/color.dart';
 import '../../../repositories/period_repository.dart';
 import '../../../models/journal_entry.dart';
 import '../../../utils/components/dialogs/confirm_dialog.dart';
@@ -20,44 +20,85 @@ class RecentEntryCard extends StatelessWidget {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 13.0),
-            decoration: BoxDecoration(
-              color: HexColor.fromHex(AppConstants.primaryWhite),
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withAlpha(60),
-                  blurRadius: 10,
-                  offset: const Offset(1, 3),
-                ),
-              ]
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(DateFormat('EEE, MMM d').format(DateTime.now()), style: TextStyle(
-                      fontSize: 12,
-                      color: HexColor.fromHex("#7A38B1").withValues(alpha: 0.8)
-                    ),),
-                    Text(DateFormat('y').format(DateTime.now()), style: TextStyle(
-                      fontSize: 12,
-                      color: HexColor.fromHex("#7A38B1").withValues(alpha: 0.8)
-                    ),),
+          Stack(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 13.0),
+                decoration: BoxDecoration(
+                  color: HexColor.fromHex(AppConstants.primaryWhite),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withAlpha(60),
+                      blurRadius: 10,
+                      offset: const Offset(1, 3),
+                    ),
                   ],
                 ),
-                SizedBox(height: 10,),
-                Text(entry.entry, style: TextStyle(
-                  color: HexColor.fromHex(AppConstants.primaryText),
-                  fontSize: 15
-                )),
-              ],
-            ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          DateFormat('EEE, MMM d').format(DateTime.now()),
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          DateFormat('y').format(DateTime.now()),
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      entry.entry,
+                      style: TextStyle(
+                        color: Colors.black.withValues(alpha: 0.7),
+                        fontSize: 15,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Inner shadow overlay
+              Positioned.fill(
+                child: IgnorePointer(
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.black.withValues(alpha: 0.1),
+                          Colors.transparent,
+                          Colors.transparent,
+                          Colors.transparent,
+                          Colors.transparent,
+                          Colors.transparent,
+                          Colors.transparent,
+                          Colors.transparent,
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
           Positioned(
             top: -6,

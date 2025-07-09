@@ -64,14 +64,15 @@ class _MarqueeScrollTopicsState extends State<MarqueeScrollTopics>
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text("Popular Topics",
-                  style: TextStyle(
-                      color: HexColor.fromHex(AppConstants.primaryText),
-                      fontSize: 18)),
+                style: TextStyle(
+                  color: Colors.black.withValues(alpha: 0.78),
+                  fontSize: 18
+                )),
               Text("See all",
-                  style: TextStyle(
-                      color: HexColor.fromHex(AppConstants.primaryText)
-                          .withAlpha(127),
-                      fontSize: 14)),
+                style: TextStyle(
+                  color: HexColor.fromHex("#666666").withAlpha(127),
+                  fontSize: 14
+                )),
             ],
           ),
         ),
@@ -95,7 +96,7 @@ class _MarqueeScrollTopicsState extends State<MarqueeScrollTopics>
                       color: HexColor.fromHex(AppConstants.primaryWhite),
                       borderRadius: BorderRadius.circular(20),
                       border:
-                      Border.all(color: Colors.black.withAlpha((0.27 * 255).toInt())),
+                      Border.all(color: Colors.black.withValues(alpha: 0.27)),
                       boxShadow: const [
                         BoxShadow(
                           color: Color.fromARGB(20, 0, 0, 0),
@@ -118,7 +119,7 @@ class _MarqueeScrollTopicsState extends State<MarqueeScrollTopics>
                           ),
                           child: SvgPicture.asset(
                             topic.icon,
-                            color: HexColor.fromHex("#B567FA"),
+                            // color: HexColor.fromHex("#B567FA"),
                             height: 25,
                             width: 25,
                           ),
@@ -126,7 +127,7 @@ class _MarqueeScrollTopicsState extends State<MarqueeScrollTopics>
                         Text(
                           topic.text,
                           style: TextStyle(
-                            color: HexColor.fromHex(AppConstants.primaryText),
+                            color: Colors.black.withValues(alpha: 0.61),
                             fontSize: 12,
                           ),
                         ),

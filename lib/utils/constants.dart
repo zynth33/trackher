@@ -119,19 +119,19 @@ class AppConstants {
 
   static List<SettingsItem> accountSettings = [
     SettingsItem(
-        Icon(Symbols.person, color: HexColor.fromHex(AppConstants.primaryIcon), size: 18,),
+        Icon(Symbols.person, color: Colors.black, size: 18,),
         "Profile Settings",
         "Update your personal information",
             (){}
     ),
     SettingsItem(
-        Icon(Symbols.calendar_today, color: HexColor.fromHex(AppConstants.primaryIcon), size: 18,),
+        Icon(Symbols.calendar_today, color: Colors.black, size: 18,),
         "Cycle Preferences",
         "Customize your tracking settings",
             (){}
     ),
     SettingsItem(
-        Icon(Symbols.border_color_rounded, color: HexColor.fromHex(AppConstants.primaryIcon), size: 18,),
+        Icon(Symbols.border_color_rounded, color: Colors.black, size: 18,),
         "Data Export",
         "Download your health data",
             (){}
@@ -140,7 +140,7 @@ class AppConstants {
 
   static List<SettingsItem> appearanceSettings = [
     SettingsItem(
-        Icon(Symbols.palette_rounded, color: HexColor.fromHex(AppConstants.primaryIcon), size: 18,),
+        Icon(Symbols.palette_rounded, color: Colors.black, size: 18,),
         "Theme",
         "Light or dark mode",
           () => navigatorKey.currentState?.push(MaterialPageRoute(builder: (_) => const ThemePage())),
@@ -155,21 +155,21 @@ class AppConstants {
 
   static List<SettingsItem> notificationsSettings = [
     SettingsItem(
-        Icon(Symbols.notifications_rounded, color: HexColor.fromHex(AppConstants.primaryIcon), size: 18,),
+        Icon(Symbols.notifications_rounded, color: Colors.black, size: 18,),
         "Push Notifications",
         "Receive period reminders",
         isSwitch: true,
             (){}
     ),
     SettingsItem(
-        Icon(Symbols.dark_mode_rounded, color: HexColor.fromHex(AppConstants.primaryIcon), size: 18,),
+        Icon(Symbols.dark_mode_rounded, color: Colors.black, size: 18,),
         "Do Not Disturb",
         "Quiet hours 10 PM - 8 AM",
         isSwitch: true,
             (){}
     ),
     SettingsItem(
-        Icon(Symbols.volume_up_rounded, color: HexColor.fromHex(AppConstants.primaryIcon), size: 18,),
+        Icon(Symbols.volume_up_rounded, color: Colors.black, size: 18,),
         "Sound Effects",
         "App interaction sounds",
         isSwitch: true,
@@ -179,13 +179,13 @@ class AppConstants {
 
   static List<SettingsItem> privacyAndSecuritySettings = [
     SettingsItem(
-        Icon(Symbols.shield_rounded, color: HexColor.fromHex(AppConstants.primaryIcon), size: 18,),
+        Icon(Symbols.shield_rounded, color: Colors.black, size: 18,),
         "Data Privacy",
         "Control your data sharing",
             (){}
     ),
     SettingsItem(
-        Icon(Symbols.database_rounded, color: HexColor.fromHex(AppConstants.primaryIcon), size: 18,),
+        Icon(Symbols.database_rounded, color: Colors.black, size: 18,),
         "Backup & Sync",
         "Cloud data backup",
         isSwitch: true,
@@ -195,7 +195,7 @@ class AppConstants {
 
   static List<SettingsItem> supportSettings = [
     SettingsItem(
-        Icon(Symbols.help, color: HexColor.fromHex(AppConstants.primaryIcon), size: 18,),
+        Icon(Symbols.help, color: Colors.black, size: 18,),
         "Help Center",
         "FAQs and support articles",
             () => navigatorKey.currentState?.push(MaterialPageRoute(builder: (_) => const FaqsPage())),
@@ -209,6 +209,7 @@ class AppConstants {
     CategoryItem("🫩", "Low Energy"),
     CategoryItem("😥", "Mood Swings"),
   ];
+
 
   static const List<CategoryItem> categoryDigestion = [
     CategoryItem("🤢", "Nausea"),

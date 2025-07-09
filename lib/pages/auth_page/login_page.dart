@@ -328,7 +328,9 @@ class _LoginPageState extends State<LoginPage> {
           Positioned(
             top: -60,
             left: -20,
-            child: Image.asset('assets/gradients/grad_4.png'),
+            child: IgnorePointer(
+              child: Image.asset('assets/gradients/grad_4.png'),
+            )
           )
         ],
       ),

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:trackher/utils/constants.dart';
-import 'package:trackher/utils/extensions/color.dart';
 
-import '../../../utils/components/gradient_rich_text.dart';
+import '../../../utils/constants.dart';
+import '../../../utils/extensions/color.dart';
 import '../../../utils/components/infinite_date_scroll.dart';
 
 class TopCalender extends StatelessWidget {
@@ -21,18 +20,19 @@ class TopCalender extends StatelessWidget {
         children: [
           SizedBox(height: 20,),
           Text("How do you feed today?", style: TextStyle(
-            color: HexColor.fromHex(AppConstants.tertiaryPurple),
-            fontWeight: FontWeight.w600,
-            fontSize: 18
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 12
           ),),
           SizedBox(
-            width: 100,
+            width: 70,
             child: Divider(
-              thickness: 3,
+              thickness: 2,
+              height: 10,
               color: HexColor.fromHex(AppConstants.primaryPurple),
             ),
           ),
-          InfiniteDateScroll(),
+          InfiniteDateScroll(fromNotes: true,),
         ],
       ),
     );

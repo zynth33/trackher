@@ -90,7 +90,7 @@ class _SymptomSelectorState extends State<SymptomSelector> {
                   emoji = "🎈";
                   break;
                 case Symptom.backPain:
-                  emoji = "🔴️";
+                  emoji = "💢";
                   break;
               }
 
