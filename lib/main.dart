@@ -16,7 +16,7 @@ import 'sessions/settings_session.dart';
 import 'sessions/symptoms_session.dart';
 import 'sessions/user_session.dart';
 import 'utils/enums.dart';
-import 'repositories/period_repository.dart';
+import 'repositories/journal_repository.dart';
 import 'sessions/period_session.dart';
 import 'pages/period_page/period_page.dart';
 import 'pages/language_test_page.dart'; // Add this for testing
@@ -44,7 +44,7 @@ void main() async {
   setSettings();
 
   /// Load any app-specific state
-  await PeriodRepository().loadRecentJournalEntries();
+  await JournalRepository().loadRecentJournalEntries();
   await UserSession().init();
   
   /// Initialize language service
@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final _ = PeriodRepository();
+    final _ = JournalRepository();
     SymptomsSession().setDate(DateTime.now());
 
     return ValueListenableBuilder<ThemeModeOption>(

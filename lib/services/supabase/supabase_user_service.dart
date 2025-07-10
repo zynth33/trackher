@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../database/database_helper.dart';
+
 class SupabaseUserService {
   static final SupabaseUserService _instance = SupabaseUserService._internal();
   factory SupabaseUserService() => _instance;

@@ -209,12 +209,12 @@ class _FaqsPageState extends State<FaqsPage> {
                             children: [
                               Text("Frequently Asked Questions", style: TextStyle(
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 16,
+                                  fontSize: 18,
                                   color: Colors.black.withValues(alpha: 0.9)
                               )),
                               const SizedBox(height: 12),
                               ...AppConstants.faqs.map((faq) => Container(
-                                margin: const EdgeInsets.symmetric(vertical: 8),
+                                margin: const EdgeInsets.symmetric(vertical: 8),    
                                 decoration: BoxDecoration(
                                   color: Colors.grey.withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(12),
@@ -224,7 +224,11 @@ class _FaqsPageState extends State<FaqsPage> {
                                   child: ExpansionTile(
                                     title: Text(
                                       faq.question,
-                                      style: const TextStyle(fontWeight: FontWeight.w500),
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.black.withValues(alpha: 0.8),
+                                        fontWeight: FontWeight.w500
+                                      ),
                                     ),
                                     trailing: const Icon(Icons.help_outline_rounded, color: Colors.grey),
                                     onExpansionChanged: (expanded) {},
@@ -237,7 +241,11 @@ class _FaqsPageState extends State<FaqsPage> {
                                         ),
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-                                          child: Text(faq.answer),
+                                          child: Text(faq.answer, style: TextStyle(
+                                            color: Colors.black.withValues(alpha: 0.5),
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w500
+                                          ),),
                                         ),
                                       )
                                     ],
@@ -277,24 +285,42 @@ class _FaqsPageState extends State<FaqsPage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               const Text("Still Need Help?", style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14
                               )),
                               SizedBox(height: 15,),
-                              Text("📧 Email: support@trackher.com", style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black,
-                              ),),
+                              Row(
+                                children: [
+                                  SvgPicture.asset('assets/icons/icon_email_2.svg'),
+                                  SizedBox(width: 10,),
+                                  Text("Email: support@Ovlotracker.com", style: TextStyle(
+                                    fontSize: 10,
+                                    color: Colors.black.withValues(alpha: 0.62),
+                                  ),),
+                                ],
+                              ),
                               SizedBox(height: 8,),
-                              Text("📞 Phone: +1 (555) 123-HELP", style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black,
-                              ),),
+                              Row(
+                                children: [
+                                  SvgPicture.asset('assets/icons/icon_phone_2.svg'),
+                                  SizedBox(width: 10,),
+                                  Text("Phone: +1 (555) 123-HELP", style: TextStyle(
+                                    fontSize: 10,
+                                    color: Colors.black.withValues(alpha: 0.62),
+                                  ),),
+                                ],
+                              ),
                               SizedBox(height: 8,),
-                              Text("🕒 Hours: Mon-Fri 9AM-6PM EST", style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black,
-                              ),),
+                              Row(
+                                children: [
+                                  SvgPicture.asset('assets/icons/icon_clock.svg'),
+                                  SizedBox(width: 10,),
+                                  Text("Hours: Mon-Fri 9AM-6PM EST", style: TextStyle(
+                                    fontSize: 10,
+                                    color: Colors.black.withValues(alpha: 0.62),
+                                  ),),
+                                ],
+                              ),
                             ],
                           ),
                         ),

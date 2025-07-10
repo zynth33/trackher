@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 
 import '../../../utils/constants.dart';
 import '../../../utils/extensions/color.dart';
-import '../../../repositories/period_repository.dart';
+import '../../../repositories/journal_repository.dart';
 import '../../../models/journal_entry.dart';
 import '../../../utils/components/dialogs/confirm_dialog.dart';
 
@@ -112,7 +112,7 @@ class RecentEntryCard extends StatelessWidget {
                 );
 
                 if (shouldDelete == true) {
-                  await PeriodRepository().deleteJournalEntry(entry.id);
+                  await JournalRepository().deleteJournalEntry(entry.id);
                 }
               },
               child: Container(

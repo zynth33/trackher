@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:trackher/utils/constants.dart';
 import 'package:trackher/utils/extensions/color.dart';
 
+import '../../../repositories/period_repository.dart';
 import '../../../sessions/dates_session.dart';
 import '../../../sessions/symptoms_session.dart';
 import '../../../utils/enums.dart';
@@ -95,10 +96,12 @@ class _MoodSelectorState extends State<MoodSelector> {
                         if (_selected == level) {
                           _selected = null;
                           SymptomsSession().setSymptoms("mood", []);
+                          updateMood();
                         } else {
                           _selected = level;
                           SymptomsSession().setSymptoms("mood", [label]);
                           DatesSession().setEntryForDateKey(selectedDate, "mood", _selected!.name);
+                          updateMood();
                         }
                       });
                     },
@@ -135,5 +138,18 @@ class _MoodSelectorState extends State<MoodSelector> {
         ),
       ),
     );
+  }
+
+  void updateMood() async {
+    final date = DatesSession().selectedDate;
+
+    if (_selected == null) {
+      PeriodRepository().setMood(date, null);
+      return;
+    }
+
+    final moodValue = _selected!.name;
+    PeriodRepository().setMood(date, moodValue);
+    PeriodRepository().setType();
   }
 }

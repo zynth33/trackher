@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:trackher/utils/assets.dart';
-import 'package:trackher/utils/constants.dart';
-import 'package:trackher/utils/extensions/color.dart';
+
+import '../../../utils/assets.dart';
+import '../../../utils/constants.dart';
+import '../../../utils/extensions/color.dart';
 
 import 'flow_selector.dart';
 

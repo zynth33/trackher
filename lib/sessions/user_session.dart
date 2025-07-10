@@ -65,7 +65,7 @@ class UserSession {
 
   Future<void> syncPeriodData() async {
     final uid = userIdNotifier.value;
-    await _firebaseSyncService.syncUserPeriodData(uid);
+    await _firebaseSyncService.syncUserPeriodData();
   }
 
   Future<void> setAvatar(String avatar) async {

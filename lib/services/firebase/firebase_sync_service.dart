@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hive/hive.dart';
+import 'package:trackher/sessions/user_session.dart';
 
 import '../../models/past_period.dart';
 import '../../models/period_prediction.dart';
@@ -7,7 +8,8 @@ import '../../models/period_prediction.dart';
 class FirebaseSyncService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> syncUserPeriodData(String uid) async {
+  Future<void> syncUserPeriodData() async {
+    final uid = UserSession().id;
     try {
       final pastPeriodsBox = Hive.box<PastPeriod>('pastPeriods');
       final metadataBox = Hive.box('periodMetaData');

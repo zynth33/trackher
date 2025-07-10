@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:path/path.dart';
+import 'package:table_calendar/table_calendar.dart';
 import 'package:trackher/utils/enums.dart';
 
 import '../../../utils/constants.dart';
 import '../../../utils/extensions/color.dart';
 import '../../../models/journal_entry.dart';
-import '../../../repositories/period_repository.dart';
+import '../../../repositories/journal_repository.dart';
 import '../../../sessions/symptoms_session.dart';
 
 
@@ -101,18 +103,13 @@ class _EnterEntryCardState extends State<EnterEntryCard> {
                     return;
                   }
 
-                  final allSymptoms = SymptomsSession().symptoms.values.expand((list) => list).toList();
-
                   JournalEntry entry = JournalEntry(
-                      "😌",
-                      DateTime.now().toString(),
-                      MoodLevel.angry.toString(),
+                      normalizeDate(DateTime.now()).toString(),
                       textEditingController.text,
-                      allSymptoms,
                       "1"
                   );
 
-                  PeriodRepository().addJournalEntry(entry);
+                  JournalRepository().addJournalEntry(entry);
                   textEditingController.text = "";
                 },
                 child: Container(

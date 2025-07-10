@@ -4,7 +4,7 @@ import '../../../utils/assets.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/extensions/color.dart';
 import '../../../models/journal_entry.dart';
-import '../../../repositories/period_repository.dart';
+import '../../../repositories/journal_repository.dart';
 
 import 'recent_entry_card.dart';
 
@@ -13,10 +13,10 @@ class RecentEntries extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final repo = PeriodRepository();
+    final repo = JournalRepository();
 
     return ValueListenableBuilder<List<JournalEntry>>(
-      valueListenable: PeriodRepository().recentEntriesNotifier,
+      valueListenable: JournalRepository().recentEntriesNotifier,
       builder: (context, entries, _) {
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),

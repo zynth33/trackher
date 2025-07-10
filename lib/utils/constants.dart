@@ -210,7 +210,6 @@ class AppConstants {
     CategoryItem("😥", "Mood Swings"),
   ];
 
-
   static const List<CategoryItem> categoryDigestion = [
     CategoryItem("🤢", "Nausea"),
     CategoryItem("🎈", "Bloating"),

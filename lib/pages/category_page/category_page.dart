@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:trackher/repositories/period_repository.dart';
 
 import '../../utils/extensions/color.dart';
 import '../../utils/constants.dart';
@@ -171,6 +172,7 @@ class _CategoryPageState extends State<CategoryPage> {
                 alignment: Alignment.bottomCenter,
                 child: InkWell(
                   onTap: () {
+                    PeriodRepository().setCategories(selectedIndexes.toList());
                     if (kDebugMode) {
                       print(selectedIndexes);
                     }

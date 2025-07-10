@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../repositories/period_repository.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/extensions/color.dart';
 import '../../../sessions/dates_session.dart';
@@ -104,9 +105,11 @@ class _SymptomSelectorState extends State<SymptomSelector> {
                     setState(() {
                       if (isSelected) {
                         _selectedSymptoms.remove(symptom);
+                        updateSymptoms();
                       } else {
                         _selectedSymptoms.add(symptom);
                         DatesSession().setEntryForDateKey(selectedDate, "symptoms", _selectedSymptoms.map((e) => e.name).toList());
+                        updateSymptoms();
                       }
                     });
 
@@ -151,5 +154,18 @@ class _SymptomSelectorState extends State<SymptomSelector> {
         );
       }
     );
+  }
+
+  void updateSymptoms() async {
+    final date = DatesSession().selectedDate;
+
+    if (_selectedSymptoms.isEmpty) {
+      PeriodRepository().setSymptoms(date, null);
+      return;
+    }
+
+    final symptomValues = _selectedSymptoms.map((e) => e.name).toList();
+    PeriodRepository().setSymptoms(date, symptomValues);
+    PeriodRepository().setType();
   }
 }

@@ -1,6 +1,9 @@
-import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import '../models/journal_entry.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:trackher/sessions/dates_session.dart';
+import 'package:trackher/sessions/period_session.dart';
+
+import '../models/period_log.dart';
 import '../database/database_helper.dart';
 
 class PeriodRepository {
@@ -10,48 +13,53 @@ class PeriodRepository {
 
   final dbHelper = DatabaseHelper.instance;
 
-  final ValueNotifier<List<JournalEntry>> recentEntriesNotifier = ValueNotifier([]);
+  final ValueNotifier<List<PeriodLog>> periodLogsNotifier = ValueNotifier([]);
 
-  /// Call once during app startup
-  Future<void> loadRecentJournalEntries() async {
-    final result = await dbHelper.getRecentJournalEntries();
-
-    final entries = result.map((row) => JournalEntry(
-      row['emoji']?.toString() ?? '',
-      row['date']?.toString() ?? '',
-      row['mood']?.toString() ?? '',
-      row['content']?.toString() ?? '',
-      List<String>.from(jsonDecode(row['symptoms'] as String)),
-      row['id'].toString(),
-    )).toList();
-
-    recentEntriesNotifier.value = entries;
+  /// Set Flow in period log
+  Future<void> setFlow(DateTime date, String? newFlow) async {
+    final id = await dbHelper.ensurePeriodLogExists(normalizeDate(date).toString());
+    await dbHelper.updateFlow(id, newFlow);
   }
 
-  Future<int> addJournalEntry(JournalEntry entry) async {
-    final insertedId = await dbHelper.insertJournal(entry);
-
-    await loadRecentJournalEntries();
-
-    return insertedId;
+  /// Set Mood in period log
+  Future<void> setMood(DateTime date, String? mood) async {
+    final id = await dbHelper.ensurePeriodLogExists(normalizeDate(date).toString());
+    await dbHelper.updateMood(id, mood);
   }
 
-  Future<List<JournalEntry>> getRecentJournalEntries() async {
-    final result = await dbHelper.getRecentJournalEntries();
-
-    return result.map((row) => JournalEntry(
-      row['emoji']?.toString() ?? '',
-      row['date']?.toString() ?? '',
-      row['mood']?.toString() ?? '',
-      row['content']?.toString() ?? '',
-      List<String>.from(jsonDecode(row['symptoms'] as String)),
-      row['id'].toString(),
-    )).toList();
+  /// Set Symptoms in period log
+  Future<void> setSymptoms(DateTime date, List<String>? symptoms) async {
+    final id = await dbHelper.ensurePeriodLogExists(normalizeDate(date).toString());
+    await dbHelper.updateSymptoms(id, symptoms);
   }
 
-  /// Delete a journal entry by ID
-  Future<void> deleteJournalEntry(String id) async {
-    await dbHelper.deleteJournalEntry(int.parse(id));
-    await loadRecentJournalEntries();
+  /// Set Day Type in period log
+  Future<void> setType({String? type}) async {
+    final date = normalizeDate(DatesSession().selectedDate);
+
+    // Use provided type, or determine from session
+    final resolvedType = type ??
+      () {
+        final session = PeriodSession();
+        final dayTypeMap = {
+          'period': session.periodDays,
+          'fertile': session.fertileDays,
+          'ovulation': session.ovulationDays,
+          'pms': session.pmsDays,
+        };
+
+        return dayTypeMap.entries
+            .firstWhere(
+              (entry) => entry.value.contains(date),
+          orElse: () => const MapEntry('normal', {}),
+        ).key;
+      }();
+
+    await dbHelper.updateType(date.toString(), resolvedType);
+  }
+
+  /// Set Symptoms in period log
+  Future<void> setCategories(List<String> categories) async {
+    await dbHelper.insertCategories(categories);
   }
 }

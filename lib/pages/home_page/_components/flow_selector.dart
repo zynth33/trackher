@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:trackher/utils/constants.dart';
-import 'package:trackher/utils/extensions/color.dart';
 
+import '../../../repositories/period_repository.dart';
+import '../../../utils/constants.dart';
+import '../../../utils/extensions/color.dart';
 import '../../../sessions/dates_session.dart';
 import '../../../sessions/period_session.dart';
 import '../../../sessions/symptoms_session.dart';
@@ -24,6 +25,7 @@ class _FlowSelectorState extends State<FlowSelector> {
     _inactivityTimer?.cancel();
     _inactivityTimer = Timer(const Duration(seconds: 3), () {
       updatePeriods();
+      updateFlow();
     });
   }
 
@@ -33,7 +35,7 @@ class _FlowSelectorState extends State<FlowSelector> {
 
     if (value is String) {
       return FlowLevel.values.firstWhere(
-          (e) => e.name == value,
+        (e) => e.name == value,
       );
     }
 
@@ -124,8 +126,6 @@ class _FlowSelectorState extends State<FlowSelector> {
   }
 
   void updatePeriods() {
-    if (_selected == null) return;
-
     final date = DatesSession().selectedDate;
     final session = PeriodSession();
 
@@ -133,6 +133,11 @@ class _FlowSelectorState extends State<FlowSelector> {
     final fertileDays = {...session.fertileDays};
     final ovulationDays = {...session.ovulationDays};
     final pmsDays = {...session.pmsDays};
+
+    if(_selected == null) {
+      periodDays.remove(date);
+      return;
+    }
 
     periodDays.add(date);
 
@@ -146,5 +151,24 @@ class _FlowSelectorState extends State<FlowSelector> {
     session.setPmsDays(pmsDays);
 
     DatesSession().setEntryForDateKey(date, "flow", _selected!.name);
+  }
+
+  void updateFlow() async {
+    final date = DatesSession().selectedDate;
+
+    if (_selected == null) {
+      await PeriodRepository().setFlow(date, null);
+
+      if(PeriodSession().periodDays.contains(date)) {
+        PeriodRepository().setType(type: "normal");
+      } else {
+        PeriodRepository().setType();
+      }
+      return;
+    }
+
+    final flowValue = _selected!.name;
+    PeriodRepository().setType(type: "period");
+    PeriodRepository().setFlow(date, flowValue);
   }
 }

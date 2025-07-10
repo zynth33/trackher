@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../pages/settings_page/settings_page.dart';
+import '../../../services/supabase/supabase_sync_service.dart';
 import '../../../sessions/user_session.dart';
 import '../../../../utils/constants.dart';
 import '../../../utils/extensions/color.dart';
@@ -35,6 +36,7 @@ class HomeHeader extends StatelessWidget {
           Spacer(),
           InkWell(
             onTap: () {
+              // SupabaseSyncService().syncLocalDataToSupabase();
               Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage()));
             },
             child: Container(
