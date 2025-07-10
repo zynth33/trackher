@@ -35,6 +35,9 @@ class RecentEntryCard extends StatelessWidget {
                       offset: const Offset(1, 3),
                     ),
                   ],
+                  border: Border.all(
+                    color: Colors.black.withValues(alpha: 0.2)
+                  )
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -73,31 +76,31 @@ class RecentEntryCard extends StatelessWidget {
                 ),
               ),
 
-              // Inner shadow overlay
-              Positioned.fill(
-                child: IgnorePointer(
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.black.withValues(alpha: 0.1),
-                          Colors.transparent,
-                          Colors.transparent,
-                          Colors.transparent,
-                          Colors.transparent,
-                          Colors.transparent,
-                          Colors.transparent,
-                          Colors.transparent,
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              // // Inner shadow overlay
+              // Positioned.fill(
+              //   child: IgnorePointer(
+              //     child: Container(
+              //       width: double.infinity,
+              //       decoration: BoxDecoration(
+              //         borderRadius: BorderRadius.circular(20),
+              //         gradient: LinearGradient(
+              //           begin: Alignment.topCenter,
+              //           end: Alignment.bottomCenter,
+              //           colors: [
+              //             Colors.black.withValues(alpha: 0.1),
+              //             Colors.transparent,
+              //             Colors.transparent,
+              //             Colors.transparent,
+              //             Colors.transparent,
+              //             Colors.transparent,
+              //             Colors.transparent,
+              //             Colors.transparent,
+              //           ],
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
           Positioned(
