@@ -45,3 +45,10 @@ app.*.map.json
 /android/app/release
 
 training_data
+
+note1.txt
+note2.txt
+note3.txt
+note4.txt
+note5.txt
+note6.txt
