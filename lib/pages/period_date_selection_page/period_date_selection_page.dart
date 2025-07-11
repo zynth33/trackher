@@ -361,13 +361,21 @@ class _PeriodDateSelectionPageState extends State<PeriodDateSelectionPage> {
     final DateTime firstDate = DateTime(now.year - 1, 1, 1);
     final DateTime lastDate = DateTime(PeriodSession().limitYear, 12, 31);
 
-    final Map<DateTime, int> cycleMap = {};
+    final Map<DateTime, Map<String, int>> cycleMap = {};
 
     for (DateTime date = firstDate; !date.isAfter(lastDate); date = date.add(const Duration(days: 1))) {
-      if (kDebugMode) {
-        print("$date: ${tracker.getCycleDay(date)}");
+      final info = tracker.getCycleInfo(date);
+
+      if (info != null) {
+        if (kDebugMode) {
+          print("$date => Day: ${info['cycleDay']}, Cycle: ${info['cycleNumber']}");
+        }
+
+        cycleMap[date] = {
+          'cycleDay': info['cycleDay']!,
+          'cycleNumber': info['cycleNumber']!,
+        };
       }
-      cycleMap[date] = tracker.getCycleDay(date);
     }
 
     PeriodSession().setCycleNumbers(cycleMap);

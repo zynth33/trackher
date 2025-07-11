@@ -13,11 +13,13 @@ class PeriodDataCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentDay = getValueForDateInMap(DateTime.now(), PeriodSession().cycleNumbers) ?? 0;
+    final mapEntry = getValueForDateInMap(DateTime.now(), PeriodSession().cycleNumbers);
+    final currentDay = mapEntry is Map<String, int> ? mapEntry['cycleDay'] ?? 0 : 0;
+
     final daysUntilNext = PeriodSession().cycleLength - currentDay;
-    final cycleLength = PeriodSession().cycleLength;
     final nextDate = DateTime.now().add(Duration(days: daysUntilNext + 1));
     final formattedNextDate = DateFormat('MMM d').format(nextDate);
+    final cycleLength = PeriodSession().cycleLength;
     final cycleStartDate = getCycleStartDateFromCycleMap(
       DateTime.now(),
       PeriodSession().cycleNumbers,
@@ -249,7 +251,7 @@ class PeriodDataCards extends StatelessWidget {
 
 }
 
-DateTime? getCycleStartDateFromCycleMap(DateTime today, Map<DateTime, int> cycleNumbers) {
+DateTime? getCycleStartDateFromCycleMap(DateTime today, Map<DateTime, Map<String, int>> cycleNumbers) {
   final todayDate = DateTime(today.year, today.month, today.day);
 
   // Step 1: Get the cycle number for today

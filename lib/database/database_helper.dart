@@ -4,8 +4,10 @@ import 'dart:convert';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:trackher/sessions/dates_session.dart';
+import 'package:trackher/sessions/period_session.dart';
 import '../models/journal_entry.dart';
 import '../models/period_log.dart';
+import '../utils/helper_functions.dart';
 
 class DatabaseHelper {
   static const _databaseName = "PeriodsDatabase.db";
@@ -124,7 +126,12 @@ class DatabaseHelper {
       return results.first['id'] as int;
     }
 
-    final periodLog = PeriodLog(date: date);
+
+    final mapEntry = getValueForDateInMap(DateTime.now(), PeriodSession().cycleNumbers);
+    final currentDay = mapEntry is Map<String, int> ? mapEntry['cycleDay'] ?? 0 : 0;
+    final cycleNumber = mapEntry is Map<String, int> ? mapEntry['cycleNumber'] ?? 0 : 0;
+
+    final periodLog = PeriodLog(date: date, cycleDayNumber: currentDay.toString(), cycleNumber: cycleNumber.toString());
     return await insertPeriodLog(periodLog);
   }
   Future<void> updateFlow(int id, String? flow) async {
@@ -171,6 +178,8 @@ class DatabaseHelper {
       final date = result.first['date'] as String;
       await _updateForeignKeyReferences(id, date);
     }
+
+    bulkInfo();
   }
   Future<void> updateSymptoms(int id, List<String>? symptoms) async {
     final db = await database;
@@ -197,12 +206,23 @@ class DatabaseHelper {
   Future<void> updateType(String date, String? type) async {
     final db = await database;
 
-    await db.update(
-      'period_logs',
-      {'type': type},
-      where: 'date = ? AND flow IS NULL',
-      whereArgs: [date],
-    );
+    print("Type: $type");
+
+    if(type == "period") {
+      await db.update(
+        'period_logs',
+        {'type': type},
+        where: 'date = ?',
+        whereArgs: [date],
+      );
+    } else {
+      await db.update(
+        'period_logs',
+        {'type': type},
+        where: 'date = ? AND flow IS NULL',
+        whereArgs: [date],
+      );
+    }
   }
 
 
@@ -275,6 +295,21 @@ class DatabaseHelper {
   }
 
 
+  /// BULK Info
+  void bulkInfo() async {
+    final totalLoggedCycles = await _getTotalLoggedCycles();
+    final mostCommonSymptom = await _getMostFrequentSymptom();
+    final mostCommonMood = await _getMostFrequentMood();
+    final moodDistribution = await _getMoodDistribution();
+    final top3Symptoms = await _getTop3Symptoms();
+    print(totalLoggedCycles);
+    print(mostCommonSymptom);
+    print(mostCommonMood);
+    print(moodDistribution);
+    print(top3Symptoms);
+  }
+
+
   /// helpers
   Future<void> _updateForeignKeyReferences(int periodLogId, String date) async {
     final db = await database;
@@ -289,4 +324,125 @@ class DatabaseHelper {
       );
     }
   }
+  Future<String> _getTotalLoggedCycles() async {
+    final db = await database;
+
+    final result = await db.rawQuery('SELECT COUNT(DISTINCT cycle_number) as count FROM period_logs');
+    return Sqflite.firstIntValue(result).toString();
+  }
+  Future<String?> _getMostFrequentSymptom() async {
+    final db = await database;
+    final result = await db.rawQuery('SELECT symptoms FROM period_logs');
+
+    final Map<String, int> symptomCounts = {};
+
+    for (final row in result) {
+      final raw = row['symptoms'] as String?;
+      if (raw == null || raw.isEmpty) continue;
+
+      try {
+        final List<dynamic> symptoms = json.decode(raw);
+        for (final symptom in symptoms) {
+          if (symptom is String) {
+            symptomCounts[symptom] = (symptomCounts[symptom] ?? 0) + 1;
+          }
+        }
+      } catch (_) {
+        // Skip if json.decode fails
+        continue;
+      }
+    }
+
+    if (symptomCounts.isEmpty) return null;
+
+    // Get the most frequent symptom
+    final sorted = symptomCounts.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+
+    return sorted.first.key;
+  }
+  Future<String?> _getMostFrequentMood() async {
+    final db = await database;
+    final result = await db.rawQuery('SELECT mood FROM period_logs');
+
+    final Map<String, int> moodCounts = {};
+
+    for (final row in result) {
+      final mood = row['mood'] as String?;
+      if (mood == null || mood.isEmpty) continue;
+
+      moodCounts[mood] = (moodCounts[mood] ?? 0) + 1;
+    }
+
+    if (moodCounts.isEmpty) return null;
+
+    final sorted = moodCounts.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+
+    return sorted.first.key;
+  }
+  Future<Map<String, num>> _getMoodDistribution() async {
+    final db = await database;
+    final result = await db.rawQuery('SELECT mood FROM period_logs');
+
+    final Map<String, int> moodCounts = {};
+    int total = 0;
+
+    for (final row in result) {
+      final mood = row['mood'] as String?;
+      if (mood == null || mood.isEmpty) continue;
+
+      moodCounts[mood] = (moodCounts[mood] ?? 0) + 1;
+      total++;
+    }
+
+    if (total == 0) return {};
+
+    final Map<String, num> distribution = {};
+
+    moodCounts.forEach((mood, count) {
+      final percent = (count / total) * 100;
+      distribution[mood] = percent % 1 == 0
+          ? percent.toInt()
+          : double.parse(percent.toStringAsFixed(1));
+    });
+
+    return distribution;
+  }
+  Future<List<Map<String, dynamic>>> _getTop3Symptoms() async {
+    final db = await database;
+    final result = await db.rawQuery('SELECT symptoms FROM period_logs');
+
+    final Map<String, int> symptomCounts = {};
+
+    for (final row in result) {
+      final raw = row['symptoms'] as String?;
+      if (raw == null || raw.isEmpty) continue;
+
+      try {
+        final List<dynamic> symptoms = json.decode(raw);
+        for (final symptom in symptoms) {
+          if (symptom is String) {
+            symptomCounts[symptom] = (symptomCounts[symptom] ?? 0) + 1;
+          }
+        }
+      } catch (_) {
+        // skip malformed entries
+        continue;
+      }
+    }
+
+    // Sort and get top 3
+    final top3 = symptomCounts.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+
+    return top3.take(3).map((entry) {
+      return {
+        'symptom': entry.key,
+        'count': entry.value,
+        'label': '${entry.value} times',
+      };
+    }).toList();
+  }
+
 }

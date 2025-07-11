@@ -19,7 +19,7 @@ class PeriodSession {
   final ValueNotifier<Set<DateTime>> _pmsDaysNotifier = ValueNotifier({});
 
   final ValueNotifier<Map<String, List<Map<String, dynamic>>>> _predictionsNotifier = ValueNotifier({});
-  final ValueNotifier<Map<DateTime, int>> cycleNumbersNotifier = ValueNotifier({});
+  final ValueNotifier<Map<DateTime, Map<String, int>>> cycleNumbersNotifier = ValueNotifier({});
 
   // Setters
   void setOldestYear(int year) {
@@ -58,7 +58,7 @@ class PeriodSession {
     _pmsDaysNotifier.value = _normalizeDateSet(dates);
   }
 
-  void setCycleNumbers(Map<DateTime, int> cycles) {
+  void setCycleNumbers(Map<DateTime, Map<String, int>> cycles) {
     cycleNumbersNotifier.value = _normalizeDateMap(cycles);
   }
 
@@ -94,7 +94,7 @@ class PeriodSession {
 
   Set<DateTime> get pmsDays => UnmodifiableSetView(_pmsDaysNotifier.value);
 
-  Map<DateTime, int> get cycleNumbers =>
+  Map<DateTime, Map<String, int>> get cycleNumbers =>
       UnmodifiableMapView(cycleNumbersNotifier.value);
 
   // Internals: Normalization Helpers
@@ -102,7 +102,7 @@ class PeriodSession {
     return input.map((d) => DateTime(d.year, d.month, d.day)).toSet();
   }
 
-  Map<DateTime, int> _normalizeDateMap(Map<DateTime, int> input) {
+  Map<DateTime, Map<String, int>> _normalizeDateMap(Map<DateTime, Map<String, int>> input) {
     return {
       for (var entry in input.entries)
         DateTime(entry.key.year, entry.key.month, entry.key.day): entry.value

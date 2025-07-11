@@ -96,6 +96,7 @@ class PeriodTracker {
       );
 
       futurePredictions.add({
+        'cycleNumber': ((start.difference(periodStartDates.first).inDays) ~/ averageCycleLength),
         'month': 'Month ${i + 1}',
         'periodWindow': periodWindow.map(format.format).toList(),
         'ovulation': format.format(ovulation),
@@ -103,6 +104,8 @@ class PeriodTracker {
         'pmsWindow': pmsWindow.map(format.format).toList(),
       });
     }
+
+    print(futurePredictions);
 
     return {
       'pastPeriods': pastPeriods,
@@ -171,9 +174,11 @@ class PeriodTracker {
 
   /// Returns the cycle number (1-based) for the given date.
   /// Returns -1 if the date is before the first recorded period.
-  int getCycleDay(DateTime date) {
+  /// Returns a map with cycleNumber and cycleDay for the given date.
+  /// Returns null if the date is before the first recorded period.
+  Map<String, int>? getCycleInfo(DateTime date) {
     if (periodStartDates.isEmpty || date.isBefore(periodStartDates.first)) {
-      return -1;
+      return null;
     }
 
     final normalizedDate = DateTime(date.year, date.month, date.day);
@@ -198,25 +203,33 @@ class PeriodTracker {
           : start.add(Duration(days: averageCycleLength - 1));
 
       if (!normalizedDate.isBefore(start) && !normalizedDate.isAfter(cycleEnd)) {
-        return normalizedDate.difference(start).inDays + 1;
+        return {
+          'cycleNumber': ((start.difference(periodStartDates.first).inDays) ~/ averageCycleLength) + 1,
+          'cycleDay': normalizedDate.difference(start).inDays + 1,
+        };
       }
     }
 
-    // Predict future cycle based on last known start date
+    // Predicted future cycles
     DateTime lastStart = DateTime(
       periodStartDates.last.year,
       periodStartDates.last.month,
       periodStartDates.last.day,
     );
 
-    while (normalizedDate.isAfter(
-        lastStart.add(Duration(days: averageCycleLength - 1)))) {
+    while (normalizedDate.isAfter(lastStart.add(Duration(days: averageCycleLength - 1)))) {
       lastStart = lastStart.add(Duration(days: averageCycleLength));
     }
 
-    // We're now within the predicted current cycle
-    return normalizedDate.difference(lastStart).inDays + 1;
+    final cycleNumber = ((lastStart.difference(periodStartDates.first).inDays) ~/ averageCycleLength) + 1;
+    final cycleDay = normalizedDate.difference(lastStart).inDays + 1;
+
+    return {
+      'cycleNumber': cycleNumber,
+      'cycleDay': cycleDay,
+    };
   }
+
 
   /// For printing/debug
   void printPredictions({int months = 1}) {

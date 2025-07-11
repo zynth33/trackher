@@ -168,7 +168,7 @@ class _FlowSelectorState extends State<FlowSelector> {
     }
 
     final flowValue = _selected!.name;
-    PeriodRepository().setType(type: "period");
-    PeriodRepository().setFlow(date, flowValue);
+    await PeriodRepository().setFlow(date, flowValue);
+    await PeriodRepository().setType(type: "period");
   }
 }

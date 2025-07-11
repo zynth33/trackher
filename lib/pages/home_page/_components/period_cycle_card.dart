@@ -24,7 +24,7 @@ class _PeriodCycleCardState extends State<PeriodCycleCard> {
   void initState() {
     super.initState();
     DatesSession().selectedDateNotifier.addListener(_onDateChanged);
-    _updateDay();
+    // _updateDay();
   }
 
   @override
@@ -35,29 +35,31 @@ class _PeriodCycleCardState extends State<PeriodCycleCard> {
 
   void _onDateChanged() {
     setState(() {
-      _updateDay();
+      // _updateDay();
     });
   }
 
-  void _updateDay() {
-    final day = getValueForDateInMap(
-      DatesSession().selectedDate,
-      PeriodSession().cycleNumbersNotifier.value,
-    )?.toDouble() ??
-        0.0;
-    _previousDay = _animatedDay;
-    _animatedDay = day;
-  }
+  // void _updateDay() {
+  //   final day = getValueForDateInMap(
+  //     DatesSession().selectedDate,
+  //     PeriodSession().cycleNumbersNotifier.value,
+  //   )?.toDouble() ??
+  //       0.0;
+  //   _previousDay = _animatedDay;
+  //   _animatedDay = day;
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<Map<DateTime, int>>(
+    return ValueListenableBuilder<Map<DateTime, Map<String, int>>>(
       valueListenable: PeriodSession().cycleNumbersNotifier,
       builder: (context, cycleNumbers, _) {
         return ValueListenableBuilder<int>(
           valueListenable: PeriodSession().cycleLengthNotifier,
           builder: (context, cycleLength, _) {
-            final currentDay = getValueForDateInMap(DatesSession().selectedDate, cycleNumbers) ?? 0;
+            final mapEntry = getValueForDateInMap(DateTime.now(), PeriodSession().cycleNumbers);
+            final currentDay = mapEntry is Map<String, int> ? mapEntry['cycleDay'] ?? 0 : 0;
+
             final periodLength = PeriodSession().periodLength;
             final daysUntilNext = cycleLength - currentDay;
 

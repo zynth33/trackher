@@ -148,8 +148,8 @@ void setData() {
   if (periodCycleDataBox.isNotEmpty) {
     final rawMap = periodCycleDataBox.get('cycleMap') as Map;
 
-    final Map<DateTime, int> convertedMap = rawMap.map(
-          (key, value) => MapEntry(DateTime.parse(key.toString()), value as int),
+    final Map<DateTime, Map<String, int>> convertedMap = rawMap.map(
+        (key, value) => MapEntry(DateTime.parse(key.toString()), value),
     );
 
     PeriodSession().setCycleNumbers(convertedMap);
