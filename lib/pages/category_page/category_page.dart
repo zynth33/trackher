@@ -31,7 +31,9 @@ class _CategoryPageState extends State<CategoryPage> {
             Positioned(
               top: -100,
               left: -195,
-              child: Image.asset('assets/gradients/grad_2.png'),
+              child: IgnorePointer(
+                child: Image.asset('assets/gradients/grad_2.png'),
+              ),
             ),
             SingleChildScrollView(
               child: Padding(
@@ -148,7 +150,9 @@ class _CategoryPageState extends State<CategoryPage> {
             Positioned(
               bottom: -110,
               right: -80,
-              child: Image.asset('assets/gradients/grad_3.png'),
+              child: IgnorePointer(
+                child: Image.asset('assets/gradients/grad_3.png'),
+              ),
             ),
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 500),
@@ -166,33 +170,41 @@ class _CategoryPageState extends State<CategoryPage> {
                   ),
                 );
               },
-              child: selectedIndexes.isNotEmpty
-                  ? Align(
+              child: selectedIndexes.isNotEmpty ? Align(
                 key: const ValueKey('apply-button'),
                 alignment: Alignment.bottomCenter,
-                child: InkWell(
-                  onTap: () {
-                    PeriodRepository().setCategories(selectedIndexes.toList());
-                    if (kDebugMode) {
-                      print(selectedIndexes);
-                    }
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(bottom: 40),
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    width: MediaQuery.of(context).size.width - 50,
-                    decoration: BoxDecoration(
-                      color: HexColor.fromHex(AppConstants.primaryText),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: const Text(
-                      "Apply",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20,
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 40),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(100),
+                    onTap: () {
+                      PeriodRepository().setCategories(selectedIndexes.toList());
+
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Successfully Set Categories")));
+
+                      if (kDebugMode) {
+                        print(selectedIndexes);
+                      }
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      width: MediaQuery.of(context).size.width - 50,
+                      decoration: BoxDecoration(
+                        color: HexColor.fromHex(AppConstants.primaryText),
+                        borderRadius: BorderRadius.circular(100),
                       ),
-                      textAlign: TextAlign.center,
+                      child: const Text(
+                        "Apply",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 20,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                 ),

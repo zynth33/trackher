@@ -1,0 +1,11 @@
+I am actively engaged in driving end-to-end technical execution across the application lifecycle, encompassing development, deployment, testing, scalability, and ongoing optimization. My core responsibilities span multiple verticals and include, but are not limited to, the following:
+* Data Architecture & Management: Ownership of all database-related workflows, leveraging platforms such as Neon DB, Firebase Firestore, Supabase, Hive, and Sqflite to ensure data integrity, availability, and performance.
+* Cloud Infrastructure & Integration: Designing and orchestrating scalable cloud-native solutions using Firebase, Vercel, Neon, Supabase, AI Dev, HuggingFace, and Cloudinary. This includes serverless computing, cloud function optimization, and third-party service integration.
+* Security & Identity Management: Implementing best practices in API authentication, RBAC (Role-Based Access Control), and secure, scalable identity frameworks to support a robust and compliant backend ecosystem.
+* DevOps & Deployment Pipelines: Managing CI/CD pipelines and orchestrating full-stack deployments across cloud environments, while also overseeing mobile deployment operations across Android (APK/AAB) and iOS (IPA) ecosystems via Play Store and App Store.
+* Product Development & Engineering: Translating Figma-based UI/UX prototypes, system architectures, and software blueprints into production-grade, maintainable, and performant code. This includes full-cycle feature implementation and backend systems development aligned with product vision.
+To the best of my knowledge, Mr. Hassan Shabbir and Mr. Khizr are primarily responsible for:
+* Procurement & Vendor Management: Coordinating and facilitating all subscription-based services and managing onboarding of third-party tools and platforms necessary for product operations.
+* UI/UX Strategy & Visual Design: Spearheading front-end experience strategy, utilizing design systems and tools such as Figma, Lovable, and Bolt to ensure cohesive and user-centered digital interfaces.
+At this time, I do not have sufficient visibility into Usama’s contributions or deliverables, and therefore cannot provide informed commentary on his scope of work.
+

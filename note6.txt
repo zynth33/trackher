@@ -1,0 +1,4 @@
+Errors
+
+Creating Firebase Streams inside build method
+Firebase sdk in pod file

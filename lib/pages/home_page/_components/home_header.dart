@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../pages/settings_page/settings_page.dart';
-import '../../../services/supabase/supabase_sync_service.dart';
 import '../../../sessions/user_session.dart';
 import '../../../../utils/constants.dart';
+import '../../../utils/app_info.dart';
 import '../../../utils/extensions/color.dart';
 
 class HomeHeader extends StatelessWidget {
@@ -14,6 +14,8 @@ class HomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    getDate();
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       child: Row(
@@ -51,5 +53,16 @@ class HomeHeader extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void getDate() async {
+    final installDate = await AppInfo.getInstallDate();
+    final version = await AppInfo.getAppVersion();
+    final batteryLevel = await AppInfo.getBatteryLevel();
+    final osVersion = await AppInfo.getOsVersion();
+    if (installDate != null) {
+      final formattedDate = "${installDate.year}-${installDate.month.toString().padLeft(2, '0')}-${installDate.day.toString().padLeft(2, '0')}";
+      print('Installed on: $formattedDate $version $batteryLevel% $osVersion');
+    }
   }
 }

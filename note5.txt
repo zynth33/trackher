@@ -1,0 +1,46 @@
+—————————————————————TUMBLR—————————————————————
+https://www.tumblr.com/widgets/share/tool?canonicalUrl=https://www.loopyfeed.com&caption=Check+this+out<br>Loopyfeed&tags=search,engine,google&posttype=link
+
+
+—————————————————————THREADS—————————————————————
+https://threads.net/intent/post?text=www.loopyfeed.com
+
+
+—————————————————————REDDIT—————————————————————
+https://www.reddit.com/submit?url=www.loopyfeed.com&title=Loopyfeed&text=yes
+
+
+—————————————————————PINTEREST—————————————————————
+https://pinterest.com/pin/create/button/?url=www.loopyfeed.com&media=https://res.cloudinary.com/dqudeifns/image/upload/v1739424587/thumbnails/thumb1.jpg
+  &description={TEXT}
+❌(Works only on web, not on pinterest app)
+
+
+—————————————————————BLOGGER—————————————————————
+https://www.blogger.com/blog/post/edit/
+  ?blogID={YOUR_BLOG_ID}
+  &text={CONTENT}
+  &title={TITLE}
+  &imageUrl={IMAGE_URL}
+
+
+
+<head>
+Const data = Php api call
+
+</head>
+
+{
+“Title”: ””,
+“Thumbnail”:  “”
+}
+
+<og   *Today’s Tasks* - Implemented Social Sharing Modules (WhatsApp, Threads, Messenger, Reddit, Email(with picker), Messages, Facebook Story, Facebook Feed, Telegram)  *Today’s Work* - Implement Social Sharing Modules - Implement API Auth Token Storing System - Create _Get Reel Data from encrypted id_ API Path - Fix QA Issues    Token: developereyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..MRXfeGQNFnROuzMC.FONl9zSwIaVrd4812LKI-qjrYC94LieKqZY4LG8g2uYp54LtQCsQEHLfRjfuwdt7xtazlP80HposyaE2arW4BvyKFZt_G769ioKbSTnYRF6SCVva7L6LjXOcWIKlQsLW2Q.CK8th6CA1O0afgKAV8WRrA  Url: https://glowing-amazingly-sawfly.ngrok-free.app/api/reels/encrypted/[encryptedIdSlug]
+
+Iss url Mai Bearer Token mai token laguna hai encryptedIdSlug mai encrypted id aye gi, jo kee url se aye gi, like www.loopyfeed.com/reels/id
+Ye id api ko send karin hai  encrypted ids for testing:
+3hmRBFQZReKc92JdyfYFH2
+68nznOSACmQr29KgRhUDVo
+4yv6gV6yBBLSUlIWXJzpSf
+4SYyQv6qRthjwZkJeiwOeU
+6XThxmphMKYp9RsPwH2UIV   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

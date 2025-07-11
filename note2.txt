@@ -1,0 +1,162 @@
+// NON-ENCRYPTION VERSION
+
+name: Backup and Upload
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo sh -c 'echo "deb https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+          wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client-17
+
+      - name: Dump PostgreSQL DB
+        env:
+          PGHOST: ${{ secrets.PGHOST }}
+          PGUSER: ${{ secrets.PGUSER }}
+          PGPASSWORD: ${{ secrets.PGPASSWORD }}
+          PGDATABASE: ${{ secrets.PGDATABASE }}
+        run: |
+          pg_dump --no-owner --no-acl --format=plain --file=backup.sql
+          echo "BACKUP_DATE=$(date +'%dth %B, %Y')" >> $GITHUB_ENV
+
+      - name: Upload backup artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: database-backup
+          path: backup.sql
+
+  upload:
+    needs: backup
+    runs-on: ubuntu-latest
+    outputs:
+      file_id: ${{ steps.upload.outputs.file_id }}
+
+    steps:
+      - name: Download backup artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: database-backup
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
+
+      - name: Create credentials file
+        run: |
+          echo "${{ secrets.GDRIVE_CREDENTIALS }}" | base64 -d > credentials.json
+
+      - name: Upload to Google Drive
+        id: upload
+        run: |
+          cat <<EOF > upload_to_gdrive.py
+          from google.oauth2 import service_account
+          from googleapiclient.discovery import build
+          from googleapiclient.http import MediaFileUpload
+          import os
+          SCOPES = ['https://www.googleapis.com/auth/drive.file']
+          creds = service_account.Credentials.from_service_account_file('credentials.json', scopes=SCOPES)
+          service = build('drive', 'v3', credentials=creds)
+          file_metadata = {
+              'name': 'backup.sql',
+              'parents': ['${{ secrets.GDRIVE_FOLDER_ID }}']
+          }
+          media = MediaFileUpload('backup.sql', mimetype='application/sql')
+          file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
+
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+            f.write(f"file_id={file.get('id')}\n")
+          EOF
+          python3 upload_to_gdrive.py
+
+      - name: Clean up
+        run: |
+          rm -f credentials.json backup.sql upload_to_gdrive.py
+
+  send_email:
+    needs: upload
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get current date
+        id: date
+        run: |
+          TODAY=$(date +'%-dth %B, %Y')
+          TODAY=$(echo "$TODAY" | sed 's/1th/1st/; s/2th/2nd/; s/3th/3rd/')
+          echo "TODAY=$TODAY" >> $GITHUB_ENV
+
+      - name: Prepare email content
+        run: |
+          BOUNDARY="====EMAIL_BOUNDARY==$(date +%s)=="
+          cat << EOF > email.txt
+          From: "GitHub Actions" <${{ secrets.EMAIL_USER }}>
+          To: "Zynth Dev" <zynthdev@gmail.com>
+          Subject: Neon Backup Link
+          MIME-Version: 1.0
+          Content-Type: multipart/alternative; boundary="$BOUNDARY"
+          Date: $(date -R)
+          Message-ID: <$(date +%s)@github-actions>
+
+          --$BOUNDARY
+          Content-Type: text/plain; charset="UTF-8"
+
+          Hi,
+
+          This is the NeonDB backup (.sql dump file) for ${{ env.TODAY }}
+
+          URL: https://drive.google.com/file/d/${{ needs.upload.outputs.file_id }}/view
+
+          --
+
+          This is an automated message from GitHub Actions.
+
+          --$BOUNDARY
+          Content-Type: text/html; charset="UTF-8"
+
+          <html>
+            <body style="font-family: Arial, sans-serif; background-color: #f9f9f9; color: #333; padding: 20px;">
+              <h2 style="color: #0066cc;">NeonDB Backup - ${{ env.TODAY }}</h2>
+              <p>Hello,</p>
+              <p>This is the <strong>NeonDB backup</strong> (.sql dump file) for <em>${{ env.TODAY }}</em>.</p>
+              <p>
+                <a href="https://drive.google.com/file/d/${{ needs.upload.outputs.file_id }}/view" style="background-color: #28a745; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+                  View Backup
+                </a>
+              </p>
+              <p style="margin-top: 40px;">This is an automated message from <strong>GitHub Actions</strong>.</p>
+            </body>
+          </html>
+
+          --$BOUNDARY--
+          EOF
+
+
+      - name: Send email with proper authentication
+        run: |
+          curl -v --ssl-reqd \
+            --url "smtps://smtp.gmail.com:465" \
+            --user "${{ secrets.EMAIL_USER }}:${{ secrets.EMAIL_PASSWORD }}" \
+            --mail-from "${{ secrets.EMAIL_USER }}" \
+            --mail-rcpt "zynthdev@gmail.com" \
+            --upload-file email.txt \
+            --header "X-Priority: 1 (Highest)" \
+            --header "X-MSMail-Priority: High" \
+            --header "Importance: High" \
+            --header "X-Mailer: GitHub Actions"

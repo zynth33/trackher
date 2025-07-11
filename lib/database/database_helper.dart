@@ -248,15 +248,34 @@ class DatabaseHelper {
   }
 
 
+  /// CRUD Operation for Table: categories
   Future<int> insertCategories(List<String> categories) async {
     final db = await instance.database;
+    final date = DatesSession().selectedDate.toString();
 
-    // Try to find a matching period_log by date
-    return await db.insert("categories", {
-      "date": DatesSession().selectedDate.toString(),
-      "categories": json.encode(categories)
-    });
+    final existing = await db.query(
+      'categories',
+      where: 'date = ?',
+      whereArgs: [date],
+    );
+
+    if (existing.isNotEmpty) {
+      return await db.update(
+        'categories',
+        {'categories': json.encode(categories)},
+        where: 'date = ?',
+        whereArgs: [date],
+      );
+    } else {
+      return await db.insert('categories', {
+        'date': date,
+        'categories': json.encode(categories),
+      });
+    }
   }
+
+
+  /// helpers
   Future<void> _updateForeignKeyReferences(int periodLogId, String date) async {
     final db = await database;
     final tables = ['journals', 'chats', 'categories'];
