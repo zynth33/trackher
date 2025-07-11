@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
-import 'package:trackher/sessions/user_session.dart';
 
+import '../../sessions/user_session.dart';
 import '../../models/past_period.dart';
 import '../../models/period_prediction.dart';
 
@@ -34,7 +35,9 @@ class FirebaseSyncService {
       await _firestore.collection('periodMetaData').doc(uid).set(metadataMap);
       await _firestore.collection('predictions').doc(uid).set(predictionsMap);
     } catch (e) {
-      print("Firestore sync error: $e");
+      if (kDebugMode) {
+        print("Firestore sync error: $e");
+      }
     }
   }
 }

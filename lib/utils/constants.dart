@@ -2,10 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:trackher/models/popular_topic.dart';
-import 'package:trackher/utils/assets.dart';
-import 'package:trackher/utils/extensions/color.dart';
 
+import '../models/popular_topic.dart';
+import '../utils/assets.dart';
+import '../utils/extensions/color.dart';
 import '../pages/settings_page/_pages/theme_page.dart';
 import '../pages/settings_page/_pages/faqs_page.dart';
 import '../models/category_item.dart';
@@ -119,31 +119,31 @@ class AppConstants {
 
   static List<SettingsItem> accountSettings = [
     SettingsItem(
-        Icon(Symbols.person, color: Colors.black, size: 18,),
-        "Profile Settings",
-        "Update your personal information",
-            (){}
+      Icon(Symbols.person, color: Colors.black, size: 18,),
+      "Profile Settings",
+      "Update your personal information",
+        (){}
     ),
     SettingsItem(
-        Icon(Symbols.calendar_today, color: Colors.black, size: 18,),
-        "Cycle Preferences",
-        "Customize your tracking settings",
-            (){}
+      Icon(Symbols.calendar_today, color: Colors.black, size: 18,),
+      "Cycle Preferences",
+      "Customize your tracking settings",
+        (){}
     ),
     SettingsItem(
-        Icon(Symbols.border_color_rounded, color: Colors.black, size: 18,),
-        "Data Export",
-        "Download your health data",
-            (){}
+      Icon(Symbols.border_color_rounded, color: Colors.black, size: 18,),
+      "Data Export",
+      "Download your health data",
+        (){}
     ),
   ];
 
   static List<SettingsItem> appearanceSettings = [
     SettingsItem(
-        Icon(Symbols.palette_rounded, color: Colors.black, size: 18,),
-        "Theme",
-        "Light or dark mode",
-          () => navigatorKey.currentState?.push(MaterialPageRoute(builder: (_) => const ThemePage())),
+      Icon(Symbols.palette_rounded, color: Colors.black, size: 18,),
+      "Theme",
+      "Light or dark mode",
+        () => navigatorKey.currentState?.push(MaterialPageRoute(builder: (_) => const ThemePage())),
     ),
     // SettingsItem(
     //     Icon(Symbols.language, color: HexColor.fromHex(AppConstants.primaryIcon), size: 18,),
@@ -155,50 +155,50 @@ class AppConstants {
 
   static List<SettingsItem> notificationsSettings = [
     SettingsItem(
-        Icon(Symbols.notifications_rounded, color: Colors.black, size: 18,),
-        "Push Notifications",
-        "Receive period reminders",
-        isSwitch: true,
-            (){}
+      Icon(Symbols.notifications_rounded, color: Colors.black, size: 18,),
+      "Push Notifications",
+      "Receive period reminders",
+      isSwitch: true,
+        (){}
     ),
     SettingsItem(
-        Icon(Symbols.dark_mode_rounded, color: Colors.black, size: 18,),
-        "Do Not Disturb",
-        "Quiet hours 10 PM - 8 AM",
-        isSwitch: true,
-            (){}
+      Icon(Symbols.dark_mode_rounded, color: Colors.black, size: 18,),
+      "Do Not Disturb",
+      "Quiet hours 10 PM - 8 AM",
+      isSwitch: true,
+        (){}
     ),
     SettingsItem(
-        Icon(Symbols.volume_up_rounded, color: Colors.black, size: 18,),
-        "Sound Effects",
-        "App interaction sounds",
-        isSwitch: true,
-            (){}
+      Icon(Symbols.volume_up_rounded, color: Colors.black, size: 18,),
+      "Sound Effects",
+      "App interaction sounds",
+      isSwitch: true,
+        (){}
     ),
   ];
 
   static List<SettingsItem> privacyAndSecuritySettings = [
     SettingsItem(
-        Icon(Symbols.shield_rounded, color: Colors.black, size: 18,),
-        "Data Privacy",
-        "Control your data sharing",
-            (){}
+      Icon(Symbols.shield_rounded, color: Colors.black, size: 18,),
+      "Data Privacy",
+      "Control your data sharing",
+        (){}
     ),
     SettingsItem(
-        Icon(Symbols.database_rounded, color: Colors.black, size: 18,),
-        "Backup & Sync",
-        "Cloud data backup",
-        isSwitch: true,
-            (){}
+      Icon(Symbols.database_rounded, color: Colors.black, size: 18,),
+      "Backup & Sync",
+      "Cloud data backup",
+      isSwitch: true,
+        (){}
     ),
   ];
 
   static List<SettingsItem> supportSettings = [
     SettingsItem(
-        Icon(Symbols.help, color: Colors.black, size: 18,),
-        "Help Center",
-        "FAQs and support articles",
-            () => navigatorKey.currentState?.push(MaterialPageRoute(builder: (_) => const FaqsPage())),
+      Icon(Symbols.help, color: Colors.black, size: 18,),
+      "Help Center",
+      "FAQs and support articles",
+        () => navigatorKey.currentState?.push(MaterialPageRoute(builder: (_) => const FaqsPage())),
     ),
   ];
 
@@ -218,7 +218,7 @@ class AppConstants {
   ];
 
   static const List<CategoryItem> categorySymptoms = [
-    CategoryItem("😖", "Cramps"),
+    CategoryItem("🔄", "Cramps"),
     CategoryItem("🤕", "Headache"),
     CategoryItem("😩", "Fatigue"),
     CategoryItem("🤢", "Abdominal Pain"),
