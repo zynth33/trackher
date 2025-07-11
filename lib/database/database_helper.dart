@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:trackher/services/supabase/supabase_period_service.dart';
 import 'package:trackher/sessions/dates_session.dart';
 import 'package:trackher/sessions/period_session.dart';
+import 'package:trackher/utils/extensions/string.dart';
 import '../models/journal_entry.dart';
 import '../models/period_log.dart';
 import '../utils/helper_functions.dart';
@@ -302,11 +305,15 @@ class DatabaseHelper {
     final mostCommonMood = await _getMostFrequentMood();
     final moodDistribution = await _getMoodDistribution();
     final top3Symptoms = await _getTop3Symptoms();
+    final symptomLogs = await _getSymptomLogs();
+    final moodLogs = await _getMoodLogs();
     print(totalLoggedCycles);
     print(mostCommonSymptom);
     print(mostCommonMood);
     print(moodDistribution);
     print(top3Symptoms);
+    print(symptomLogs);
+    print(moodLogs);
   }
 
 
@@ -443,6 +450,72 @@ class DatabaseHelper {
         'label': '${entry.value} times',
       };
     }).toList();
+  }
+  Future<List<Map<String, String>>> _getSymptomLogs() async {
+    final categoryEmojis = await SupabasePeriodService().fetchCategoryEmojis();
+
+    final db = await database;
+    final result = await db.rawQuery('SELECT date, symptoms FROM period_logs');
+    final DateFormat formatter = DateFormat('MMM d, yyyy');
+
+    final List<Map<String, String>> logs = [];
+
+    for (final row in result) {
+      final rawDate = row['date'];
+      final rawSymptoms = row['symptoms'] as String?;
+
+      if (rawDate == null || rawSymptoms == null || rawSymptoms.isEmpty) continue;
+
+      try {
+        final DateTime date = DateTime.parse(rawDate.toString());
+        final List<dynamic> symptomsList = json.decode(rawSymptoms);
+
+        final formattedSymptoms = symptomsList
+            .whereType<String>()
+            .map((s) => '${categoryEmojis[s.toSentenceCase()] ?? ''} ${s.toSentenceCase()}')
+            .join(', ');
+
+        logs.add({
+          'date': formatter.format(date),
+          'symptoms': formattedSymptoms,
+        });
+      } catch (_) {
+        continue;
+      }
+    }
+
+    return logs;
+  }
+  Future<List<Map<String, String>>> _getMoodLogs() async {
+    final categoryEmojis = await SupabasePeriodService().fetchCategoryEmojis();
+
+    final db = await database;
+    final result = await db.rawQuery('SELECT date, mood FROM period_logs');
+    final DateFormat formatter = DateFormat('MMM d, yyyy');
+
+    final List<Map<String, String>> logs = [];
+
+    for (final row in result) {
+      final rawDate = row['date'];
+      final rawMood = row['mood'] as String?;
+
+      if (rawDate == null || rawMood == null || rawMood.isEmpty) continue;
+
+      try {
+        final DateTime date = DateTime.parse(rawDate.toString());
+        final mood = rawMood.toSentenceCase();
+        final emoji = categoryEmojis[mood] ?? '';
+
+        logs.add({
+          'date': formatter.format(date),
+          'mood': '$emoji ${mood.toSentenceCase()}',
+        });
+      } catch (_) {
+        continue;
+      }
+    }
+
+    return logs;
   }
 
 }
