@@ -19,7 +19,6 @@ import 'utils/enums.dart';
 import 'repositories/journal_repository.dart';
 import 'sessions/period_session.dart';
 import 'pages/period_page/period_page.dart';
-import 'pages/language_test_page.dart'; // Add this for testing
 
 import 'firebase_options.dart';
 import 'models/past_period.dart';
@@ -62,7 +61,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
     final _ = JournalRepository();
@@ -149,7 +147,10 @@ void setData() {
     final rawMap = periodCycleDataBox.get('cycleMap') as Map;
 
     final Map<DateTime, Map<String, int>> convertedMap = rawMap.map(
-        (key, value) => MapEntry(DateTime.parse(key.toString()), value),
+          (key, value) => MapEntry(
+        DateTime.parse(key.toString()),
+        Map<String, int>.from(value as Map), // Convert inner map explicitly
+      ),
     );
 
     PeriodSession().setCycleNumbers(convertedMap);
